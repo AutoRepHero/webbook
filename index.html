@@ -120,7 +120,7 @@ footer{text-align:center;padding:40px 20px;font-size:12px;color:var(--text3)}
       <div class="hero-btns">
         <button class="btn-gold" onclick="startReading()">📖 Read Free Chapter</button>
         <a href="#about" class="btn-outline">About the Author</a>
-        <div class="price-note">First chapter free · Full book $9.99</div>
+        <div class="price-note">First chapter free · Full book <span style="text-decoration:line-through;color:#666">$14.95</span> <strong style="color:var(--gold)">$7.00</strong> — Launch Price 🔥</div>
       </div>
     </div>
   </div>
@@ -259,7 +259,7 @@ footer{text-align:center;padding:40px 20px;font-size:12px;color:var(--text3)}
           </button>
         </div>
         <div class="divider-or">or</div>
-        <button class="btn-gold" onclick="showPurchase()">Get the Full Book — $9.99</button>
+        <button class="btn-gold" onclick="showPurchase()">Get the Full Book — <span style="text-decoration:line-through;opacity:0.6">$14.95</span> $7.00</button>
       </div>
     </div>
 
@@ -332,13 +332,13 @@ function submitEmail() {
       <h4>You're on the list!</h4>
       <p style="color:var(--text2)">We'll let you know when the next chapter drops. In the meantime, get the full book now.</p>
       <br>
-      <button class="btn-gold" style="width:100%;text-align:center" onclick="showPurchase()">Get the Full Book — $9.99</button>
+      <button class="btn-gold" style="width:100%;text-align:center" onclick="showPurchase()">Get the Full Book — <span style="text-decoration:line-through;opacity:0.6">$14.95</span> $7.00</button>
     </div>
   `;
 }
 
 function showPurchase() {
-  alert('Full book purchase coming soon! For now, find it on Amazon: "Taking Authority in Your Life" by Charles Zaagsma');
+  window.location.href = 'https://pay.chuckzonline.com/b/5kQeV50X09RJasfbtm63K03';
 }
 
 // Reading progress bar
