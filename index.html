@@ -652,6 +652,11 @@ const FREE_CHAPTERS = 1; // How many chapters are free
 if (new URLSearchParams(window.location.search).get('paid') === 'true') {
   localStorage.setItem('webbook_paid', 'true');
 }
+// Owner/promo access codes
+const accessCode = new URLSearchParams(window.location.search).get('code');
+if (accessCode === 'king2026') {
+  localStorage.setItem('webbook_paid', 'true');
+}
 const hasPaid = localStorage.getItem('webbook_paid') === 'true';
 
 function loadChapter(idx) {
