@@ -107,7 +107,31 @@ footer{text-align:center;padding:40px 20px;font-size:12px;color:var(--text3)}
   <div class="hero">
     <div class="book-cover">
       <div class="book-cover-inner">
-        <svg class="crown-icon" viewBox="0 0 120 80" fill="#d4af37" width="60" height="40" style="margin:0 auto 12px;display:block"><path d="M10 58 Q10 55 12 52 L25 28 Q28 22 30 28 L42 48 L52 16 Q55 8 58 8 L60 6 L62 8 Q65 8 68 16 L78 48 L90 28 Q92 22 95 28 L108 52 Q110 55 110 58 Z"/><rect x="10" y="58" width="100" height="10" rx="5"/><circle cx="60" cy="12" r="5" fill="#e8c84c"/><circle cx="30" cy="30" r="3.5" fill="#e8c84c"/><circle cx="90" cy="30" r="3.5" fill="#e8c84c"/></svg>
+        <div id="crownPicker" style="margin-bottom:20px">
+        <div style="font-size:10px;color:#666;text-align:center;margin-bottom:12px;letter-spacing:1px">TAP THE CROWN YOU LIKE BEST ↓</div>
+        <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap">
+          <!-- Option A: Clean Minimal -->
+          <div onclick="pickCrown('a')" style="cursor:pointer;text-align:center;padding:12px;border:2px solid #333;border-radius:12px;min-width:80px" id="crownA">
+            <svg viewBox="0 0 100 70" fill="#d4af37" width="50" height="35"><path d="M10 55 L10 50 L28 20 L40 38 L50 8 L60 38 L72 20 L90 50 L90 55 Z"/><rect x="8" y="55" width="84" height="8" rx="3"/></svg>
+            <div style="font-size:9px;color:#888;margin-top:4px">A: Clean</div>
+          </div>
+          <!-- Option B: Royal Ornate -->
+          <div onclick="pickCrown('b')" style="cursor:pointer;text-align:center;padding:12px;border:2px solid #333;border-radius:12px;min-width:80px" id="crownB">
+            <svg viewBox="0 0 100 70" fill="#d4af37" width="50" height="35"><path d="M8 55 L15 22 Q18 15 20 22 L32 42 L44 12 Q47 4 50 4 Q53 4 56 12 L68 42 L80 22 Q82 15 85 22 L92 55 Z"/><rect x="6" y="55" width="88" height="9" rx="4"/><circle cx="50" cy="8" r="4"/><circle cx="20" cy="22" r="3"/><circle cx="80" cy="22" r="3"/></svg>
+            <div style="font-size:9px;color:#888;margin-top:4px">B: Royal</div>
+          </div>
+          <!-- Option C: Thin Modern -->
+          <div onclick="pickCrown('c')" style="cursor:pointer;text-align:center;padding:12px;border:2px solid #333;border-radius:12px;min-width:80px" id="crownC">
+            <svg viewBox="0 0 100 70" fill="none" stroke="#d4af37" stroke-width="3" width="50" height="35"><path d="M12 52 L20 18 L35 38 L50 8 L65 38 L80 18 L88 52"/><line x1="10" y1="52" x2="90" y2="52"/><line x1="10" y1="58" x2="90" y2="58"/></svg>
+            <div style="font-size:9px;color:#888;margin-top:4px">C: Thin</div>
+          </div>
+          <!-- Option D: Bold 5-Point -->
+          <div onclick="pickCrown('d')" style="cursor:pointer;text-align:center;padding:12px;border:2px solid #333;border-radius:12px;min-width:80px" id="crownD">
+            <svg viewBox="0 0 100 70" fill="#d4af37" width="50" height="35"><path d="M5 55 L5 48 L22 15 L35 35 L45 5 L50 0 L55 5 L65 35 L78 15 L95 48 L95 55 Z"/><rect x="5" y="55" width="90" height="10" rx="2"/></svg>
+            <div style="font-size:9px;color:#888;margin-top:4px">D: Bold</div>
+          </div>
+        </div>
+      </div>
         <h1>Taking Authority<br>in Your Life</h1>
         <div class="divider"></div>
         <div class="subtitle">The Power of the Spoken Word</div>
@@ -269,6 +293,12 @@ footer{text-align:center;padding:40px 20px;font-size:12px;color:var(--text3)}
 </div>
 
 <script>
+function pickCrown(choice) {
+  document.querySelectorAll('#crownPicker > div > div').forEach(d => d.style.borderColor = '#333');
+  document.getElementById('crown' + choice.toUpperCase()).style.borderColor = '#d4af37';
+  alert('Crown ' + choice.toUpperCase() + ' selected! Tell Chuck which one you picked and I\'ll lock it in.');
+}
+
 let fontSize = 17;
 let unlocked = false;
 
