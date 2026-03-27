@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taking Authority in Your Life — Charles Zaagsma</title>
+<meta name="description" content="The Power of the Spoken Word. Achieve lifelong goals. Transform your life with the authority God has given you.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--gold:#c9a84c;--dark:#0d0d0d;--dark2:#141414;--dark3:#1c1c1c;--text:#e8e0d0;--text2:#a89870;--text3:#5a5040;--radius:12px}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--dark);color:var(--text);min-height:100vh}
+
+/* LANDING PAGE */
+.landing{max-width:100%;min-height:100vh}
+.hero{background:linear-gradient(180deg,#0d0d0d 0%,#1a1208 50%,#0d0d0d 100%);padding:60px 20px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(201,168,76,0.08) 0%,transparent 70%);pointer-events:none}
+.book-cover{position:relative;display:inline-block;margin-bottom:40px}
+.book-cover-inner{width:220px;background:linear-gradient(135deg,#1a1208,#0d0d0d);border:1px solid rgba(201,168,76,0.3);border-radius:4px;padding:32px 24px;box-shadow:8px 8px 30px rgba(0,0,0,0.8),-2px 0 8px rgba(201,168,76,0.1);position:relative}
+.crown-icon{font-size:48px;margin-bottom:12px;display:block}
+.book-cover-inner h1{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:#fff;line-height:1.2;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px}
+.book-cover-inner .divider{width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:12px auto}
+.book-cover-inner .subtitle{font-size:11px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:20px}
+.book-cover-inner .author{font-family:'Playfair Display',serif;font-size:13px;color:var(--text2);font-style:italic}
+.hero-text{max-width:600px;margin:0 auto}
+.hero-text h2{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;margin-bottom:16px;color:#fff;line-height:1.3}
+.hero-text p{font-size:16px;color:var(--text2);line-height:1.8;margin-bottom:32px}
+.hero-btns{display:flex;flex-direction:column;gap:12px;align-items:center}
+.btn-gold{padding:16px 40px;background:linear-gradient(135deg,#c9a84c,#a07830);color:#000;font-weight:700;font-size:15px;border:none;border-radius:var(--radius);cursor:pointer;font-family:inherit;transition:all 0.2s;text-decoration:none;display:inline-block;letter-spacing:0.5px}
+.btn-gold:active{transform:scale(0.97)}
+.btn-outline{padding:14px 36px;background:transparent;color:var(--gold);font-weight:600;font-size:14px;border:1px solid rgba(201,168,76,0.4);border-radius:var(--radius);cursor:pointer;font-family:inherit;transition:all 0.2s;text-decoration:none;display:inline-block;letter-spacing:0.5px}
+.price-note{font-size:13px;color:var(--text3);margin-top:8px}
+
+/* PRAISE / BLURB */
+.blurb{max-width:700px;margin:60px auto;padding:0 20px}
+.blurb-text{font-family:'Playfair Display',serif;font-size:18px;font-style:italic;color:var(--text2);line-height:1.8;text-align:center;margin-bottom:40px;padding:0 20px}
+.feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:60px}
+.feature-item{background:var(--dark2);border:1px solid rgba(201,168,76,0.15);border-radius:var(--radius);padding:20px}
+.feature-item .fi{font-size:24px;margin-bottom:8px}
+.feature-item h4{font-size:14px;font-weight:600;color:#fff;margin-bottom:4px}
+.feature-item p{font-size:12px;color:var(--text3);line-height:1.5}
+
+/* ABOUT AUTHOR */
+.about{background:var(--dark2);padding:60px 20px;text-align:center}
+.about-inner{max-width:600px;margin:0 auto}
+.about h3{font-family:'Playfair Display',serif;font-size:24px;color:var(--gold);margin-bottom:20px}
+.about p{font-size:15px;color:var(--text2);line-height:1.8}
+
+/* CHAPTER PREVIEW CTA */
+.preview-cta{max-width:600px;margin:60px auto;padding:40px 20px;text-align:center}
+.preview-cta h3{font-family:'Playfair Display',serif;font-size:28px;margin-bottom:12px;color:#fff}
+.preview-cta p{font-size:15px;color:var(--text2);margin-bottom:28px;line-height:1.7}
+
+/* READER */
+.reader{display:none;min-height:100vh}
+.reader.active{display:block}
+.reader-header{background:var(--dark2);border-bottom:1px solid rgba(201,168,76,0.15);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.reader-header .back{background:none;border:none;color:var(--text2);cursor:pointer;font-family:inherit;font-size:13px;display:flex;align-items:center;gap:6px;padding:6px}
+.reader-header .book-title{font-size:12px;color:var(--text3);text-align:center;flex:1}
+.reader-controls{display:flex;gap:8px}
+.font-btn{background:none;border:1px solid var(--text3);color:var(--text2);border-radius:6px;padding:4px 10px;cursor:pointer;font-family:inherit;font-size:12px}
+
+.chapter-content{max-width:680px;margin:0 auto;padding:40px 24px 120px}
+.chapter-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:#fff;margin-bottom:8px;line-height:1.3}
+.chapter-num{font-size:12px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:20px}
+.chapter-divider{width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin-bottom:32px}
+.chapter-text{font-size:17px;line-height:1.9;color:var(--text)}
+.chapter-text p{margin-bottom:1.5em}
+.chapter-text blockquote{border-left:2px solid var(--gold);padding-left:20px;margin:24px 0;font-family:'Playfair Display',serif;font-style:italic;color:var(--text2);font-size:16px;line-height:1.7}
+.chapter-text .scripture{background:rgba(201,168,76,0.05);border:1px solid rgba(201,168,76,0.15);border-radius:8px;padding:16px 20px;margin:24px 0;font-style:italic;color:var(--text2);font-size:15px;line-height:1.7}
+.chapter-text .scripture cite{display:block;margin-top:8px;font-style:normal;font-size:12px;color:var(--gold);letter-spacing:1px}
+
+/* UNLOCK GATE */
+.unlock-gate{background:linear-gradient(180deg,transparent,var(--dark) 30%);position:relative;margin-top:-80px;padding:80px 24px 40px;text-align:center;max-width:680px;margin-left:auto;margin-right:auto}
+.unlock-box{background:var(--dark2);border:1px solid rgba(201,168,76,0.3);border-radius:20px;padding:40px 24px;max-width:480px;margin:0 auto}
+.unlock-box h3{font-family:'Playfair Display',serif;font-size:24px;color:#fff;margin-bottom:8px}
+.unlock-box p{font-size:14px;color:var(--text2);margin-bottom:24px;line-height:1.6}
+.share-btns{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.share-btn{padding:14px 20px;border:none;border-radius:var(--radius);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:10px;transition:all 0.2s}
+.share-btn:active{transform:scale(0.97)}
+.share-fb{background:#1877F2;color:#fff}
+.share-text{background:#22c55e;color:#fff}
+.share-copy{background:var(--dark3);color:var(--text);border:1px solid var(--text3)}
+.divider-or{display:flex;align-items:center;gap:12px;color:var(--text3);font-size:12px;margin:16px 0}
+.divider-or::before,.divider-or::after{content:'';flex:1;height:1px;background:var(--dark3)}
+.unlock-box .btn-gold{width:100%;text-align:center}
+
+/* PROGRESS BAR */
+.reading-progress{position:fixed;top:0;left:0;height:2px;background:var(--gold);z-index:100;transition:width 0.1s;width:0%}
+
+/* CHAPTER 2 TEASER */
+.next-chapter{background:var(--dark2);border:1px solid rgba(201,168,76,0.2);border-radius:16px;padding:32px;text-align:center;max-width:480px;margin:40px auto}
+.next-chapter h4{font-family:'Playfair Display',serif;font-size:20px;color:#fff;margin-bottom:8px}
+.next-chapter p{font-size:13px;color:var(--text3);margin-bottom:20px}
+
+footer{text-align:center;padding:40px 20px;font-size:12px;color:var(--text3)}
+</style>
+</head>
+<body>
+
+<div class="reading-progress" id="readingProgress"></div>
+
+<!-- LANDING PAGE -->
+<div class="landing" id="landing">
+  <div class="hero">
+    <div class="book-cover">
+      <div class="book-cover-inner">
+        <span class="crown-icon">♛</span>
+        <h1>Taking Authority<br>in Your Life</h1>
+        <div class="divider"></div>
+        <div class="subtitle">The Power of the Spoken Word</div>
+        <div class="author">Charles Zaagsma</div>
+      </div>
+    </div>
+    <div class="hero-text">
+      <h2>Your words are creating your world.<br>Are you saying what you want?</h2>
+      <p>A raw, powerful testimony of going from the edge of death — broken, addicted, and hopeless — to completely restored. And the discovery that changed everything: the authority in your spoken words.</p>
+      <div class="hero-btns">
+        <button class="btn-gold" onclick="startReading()">📖 Read Free Chapter</button>
+        <a href="#about" class="btn-outline">About the Author</a>
+        <div class="price-note">First chapter free · Full book $9.99</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="blurb">
+    <p class="blurb-text">"If you think something you want is impossible but don't want to give up on your dream — this book is for you."</p>
+    <div class="feature-grid">
+      <div class="feature-item">
+        <div class="fi">💪</div>
+        <h4>Transform Any Area of Life</h4>
+        <p>Health, finances, relationships — learn the principles that work across every challenge</p>
+      </div>
+      <div class="feature-item">
+        <div class="fi">👑</div>
+        <h4>Walk in Authority</h4>
+        <p>Discover the God-given authority you already have and how to use it</p>
+      </div>
+      <div class="feature-item">
+        <div class="fi">🔥</div>
+        <h4>Real Testimony</h4>
+        <p>125 lbs lost, addictions broken, body healed — not theory, lived experience</p>
+      </div>
+      <div class="feature-item">
+        <div class="fi">📖</div>
+        <h4>Bible-Based Principles</h4>
+        <p>Practical application of scripture to everyday situations that actually work</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="about" id="about">
+    <div class="about-inner">
+      <h3>About the Author</h3>
+      <p>Chuck Zaagsma is an enthusiastic motivator who has triumphed over what seemed insurmountable odds. Chuck rose up out of the ashes of physical, financial, and emotional ruin — knocking on death's door — to a completely restored soul, free from lifelong addictions and completely transforming every area of his life for the better.</p>
+      <br>
+      <p>Chuck is first and foremost a man of God. A former correctional officer and US Army and Air Force veteran, God has called him to "arm the troops" and teach His word to His people. He is married to his beautiful wife Pam and has four amazing sons: Josh, Xander, Zachary, and Owen. He is a member of Zeal Church in Spokane, WA.</p>
+    </div>
+  </div>
+
+  <div class="preview-cta">
+    <h3>Start Reading for Free</h3>
+    <p>Read the first chapter completely free. If it moves you, share it to unlock the next — or get the full book and let these principles transform your life.</p>
+    <button class="btn-gold" onclick="startReading()">📖 Start Reading Now</button>
+  </div>
+
+  <footer>© 2022 Charles Zaagsma · Taking Authority in Your Life</footer>
+</div>
+
+<!-- READER -->
+<div class="reader" id="reader">
+  <div class="reader-header">
+    <button class="back" onclick="showLanding()">← Back</button>
+    <div class="book-title">Taking Authority in Your Life</div>
+    <div class="reader-controls">
+      <button class="font-btn" onclick="changeFontSize(-1)">A−</button>
+      <button class="font-btn" onclick="changeFontSize(1)">A+</button>
+    </div>
+  </div>
+
+  <div class="chapter-content" id="chapterContent">
+    <div class="chapter-num">Chapter One</div>
+    <h1 class="chapter-title">Utter Defeat, No Hope, and Life at Its End — Or Was It?</h1>
+    <div class="chapter-divider"></div>
+    <div class="chapter-text" id="chapterText">
+
+      <p>I was over at a friend's family farm. I was standing facing this typical-looking farm fence, gazing out into the horizon. It was an amazing scenery of rural country fields and hillsides with the sun starting to go down. It started to be a beautiful show of colors — but not for me.</p>
+
+      <p>I had just received a phone call, and the words I heard were devastating. I couldn't believe it. It was over. Everything was over. It was another knockdown blow. I'm down again, and the hits just keep coming. This blow though seemed to be the one that would finish me — the last straw that broke the camel's back.</p>
+
+      <p>I had taken many hard blows in my life, and I had always seemed to get up. I had always been a survivor — the last one standing after the carnage. From an early age, disappointment and death had reigned. My older brother and my younger sister gone before I even got out of high school.</p>
+
+      <p>I knew there was a God, but I thought maybe he was an angry God. And he wasn't loving or caring. My brother loved God and was so smart. He had gotten a full-ride scholarship to Gonzaga University for engineering. My brother died in his sleep at the dorm, right before Christmas, when I was a sophomore in high school.</p>
+
+      <p>A month after my brother died, we found out my sister had a brain tumor. My sister loved God and believed he was going to heal her of her cancer, but she died anyway about a month before I graduated from high school. She had so much talent and was so amazing. I shouldn't be the choice. They both seemed so much more than me and so much more to offer the world. Why was I the one left?</p>
+
+      <p>I had been mad at God for so long now — for well over twenty years. Even with him, it was just another bad and irreparable relationship in my life. I had done so many bad things. Maybe I deserve it. Maybe I deserve everything. Maybe I deserve his wrath. If there was a God, I definitely wasn't on his team.</p>
+
+      <p>Maybe nothing matters. Maybe there is no rhyme or reason. Why me? Why am I the one who lived? Why was I left alive because I sure hadn't done any good with it? If something is so bad, is it even worth anything? That was the story of my life. Was it even worth living? Why do bad things keep happening to me?</p>
+
+      <p>I would always get back up, and I used laughter and humor to disguise and cover up my pain. But this time, the wind was completely knocked out of me, and it didn't seem possible to get back up or ever recover or ever even hope to feel somewhat normal again — where I had always willed through everything, even my will was gone.</p>
+
+      <p>The sky continued to be full of radiant color, orange, red, and blue, and the sun was starting to slip below the horizon. It was probably an extraordinary sunset, but for me it was anything but beautiful. All I could see was the sun setting on my life. Forty-two and my life was a fail.</p>
+
+      <p>I had been officially damaged goods for some time now. I was broken beyond repair — or so it seemed. The man in the mirror disgusted me. Overweight, old, so old-looking. I felt so old beyond my years, like I had one foot in the grave. Everything I thought was important was gone. No one would ever want me or want to be with me.</p>
+
+      <p>Every part of me seemed broken. My marriage — to whom I thought was the love of my life and the best thing I had ever known up to that point — was destroyed and ruined. Everyone and everything I love either dies or I end up losing. Why try? Every relationship I had, along with three failed marriages, were destroyed.</p>
+
+      <p>I was an alcoholic and addicted to pain pills. The drinking and pain pills couldn't numb the pain anymore either, especially the emotional pain. I wanted to die and felt I deserved to die. I wouldn't pull out a gun and use it on myself, but I was pulling the trigger on the bottle and pills. Passive self-destruction.</p>
+
+      <p>I couldn't stop. If I could, I didn't know how. I kept trying. Every day I would say, "This is it. I have to stop, but I can't." How do I recover? It didn't look like anything would have helped.</p>
+
+      <p>My body was ravaged in so many ways. Damage in my spine that wasn't fixable according to doctors. Three surgeries between two shoulders. Multiple points of constant unrelenting pain. Damaged vertebrae in my neck. Nerve damage in my left elbow that controlled three of my fingers. I couldn't sit for more than fifteen minutes without my hand going numb and getting excruciating headaches.</p>
+
+      <div class="scripture">I wanted to give up and die, and I almost did.<br>But that's not how this story ends.</div>
+
+      <p>Fast forward to the present day, a little over nine years later. I am clean and sober for eight years now. I am completely healed and restored to whole in every way. Since then, I have lost over 150 pounds — went from a size 4X to a regular size large and from a size 52 waist to a 32.</p>
+
+      <p>With the very hand I couldn't control or use three of my fingers, I learned how to play guitar, and I played for years on the praise and worship team at the church I attend. I cannot only control those fingers but can choose to move them independently and have the strength in them to hold down the right acoustic guitar strings on my guitar.</p>
+
+      <p>My kids know me as a God-fearing, loving, good, and godly example of a man and dad. I'm married to my beautiful bride and wife, Pam — the true love of my life and the one that God had planned and designed for me.</p>
+
+      <p>My oldest, Josh, who knew me at my worst, says I am the perfect example of God's grace and love. If he can change me, he can change anyone.</p>
+
+      <p>The story I tell now is a different story. A story of love, joy, and peace. A story of life and life more abundant. How I am an overcomer and I now live in victory. My God is greater than any obstacle in my path. Death and defeat are no longer in my vocabulary — and they shouldn't be in yours either.</p>
+
+      <hr style="border:none;border-top:1px solid rgba(201,168,76,0.2);margin:40px 0">
+
+      <p>We all have, once we reach adulthood, the authority in our life to do what we want to do and control our destiny — where we work, who we marry, the direction we go. Most people will agree that they can make decisions for themselves, but they feel they have no control to give orders or enforce obedience to anything.</p>
+
+      <p>That's how it was in my life — until I figured out I was sabotaging the outcomes in almost every situation with my words. I didn't know what authority was, but I was using mine negatively. Instead of giving up, I want to show you how to take back your control and authority like I did and start changing your life for the better.</p>
+
+      <div class="scripture">"My heart is inditing a good matter: I speak of the things which I have made touching the king: my tongue is the pen of a ready writer."<cite>Psalms 45:1 KJV</cite></div>
+
+      <p>If you look at the root of the word <em>authority</em>, it comes from the English word <em>author</em>. The word author is usually referred to as a writer, originator, or creator of something — especially a plan or idea. The author gets to choose the words to tell their story, and they are the ones who create it.</p>
+
+      <p>As the author of telling your story, you get to choose. Not only do you get to choose your words, but your words matter. If you choose better words, not only will the focus of your story get better, but the direction and outcome will get better. No matter where you are in your story — if it's not finished — you can still change the ending.</p>
+
+      <p><strong>Better words. Better story. Better life.</strong></p>
+
+    </div>
+
+    <!-- UNLOCK GATE -->
+    <div class="unlock-gate" id="unlockGate">
+      <div class="unlock-box">
+        <h3>You're on a roll. 🔥</h3>
+        <p>Chapter 2 reveals the biggest lie you've been told about your words — and the one Bible principle that changes everything. Share this to keep reading.</p>
+        <div class="share-btns">
+          <button class="share-btn share-fb" onclick="shareAndUnlock('facebook')">
+            📘 Share on Facebook to Continue
+          </button>
+          <button class="share-btn share-text" onclick="shareAndUnlock('text')">
+            💬 Text to a Friend to Continue
+          </button>
+          <button class="share-btn share-copy" onclick="shareAndUnlock('copy')">
+            📋 Copy Link to Share
+          </button>
+        </div>
+        <div class="divider-or">or</div>
+        <button class="btn-gold" onclick="showPurchase()">Get the Full Book — $9.99</button>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>© 2022 Charles Zaagsma · <a href="#" onclick="showLanding();return false" style="color:var(--text3)">Taking Authority in Your Life</a></footer>
+</div>
+
+<script>
+let fontSize = 17;
+let unlocked = false;
+
+function showLanding() {
+  document.getElementById('landing').style.display = 'block';
+  document.getElementById('reader').classList.remove('active');
+  window.scrollTo(0,0);
+}
+
+function startReading() {
+  document.getElementById('landing').style.display = 'none';
+  document.getElementById('reader').classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function changeFontSize(delta) {
+  fontSize = Math.max(14, Math.min(24, fontSize + delta));
+  document.getElementById('chapterText').style.fontSize = fontSize + 'px';
+}
+
+function shareAndUnlock(type) {
+  const url = window.location.href;
+  const text = 'Reading "Taking Authority in Your Life" by Chuck Zaagsma — this is powerful. ' + url;
+
+  if (type === 'facebook') {
+    window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url), '_blank');
+  } else if (type === 'text') {
+    window.open('sms:?body=' + encodeURIComponent(text));
+  } else if (type === 'copy') {
+    navigator.clipboard.writeText(url).then(() => alert('Link copied! Share it with someone who needs this.'));
+  }
+
+  // Unlock after share
+  setTimeout(() => {
+    unlocked = true;
+    document.getElementById('unlockGate').innerHTML = `
+      <div class="next-chapter">
+        <div style="font-size:32px;margin-bottom:8px">✅</div>
+        <h4>Chapter 2 Unlocked!</h4>
+        <p>Thank you for sharing. The next chapter is coming soon — enter your email to be notified and get the rest free.</p>
+        <input type="email" id="emailInput" placeholder="your@email.com" style="width:100%;padding:12px 14px;background:#1c1c1c;border:1px solid #333;border-radius:10px;color:#fff;font-family:inherit;font-size:14px;margin-bottom:12px">
+        <button class="btn-gold" style="width:100%;text-align:center" onclick="submitEmail()">Notify Me When Chapter 2 is Live</button>
+      </div>
+    `;
+    document.getElementById('unlockGate').scrollIntoView({behavior:'smooth'});
+  }, 1500);
+}
+
+function submitEmail() {
+  const email = document.getElementById('emailInput').value;
+  if (!email || !email.includes('@')) { alert('Please enter a valid email'); return; }
+  document.getElementById('unlockGate').innerHTML = `
+    <div class="next-chapter">
+      <div style="font-size:40px;margin-bottom:8px">🙏</div>
+      <h4>You're on the list!</h4>
+      <p style="color:var(--text2)">We'll let you know when the next chapter drops. In the meantime, get the full book now.</p>
+      <br>
+      <button class="btn-gold" style="width:100%;text-align:center" onclick="showPurchase()">Get the Full Book — $9.99</button>
+    </div>
+  `;
+}
+
+function showPurchase() {
+  alert('Full book purchase coming soon! For now, find it on Amazon: "Taking Authority in Your Life" by Charles Zaagsma');
+}
+
+// Reading progress bar
+window.addEventListener('scroll', () => {
+  const doc = document.documentElement;
+  const scrollTop = doc.scrollTop || document.body.scrollTop;
+  const scrollHeight = doc.scrollHeight - doc.clientHeight;
+  const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+  document.getElementById('readingProgress').style.width = progress + '%';
+});
+</script>
+</body>
+</html>
