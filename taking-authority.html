@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Taking Authority — Interactive Webbook</title>
+  <style>
+    :root {
+      --gold: #c9a227;
+      --gold-light: #f0d080;
+      --dark: #0d0d0d;
+      --card: #1a1a1a;
+      --card2: #222;
+      --text: #e8e8e8;
+      --muted: #888;
+      --accent: #2a6496;
+      --green: #27ae60;
+      --radius: 12px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: var(--dark);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #1a1200 0%, #2a1e00 50%, #0d0d0d 100%);
+      border-bottom: 2px solid var(--gold);
+      padding: 32px 24px 24px;
+      text-align: center;
+    }
+    header .crown { font-size: 2.5rem; margin-bottom: 8px; }
+    header h1 {
+      font-size: clamp(1.6rem, 4vw, 2.8rem);
+      color: var(--gold);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    header p {
+      color: var(--gold-light);
+      font-size: 1rem;
+      margin-top: 8px;
+      font-style: italic;
+    }
+    header .byline {
+      margin-top: 12px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* ── Progress Bar ── */
+    #progress-wrap {
+      background: #111;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid #2a2a2a;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    #progress-label { font-size: 0.75rem; color: var(--muted); white-space: nowrap; }
+    #progress-bar-outer {
+      flex: 1;
+      background: #2a2a2a;
+      border-radius: 99px;
+      height: 8px;
+      overflow: hidden;
+    }
+    #progress-bar-inner {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      border-radius: 99px;
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+    #progress-pct { font-size: 0.75rem; color: var(--gold); font-weight: bold; min-width: 36px; text-align: right; }
+
+    /* ── Layout ── */
+    .container {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 0 16px 80px;
+    }
+
+    /* ── TOC ── */
+    #toc {
+      background: var(--card);
+      border: 1px solid #2a2a2a;
+      border-radius: var(--radius);
+      margin: 28px 0 0;
+      overflow: hidden;
+    }
+    #toc-header {
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      background: #1e1e1e;
+      user-select: none;
+    }
+    #toc-header h2 { font-size: 1rem; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; }
+    #toc-header .arrow { color: var(--gold); transition: transform 0.2s; }
+    #toc-list {
+      padding: 8px 0;
+      display: none;
+    }
+    #toc-list.open { display: block; }
+    #toc-list a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: background 0.15s;
+    }
+    #toc-list a:hover { background: #2a2a2a; }
+    #toc-list a .num {
+      color: var(--gold);
+      font-weight: bold;
+      min-width: 24px;
+    }
+    #toc-list a.done .num::after { content: ' ✓'; color: var(--green); }
+
+    /* ── Chapter Section ── */
+    .chapter-section { margin-top: 40px; }
+
+    .chapter-header {
+      padding: 20px 24px;
+      background: linear-gradient(135deg, #1a1400 0%, #1e1800 100%);
+      border: 1px solid var(--gold);
+      border-radius: var(--radius) var(--radius) 0 0;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .chapter-header .ch-num {
+      background: var(--gold);
+      color: #000;
+      font-weight: bold;
+      font-size: 0.8rem;
+      padding: 4px 10px;
+      border-radius: 99px;
+      white-space: nowrap;
+      margin-top: 2px;
+    }
+    .chapter-header .ch-title {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: var(--gold-light);
+      line-height: 1.4;
+      flex: 1;
+    }
+    .chapter-header .ch-arrow { color: var(--gold); font-size: 1.2rem; transition: transform 0.25s; margin-top: 2px; }
+    .chapter-header.open .ch-arrow { transform: rotate(90deg); }
+
+    .chapter-body {
+      display: none;
+      background: var(--card);
+      border: 1px solid #2a2a2a;
+      border-top: none;
+      border-radius: 0 0 var(--radius) var(--radius);
+      overflow: hidden;
+    }
+    .chapter-body.open { display: block; }
+
+    /* ── Chapter Text ── */
+    .chapter-text {
+      padding: 24px;
+      border-bottom: 1px solid #2a2a2a;
+      max-height: 440px;
+      overflow-y: auto;
+      line-height: 1.85;
+      font-size: 0.97rem;
+      color: #d0d0d0;
+    }
+    .chapter-text::-webkit-scrollbar { width: 5px; }
+    .chapter-text::-webkit-scrollbar-track { background: #1a1a1a; }
+    .chapter-text::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 99px; }
+    .chapter-text p { margin-bottom: 14px; }
+
+    /* ── Transformation Stack ── */
+    .stack-wrap {
+      padding: 24px;
+    }
+    .stack-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .stack-header h3 {
+      color: var(--gold);
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .stack-header .badge {
+      background: var(--gold);
+      color: #000;
+      font-size: 0.7rem;
+      font-weight: bold;
+      padding: 3px 8px;
+      border-radius: 99px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .stack-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 600px) { .stack-grid { grid-template-columns: 1fr; } }
+
+    .stack-card {
+      background: var(--card2);
+      border: 1px solid #333;
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .stack-card h4 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .stack-card.summary h4 { color: #7ec8e3; }
+    .stack-card.keys h4 { color: #f4a261; }
+    .stack-card.qa h4 { color: #a8dadc; }
+    .stack-card.actions h4 { color: var(--green); }
+    .stack-card ul, .stack-card ol {
+      padding-left: 18px;
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: #bbb;
+    }
+    .stack-card p { font-size: 0.88rem; line-height: 1.7; color: #bbb; }
+
+    /* ── Journal / Workbook ── */
+    .journal-section {
+      margin-top: 16px;
+      background: #151515;
+      border: 1px solid #2d2d2d;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .journal-header {
+      padding: 12px 16px;
+      background: #1c1c1c;
+      border-bottom: 1px solid #2d2d2d;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .journal-prompts { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+    .journal-prompt label {
+      display: block;
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 5px;
+      font-style: italic;
+    }
+    .journal-prompt textarea {
+      width: 100%;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 6px;
+      padding: 10px 12px;
+      color: var(--text);
+      font-family: 'Georgia', serif;
+      font-size: 0.9rem;
+      resize: vertical;
+      min-height: 72px;
+      line-height: 1.6;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .journal-prompt textarea:focus { border-color: var(--gold); }
+    .journal-prompt textarea::placeholder { color: #444; }
+
+    /* ── Action Checklist ── */
+    .action-checks { padding: 0 16px 16px; display: flex; flex-direction: column; gap: 8px; }
+    .action-check {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      cursor: pointer;
+      padding: 8px 10px;
+      border-radius: 6px;
+      transition: background 0.15s;
+    }
+    .action-check:hover { background: #1e1e1e; }
+    .action-check input[type="checkbox"] { display: none; }
+    .action-check .checkmark {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--green);
+      border-radius: 4px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+      transition: background 0.2s;
+    }
+    .action-check input:checked ~ .checkmark {
+      background: var(--green);
+    }
+    .action-check input:checked ~ .checkmark::after { content: '✓'; color: #000; font-size: 0.75rem; font-weight: bold; }
+    .action-check input:checked ~ .step-text { color: var(--muted); text-decoration: line-through; }
+    .action-check .step-text { font-size: 0.88rem; color: #ccc; line-height: 1.5; }
+
+    /* ── Mark Complete button ── */
+    .chapter-complete-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 16px 0 0;
+      padding: 12px 20px;
+      border: 2px solid var(--green);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--green);
+      font-size: 0.9rem;
+      font-family: 'Georgia', serif;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.2s, color 0.2s;
+      letter-spacing: 0.5px;
+    }
+    .chapter-complete-btn:hover { background: var(--green); color: #000; }
+    .chapter-complete-btn.done { background: var(--green); color: #000; border-color: var(--green); }
+
+    /* ── Bonus Link ── */
+    .bonus-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 14px 0 0;
+      padding: 12px 16px;
+      background: rgba(201,162,39,0.07);
+      border: 1px solid rgba(201,162,39,0.25);
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--gold-light);
+      font-size: 0.85rem;
+      transition: background 0.15s;
+    }
+    .bonus-link:hover { background: rgba(201,162,39,0.14); }
+    .bonus-link .bl-icon { font-size: 1.2rem; flex-shrink: 0; }
+    .bonus-link .bl-text { flex: 1; }
+    .bonus-link .bl-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); margin-bottom: 2px; }
+    .bonus-link .bl-arrow { color: var(--gold); font-size: 0.9rem; }
+
+    /* ── 30-Day Challenge ── */
+    #challenge-section {
+      margin-top: 48px;
+      background: linear-gradient(135deg, #0f1a0f 0%, #0a150a 100%);
+      border: 2px solid var(--green);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    #challenge-header {
+      padding: 20px 24px;
+      background: #0d1a0d;
+      border-bottom: 1px solid #1a3a1a;
+      text-align: center;
+    }
+    #challenge-header h2 { color: #5ef08a; font-size: 1.4rem; letter-spacing: 2px; text-transform: uppercase; }
+    #challenge-header p { color: #7abc8a; font-size: 0.9rem; margin-top: 6px; font-style: italic; }
+    .challenge-weeks {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    @media (max-width: 580px) { .challenge-weeks { grid-template-columns: 1fr; } }
+    .week-card {
+      padding: 20px;
+      border-right: 1px solid #1a3a1a;
+      border-bottom: 1px solid #1a3a1a;
+    }
+    .week-card:nth-child(even) { border-right: none; }
+    .week-card h3 {
+      color: #5ef08a;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    .week-card .week-theme { color: var(--gold); font-size: 1rem; font-weight: bold; margin-bottom: 12px; }
+    .week-card ul { padding-left: 18px; font-size: 0.85rem; color: #8fc; line-height: 1.8; }
+    .challenge-footer {
+      padding: 20px 24px;
+      text-align: center;
+      border-top: 1px solid #1a3a1a;
+    }
+    .challenge-footer p { color: #8fc; font-size: 0.95rem; font-style: italic; }
+    .challenge-footer .grad { font-size: 1.5rem; margin-top: 8px; }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 32px 16px;
+      color: var(--muted);
+      font-size: 0.8rem;
+      border-top: 1px solid #1a1a1a;
+      margin-top: 48px;
+    }
+    footer a { color: var(--gold); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="crown">👑</div>
+  <h1>Taking Authority</h1>
+  <p>Interactive Workbook Edition</p>
+  <div class="byline">By Chuck Zaagsma</div>
+</header>
+
+<div id="progress-wrap">
+  <span id="progress-label">Your Progress</span>
+  <div id="progress-bar-outer"><div id="progress-bar-inner"></div></div>
+  <span id="progress-pct">0%</span>
+</div>
+
+<div class="container">
+
+  <!-- Table of Contents -->
+  <div id="toc">
+    <div id="toc-header" onclick="toggleToc()">
+      <h2>📖 Table of Contents</h2>
+      <span class="arrow" id="toc-arrow">▼</span>
+    </div>
+    <div id="toc-list" class="open">
+      <a href="#ch1" id="toc-1"><span class="num">1</span> Utter Defeat, No Hope — Or Was It?</a>
+      <a href="#ch2" id="toc-2"><span class="num">2</span> Choosing the Words to Tell Your Story</a>
+      <a href="#ch3" id="toc-3"><span class="num">3</span> Get Out of the Pot! Choose Life!</a>
+      <a href="#ch4" id="toc-4"><span class="num">4</span> Victim or Victor — You Choose!</a>
+      <a href="#ch5" id="toc-5"><span class="num">5</span> The Big Lie</a>
+      <a href="#ch6" id="toc-6"><span class="num">6</span> The Power of Words</a>
+      <a href="#ch7" id="toc-7"><span class="num">7</span> Self-Fulfilling Prophecy</a>
+      <a href="#ch8" id="toc-8"><span class="num">8</span> Your Mouth Is the Steering Wheel</a>
+      <a href="#ch9" id="toc-9"><span class="num">9</span> Unemployed Angels</a>
+      <a href="#ch10" id="toc-10"><span class="num">10</span> Patterned Behavior and Changing Your Course</a>
+      <a href="#ch11" id="toc-11"><span class="num">11</span> Calling the Dog</a>
+      <a href="#ch12" id="toc-12"><span class="num">12</span> Being Specific to Be Terrific</a>
+      <a href="#ch13" id="toc-13"><span class="num">13</span> Claiming Your Inheritance</a>
+      <a href="#ch14" id="toc-14"><span class="num">14</span> Counter Attacks of the Enemy</a>
+    </div>
+  </div>
+
+  <!-- Chapters injected by JS -->
+  <div id="chapters"></div>
+
+  <!-- Bonus Vault -->
+  <div style="margin-top:48px; background:linear-gradient(135deg,#1a1400,#0f0c00); border:2px solid var(--gold); border-radius:var(--radius); overflow:hidden;">
+    <div style="padding:20px 24px 16px; text-align:center; border-bottom:1px solid rgba(201,162,39,0.2);">
+      <div style="font-size:2rem;margin-bottom:6px;">👑</div>
+      <div style="font-size:1.2rem;font-weight:900;color:var(--gold);letter-spacing:2px;text-transform:uppercase;">Bonus Vault</div>
+      <div style="font-size:0.82rem;color:var(--muted);margin-top:5px;font-style:italic;">Everything included with your Taking Authority purchase</div>
+    </div>
+    <div style="padding:16px;display:flex;flex-direction:column;gap:10px;">
+      <a href="bonus-healing.html" style="display:flex;align-items:center;gap:12px;padding:14px;background:rgba(39,174,96,0.07);border:1px solid rgba(39,174,96,0.2);border-radius:10px;text-decoration:none;color:#a5d6a7;">
+        <span style="font-size:1.4rem">💊</span>
+        <div style="flex:1"><div style="font-size:0.62rem;text-transform:uppercase;letter-spacing:1px;color:#27ae60;margin-bottom:2px;">Bonus</div>God's Medicine — 31 Healing Confessions</div>
+        <span style="color:#27ae60">→</span>
+      </a>
+      <a href="bonus-declarations.html" style="display:flex;align-items:center;gap:12px;padding:14px;background:rgba(201,162,39,0.06);border:1px solid rgba(201,162,39,0.2);border-radius:10px;text-decoration:none;color:var(--gold-light);">
+        <span style="font-size:1.4rem">📜</span>
+        <div style="flex:1"><div style="font-size:0.62rem;text-transform:uppercase;letter-spacing:1px;color:var(--gold);margin-bottom:2px;">Bonus</div>Daily Declaration Card — All 14 Chapters</div>
+        <span style="color:var(--gold)">→</span>
+      </a>
+      <a href="bonus-counterattack.html" style="display:flex;align-items:center;gap:12px;padding:14px;background:rgba(231,76,60,0.06);border:1px solid rgba(231,76,60,0.2);border-radius:10px;text-decoration:none;color:#ffcdd2;">
+        <span style="font-size:1.4rem">⚔️</span>
+        <div style="flex:1"><div style="font-size:0.62rem;text-transform:uppercase;letter-spacing:1px;color:#e74c3c;margin-bottom:2px;">Bonus</div>Counter Attack Cards — 8 Loaded Responses</div>
+        <span style="color:#e74c3c">→</span>
+      </a>
+      <a href="bonus-journal.html" style="display:flex;align-items:center;gap:12px;padding:14px;background:rgba(58,159,209,0.06);border:1px solid rgba(58,159,209,0.2);border-radius:10px;text-decoration:none;color:#b3e5fc;">
+        <span style="font-size:1.4rem">📓</span>
+        <div style="flex:1"><div style="font-size:0.62rem;text-transform:uppercase;letter-spacing:1px;color:#3a9fd1;margin-bottom:2px;">Bonus</div>30-Day Transformation Journal</div>
+        <span style="color:#3a9fd1">→</span>
+      </a>
+      <a href="../confession-app/index.html" style="display:flex;align-items:center;gap:12px;padding:14px;background:rgba(255,107,26,0.06);border:1px solid rgba(255,107,26,0.2);border-radius:10px;text-decoration:none;color:#ffe0b2;">
+        <span style="font-size:1.4rem">⚡</span>
+        <div style="flex:1"><div style="font-size:0.62rem;text-transform:uppercase;letter-spacing:1px;color:#ff6b1a;margin-bottom:2px;">App</div>Daily Declarations App — Build & Record Your Own</div>
+        <span style="color:#ff6b1a">→</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 30-Day Challenge -->
+  <div id="challenge-section">
+    <div id="challenge-header">
+      <h2>⚡ 30-Day Transformation Challenge</h2>
+      <p>This is where the book becomes a system. Do the work. Get the results.</p>
+    </div>
+    <div class="challenge-weeks">
+      <div class="week-card">
+        <h3>Week 1</h3>
+        <div class="week-theme">🔍 Awareness</div>
+        <ul>
+          <li>Track every word you say about yourself and your situations</li>
+          <li>Identify death words and victim language</li>
+          <li>Memorize Proverbs 18:21</li>
+        </ul>
+      </div>
+      <div class="week-card">
+        <h3>Week 2</h3>
+        <div class="week-theme">🔄 Replace</div>
+        <ul>
+          <li>Create your declaration sheet (present-tense, specific)</li>
+          <li>Rename the negative things in your life</li>
+          <li>Start speaking declarations 3x daily</li>
+        </ul>
+      </div>
+      <div class="week-card">
+        <h3>Week 3</h3>
+        <div class="week-theme">🏗️ Build</div>
+        <ul>
+          <li>Find 10 scriptures for your specific needs</li>
+          <li>Start binding and loosing</li>
+          <li>Practice "calling the dog" on your biggest need</li>
+        </ul>
+      </div>
+      <div class="week-card">
+        <h3>Week 4</h3>
+        <div class="week-theme">🛡️ Defend</div>
+        <ul>
+          <li>Prepare counter attack responses</li>
+          <li>Journal your victories (even small ones)</li>
+          <li>Share your testimony with someone</li>
+        </ul>
+      </div>
+    </div>
+    <div class="challenge-footer">
+      <p>You've rewired 30 days of word habits. Your angels are employed. Your mouth is steering you toward victory. Keep going — the harvest is coming.</p>
+      <div class="grad">👑⚡</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>Taking Authority &copy; Chuck Zaagsma &nbsp;·&nbsp; Interactive Workbook Edition</p>
+  <p style="margin-top:8px;">Your journal entries are saved locally in your browser.</p>
+</footer>
+
+<script>
+// ── Data ──────────────────────────────────────────────────────────────────────
+const CHAPTERS = [
+  {
+    num: 1,
+    title: "Utter Defeat, No Hope — Or Was It?",
+    summary: "Chuck's raw testimony — from addiction, broken body, failed marriages, and suicidal thoughts to complete restoration. Lost over 125 lbs, healed from nerve damage, free from addiction for 8+ years.",
+    keys: [
+      "Rock bottom is not the end — it's the setup for the comeback",
+      "Your past doesn't disqualify you from an incredible future",
+      "God can restore what seems permanently destroyed"
+    ],
+    qa: [
+      "What area of your life feels beyond repair right now?",
+      "What would your life look like if that area was completely restored?"
+    ],
+    actions: [
+      "Write down the ONE area of your life that feels most broken right now",
+      "Write a 'future testimony' — describe that area as if it's already healed/fixed",
+      "Read your future testimony out loud every morning this week"
+    ]
+  },
+  {
+    num: 2,
+    title: "Choosing the Words to Tell Your Story",
+    summary: "You are the author of your life story. The word 'authority' comes from 'author.' How you tell your story determines your outcome.",
+    keys: [
+      "Author is the root of authority — you're writing your life with your words",
+      "Better words = better story = better life",
+      "If your story isn't finished, you can still change the ending"
+    ],
+    qa: [
+      "How do you typically describe your life when someone asks 'how are you?'",
+      "Is that the story you want to keep telling?"
+    ],
+    actions: [
+      "For 7 days, track what you say about yourself and your situation — write it down",
+      "Circle every negative statement",
+      "Rewrite each negative as a positive declaration ('I can't' → 'I am learning to')"
+    ]
+  },
+  {
+    num: 3,
+    title: "Get Out of the Pot! Choose Life!",
+    summary: "Like crabs in a pot pulling each other back in, people around you may try to keep you at their level. You have to choose life and refuse to be pulled down.",
+    keys: [
+      "Misery loves company — people will try to talk you out of your dreams",
+      "'That's just the way it is' is a LIE",
+      "Your life is a 'get to' not a 'have to'",
+      "Anything is possible to him who believes"
+    ],
+    qa: [
+      "Who in your life is pulling you back into the pot?",
+      "What dream have you given up on because someone told you it was impossible?"
+    ],
+    actions: [
+      "Identify 1–2 people who consistently speak negativity into your life",
+      "Set a boundary — limit time with them or redirect conversations",
+      "Write down 3 dreams you gave up on. Pick ONE and declare out loud: 'This is still possible for me'"
+    ]
+  },
+  {
+    num: 4,
+    title: "Victim or Victor — You Choose!",
+    summary: "The only difference between a victim and a victor is the ending. You choose which one you are by your words and your refusal to quit. Kings speak with authority.",
+    keys: [
+      "Champions get knocked down but always get back up",
+      "It's not a 9-inning game — you keep playing until you win",
+      "A king's words have power — whatever you say goes",
+      "You can't have sympathy and respect at the same time",
+      "Speak like a king, not a victim"
+    ],
+    qa: [
+      "Do your words sound like a victim or a victor?",
+      "What would a king say about your current situation?"
+    ],
+    actions: [
+      "For one week, catch yourself every time you complain or speak defeat",
+      "Replace each complaint with a declaration of victory: 'This is hard BUT my God is greater'",
+      "Write YOUR victory speech — how you will describe overcoming your current battle"
+    ]
+  },
+  {
+    num: 5,
+    title: "The Big Lie",
+    bonusLink: "bonus-declarations.html",
+    bonusIcon: "📜",
+    bonusTitle: "Daily Declaration Card — 14 power declarations, one per chapter. Put it on your mirror.",
+    summary: "'Sticks and stones may break my bones but words can never hurt me' is the biggest lie. Words carry the power of life and death. Death and life are in the power of the tongue.",
+    keys: [
+      "Proverbs 18:21 — Death and life are in the power of YOUR tongue",
+      "You ARE eating the fruit of your mouth right now",
+      "You will never rise above the level of your confession",
+      "'Whether you think you can or think you can't — you're right' (Henry Ford)"
+    ],
+    qa: [
+      "What lies about words have you accepted?",
+      "What are you 'eating' from the fruit of your mouth?"
+    ],
+    actions: [
+      "Memorize Proverbs 18:21",
+      "For 3 days, before you say anything about a problem, stop and ask: 'Is this life or death?'",
+      "Make a 'death words' list — phrases you will STOP saying (e.g. 'I'm dying,' 'that kills me,' 'I'm sick and tired')"
+    ]
+  },
+  {
+    num: 6,
+    title: "The Power of Words",
+    summary: "God created the universe with words. We are made in His image. Our words create too — for good or bad. The vernacular of our culture is backwards (sick, dope, wicked, killing it).",
+    keys: [
+      "Genesis 1:3 — God SPOKE and it was done",
+      "We are made in God's image — our words create",
+      "Stop calling things by the wrong name",
+      "Isaiah 5:20 — Woe to those who call evil good and good evil",
+      "What you name things, they become"
+    ],
+    qa: [
+      "What have you been 'naming' or 'calling' in your life? (My bad knee, my crazy ex, my terrible luck)",
+      "What should you rename it?"
+    ],
+    actions: [
+      "List 5 things you regularly speak negatively about (body parts, relationships, finances, etc.)",
+      "Rename each one with what you WANT it to be",
+      "Every time the old name comes out, correct yourself OUT LOUD with the new name"
+    ]
+  },
+  {
+    num: 7,
+    title: "Self-Fulfilling Prophecy",
+    summary: "Mark 11:23 — you shall have whatever you SAY. Jesus said 'saying' three times and 'believe' once. You need to focus 3x more on what you're saying than what you're believing.",
+    keys: [
+      "You can have what you say — Mark 11:23",
+      "Saying is mentioned 3x, believing 1x — saying matters MORE than you think",
+      "Pray the ANSWER not the problem",
+      "If you speak the problem, you get more problem"
+    ],
+    qa: [
+      "When you pray, do you describe the problem or declare the answer?",
+      "What have you been prophesying over your own life?"
+    ],
+    actions: [
+      "Write down your top 3 prayer requests",
+      "Rewrite each one as a DECLARATION, not a request: 'I have health' not 'Please heal me'",
+      "Speak these declarations 3 times daily — morning, noon, night"
+    ]
+  },
+  {
+    num: 8,
+    title: "Your Mouth Is the Steering Wheel",
+    summary: "James 3:3-4 — your tongue is like a rudder on a ship or bit in a horse's mouth. Small but controls the direction. Where your words go, your life follows.",
+    keys: [
+      "Your tongue steers your whole life",
+      "Whatever you focus on, you get more of",
+      "Your mind is the sight, your mouth releases the bullets",
+      "Stop focusing on what you DON'T want",
+      "Start saying you HAVE what you want"
+    ],
+    qa: [
+      "Where are your words steering you right now?",
+      "If someone recorded everything you said today, what direction would it show?"
+    ],
+    actions: [
+      "Set 3 phone alarms throughout the day labeled 'WORD CHECK'",
+      "At each alarm, evaluate: what have I been saying the last few hours?",
+      "Course correct if needed — speak your desired destination out loud"
+    ]
+  },
+  {
+    num: 9,
+    title: "Unemployed Angels",
+    bonusLink: "bonus-healing.html",
+    bonusIcon: "💊",
+    bonusTitle: "God's Medicine — Chuck's 31 Healing Confessions. Speak these like medicine, daily.",
+    summary: "Hebrews 1:14 and Psalm 103:20 — angels are waiting to hear God's word spoken from YOUR mouth. If you're complaining, they have nothing to act on. Your words deploy heaven's army.",
+    keys: [
+      "Angels 'hearken unto the voice of His word' — they need YOU to speak it",
+      "Complaining = unemployed angels",
+      "Confessing God's word = angels deployed on your behalf",
+      "Romans 10:8-10 — confession is made unto salvation",
+      "All of God's promises are yes and amen IN Christ"
+    ],
+    qa: [
+      "Are your angels employed or unemployed based on your words?",
+      "What would happen if you started speaking God's word over every situation?"
+    ],
+    actions: [
+      "Find 5 scriptures that directly address your biggest need (healing, finances, relationships)",
+      "Write them on index cards or your phone notes",
+      "Speak them out loud morning and night — this is putting your angels to WORK"
+    ]
+  },
+  {
+    num: 10,
+    title: "Patterned Behavior and Changing Your Course",
+    summary: "Like driving to work on autopilot and missing your exit, your words follow patterns. Changing requires conscious effort for about 30 days to create a new normal.",
+    keys: [
+      "Patterned behavior is powerful — you say things without thinking",
+      "It takes ~30 days to build a new pattern",
+      "Find someone getting the results you want and copy them",
+      "If you keep getting bit by a snake on the same path, STOP GOING DOWN THAT PATH"
+    ],
+    qa: [
+      "What word patterns are you on autopilot with?",
+      "What 'path' do you keep going down that keeps hurting you?"
+    ],
+    actions: [
+      "Identify your #1 negative word habit (complaining, self-deprecating humor, fear words)",
+      "Create a replacement phrase you'll use instead",
+      "Commit to 30 days of catching and replacing — track it daily (tally marks on paper)"
+    ]
+  },
+  {
+    num: 11,
+    title: "Calling the Dog",
+    summary: "Romans 4:17 — God calls those things that be NOT as though they WERE. Don't call the cat when you want the dog. Don't speak lack when you want abundance.",
+    keys: [
+      "Call the thing you WANT, not the thing you HAVE",
+      "Faith is always present tense — 'I HAVE it' not 'I will have it'",
+      "Mark 11:24 — believe you HAVE received when you pray",
+      "Chuck's testimony: confessed 'I have a Toyota Highlander' while catching the bus — got the exact car"
+    ],
+    qa: [
+      "What are you calling? The cat or the dog?",
+      "What would you say if you already had what you're praying for?"
+    ],
+    actions: [
+      "Pick ONE specific thing you need (car, healing, job, spouse)",
+      "Write it as a present-tense declaration: 'I HAVE ___'",
+      "Put a picture of it where you see it daily",
+      "Confess it out loud every day — even when it doesn't make sense"
+    ]
+  },
+  {
+    num: 12,
+    title: "Being Specific to Be Terrific",
+    bonusLink: "../confession-app/index.html",
+    bonusIcon: "⚡",
+    bonusTitle: "Daily Declarations App — Build your own confession using Chuck's method. Record your voice.",
+    summary: "General prayers get general results. Be specific in your prayers and declarations. Also be selective — reject what is not for you. You have authority to bind and loose.",
+    keys: [
+      "Specific prayers = specific results",
+      "Matthew 16:19 — whatever you bind is bound, whatever you loose is loosed",
+      "Bind = forbid by authority. Loose = permit by authority",
+      "Reject sickness, poverty, and lies of the enemy — they are NOT yours",
+      "'It's not mine and I refuse to accept it'"
+    ],
+    qa: [
+      "Are your prayers specific or vague?",
+      "What have you been accepting that you should be rejecting?"
+    ],
+    actions: [
+      "Rewrite your prayers with SPECIFIC details (amount, date, name, result)",
+      "Make a 'REJECTED' list — things you will no longer accept in your life",
+      "Practice saying out loud: 'I bind ___ from operating in my life. I loose ___ from its assignment against me, in Jesus' name'"
+    ]
+  },
+  {
+    num: 13,
+    title: "Claiming Your Inheritance",
+    summary: "Galatians 3:29 — if you're Christ's, you're an heir. God's promises are your inheritance. His Word is your owner's manual. Joshua 1:8 — meditate on it day and night and you'll be prosperous.",
+    keys: [
+      "The Bible is your inheritance document",
+      "God's promises are for HERE and NOW, not just heaven",
+      "A defeated Christian is ineffective — God wants you healthy, prosperous, and whole",
+      "Proverbs 4:20-22 — God's word is health to ALL your flesh",
+      "Faith begins where the will of God is known"
+    ],
+    qa: [
+      "Do you know what your inheritance includes?",
+      "Are you living like an heir or an orphan?"
+    ],
+    actions: [
+      "Look up 10 promises of God (healing, provision, protection, peace)",
+      "Write 'THIS IS MINE' next to each one",
+      "Create a daily confession sheet — read your inheritance out loud every morning",
+      "Start a prayer journal — write prayers AND track answers"
+    ]
+  },
+  {
+    num: 14,
+    title: "Counter Attacks of the Enemy",
+    bonusLink: "bonus-counterattack.html",
+    bonusIcon: "⚔️",
+    bonusTitle: "Counter Attack Cards — 8 loaded responses ready before you need them.",
+    summary: "After every victory, expect a counter attack. This is where most people lose. Don't take your armor off. Hold fast to your confession. The test gives birth to the testimony.",
+    keys: [
+      "Counter attacks come AFTER victories — be ready",
+      "The thoughts will come: 'I guess it didn't work,' 'Maybe God wants me to suffer'",
+      "DO NOT open your mouth and agree with the enemy",
+      "Ephesians 6:11 — after you've done all, keep standing",
+      "Every test you win = more ammo (testimony) against the enemy",
+      "The harder the fight, the greater the victory"
+    ],
+    qa: [
+      "Have you experienced a counter attack after a victory?",
+      "Did you give up or hold your ground?"
+    ],
+    actions: [
+      "Prepare your counter attack response NOW (before you need it): 'Devil, you are defeated. My God is greater than this situation'",
+      "Write down 3 past victories God gave you — revisit them when doubt hits",
+      "When the attack comes, DO NOT speak the problem. Speak the Word. Stand. Don't quit."
+    ]
+  }
+];
+
+// Chapter text snippets (first few paragraphs per chapter)
+const CHAPTER_TEXTS = {
+  1: `<p>I was over at a friend's family farm. I was standing facing this typical looking farm fence gazing out into the horizon. It was an amazing scenery of rural country fields and hillsides with the sun starting to go down. It started to be a beautiful show of colors but not for me. I had just received a phone call and the words I heard were devastating. I couldn't believe it, it was over, everything was over.</p>
+<p>Another knock down blow. I'm already down but the hits keep coming. This blow though seemed to be the one that would finish me. The last straw that broke the camel's back. I had taken many hard blows in my life and I had always seemed to get up. I had always been a survivor...</p>
+<p>I wanted to give up and die, and I almost did... but that's not how this story ends.</p>
+<p>Fast forward to the present day a little over nine years later. I am clean and sober for eight years now. I am completely healed and restored to whole in every way. Since then I have lost over 125 pounds and went from a size 4X to a regular size large and from a size 48 waist to a 34. With the very hand I couldn't control or use three of my fingers, I learned how to play guitar and I now play guitar on our praise and worship team at the church I attend.</p>
+<p>The story I tell now is a different story. A story of love, joy, and peace. A story of life and life more abundant. How I AM an overcomer and I NOW live in victory. My God is greater than any obstacle in my path. Death and defeat are no longer in my vocabulary and they shouldn't be in yours either.</p>`,
+  2: `<p>Is your life story not what you thought it would be? Do you feel defeated? Are you knocked down and out? Well, You can get up every time you get knocked down or you can stay down. It's not a nine inning game or a twelve round boxing match. There is no whistle or time limit to win. If you're alive with breath in your lungs, you are still in it! Don't throw in the towel. It's your life, you keep playing til you win!</p>
+<p><em>"for a righteous man falls seven times, and rises up again..." — Proverbs 24:16 WEB</em></p>
+<p>No one has ever dreamed or desired a life of being conquered, defeated, broken or just average. A life that is Blah or no good at all. You were made for so much more. No little child says when I grow up I want to be broken, mad, bad and sad. If you can dream it, you can achieve it.</p>
+<p>Don't let the world, your family, your friends or anyone talk you out of your dreams or the goodness God has prepared for you. It's your life so choose Life and life to the fullest and overflowing. Remember that phrase "Choose LIFE!"</p>`,
+  3: `<p>Get out of the pot! Choose life!</p>
+<p>Have you ever announced something you were going to do only to have others caution you and try to talk you out of it? Think about Crabs in a boiling pot — when one is about to climb out, the others pull it back in and seal its fate with theirs. Misery loves company. Love people... but don't let them control your destiny or keep you at or below their level.</p>
+<p>The world will tell you that you can't do something or all the reasons why what you are trying to do will fail. They will put you down or pull you down to feel better about themselves or their situation. But only you "get to" decide your path and how you will blaze it. Your life is a get to not a have to.</p>
+<p>"That's just the way it is" is a LIE. It's easier for them to think 'it's not possible' than that they just didn't try hard enough. Anything is possible to him who Believes. It's time to get out of your pot!</p>`,
+  4: `<p>The difference between being a victim or victor is often just the ending and the right attitude — and often just a few seconds on the clock. Not giving up when it matters... and it always matters. Champions are winners! A champion may suffer a defeat but they will always get back up and rise above the situation.</p>
+<p>You should speak like a king! A king is a perfect example of what authority looks like. Whatever a king says goes. He has power and authority and what he says is LAW! Whatever you say is all that really matters to you. You have creative license over your life. It's your life and NO ONE can live it but YOU!</p>
+<p>You can be the victim or victor. You can't have both. You can't have someone feel pity or sorrow for you because you're winning or being victorious! Life is not a nine inning game — you KEEP PLAYING until YOU WIN!</p>
+<p><em>"Where the word of a king is, there is power: and who may say unto him, What doest thou?" — Ecclesiastes 8:4 KJV</em></p>`,
+  5: `<p>A big lie told long enough is accepted as truth! When it comes to lies, the biggest lies we tell, most often, are to ourselves!</p>
+<p>The biggest lie that is prevalent today is that words don't matter. The world says that you can say whatever you want and there are no consequences. In fact I remember this lie from my early childhood: "Sticks and stones may break my bones but words can never hurt me." What a crock! The truth is words can hurt and they are so powerful.</p>
+<p><em>"Death and life are in the power of the tongue: and they that love it shall eat the fruit thereof." — Proverbs 18:21 KJV</em></p>
+<p>Not only do words matter but the power of life and death are in your tongue and you will eat the fruit of your mouth. You set your boundaries and limits. You will never rise above the level of your confession. Remember Henry Ford: "Whether you think you can, or you think you can't — you're right."</p>`,
+  6: `<p>So there is power — life and death power — and it's in our words. Let's look at some of the most powerful creative words ever spoken.</p>
+<p><em>"And God said, Let there be light: and there was light." — Genesis 1:3 KJV</em></p>
+<p>We are made in God's image and likeness. That means we have word power too! Stop calling things by the wrong name. Our culture says things like "sick," "wicked," "killing it" — all twisted. Isaiah 5:20 says woe to those who call evil good and good evil.</p>
+<p>What you name things, they become. What have you been naming the things in your life? Your bad knee? Your terrible luck? Your crazy ex? Time to rename them with what you WANT them to be.</p>`,
+  7: `<p>Mark 11:23 says you shall have whatsoever you SAY. Jesus said "saying" three times and "believe" only once in that verse. That means you should be focusing 3x more on what you're SAYING than what you're believing!</p>
+<p>If you speak the problem, you get more problem. Pray the ANSWER, not the problem. Don't describe your mountain — command it to move. Don't ask God to heal you — declare that you ARE healed by His stripes.</p>
+<p>Stop asking and start declaring. Stop begging and start believing. You are an heir. Heirs don't beg their father for their own inheritance — they claim it!</p>`,
+  8: `<p>James 3:3-4 says a small bit in a horse's mouth controls the whole horse. A small rudder on a massive ship steers the whole vessel in whatever direction the pilot decides. Your tongue is exactly like that.</p>
+<p>Your mouth is the steering wheel of your life. Whatever you focus on, you get more of. Your mind is the sight, your mouth releases the bullets. Stop focusing on what you DON'T want and start saying you HAVE what you want.</p>
+<p>If someone recorded everything you said today, where would those words be taking you? Toward your dreams or away from them? The direction of your words is the direction of your life.</p>`,
+  9: `<p>Hebrews 1:14 says angels are ministering spirits sent to minister to the heirs of salvation — that's YOU. And Psalm 103:20 says angels hearken unto the voice of His word. They are WAITING to hear God's word spoken from YOUR mouth.</p>
+<p>If you're complaining, your angels have nothing to act on. Complaining is unemployment for angels. But when you speak the Word of God over your situation — over your health, your finances, your family — you put heaven's army to work on your behalf.</p>
+<p>Every promise of God is yes and amen IN Christ. All you have to do is speak it. Open your mouth and deploy heaven!</p>`,
+  10: `<p>Have you ever driven to work and arrived without remembering the drive? Autopilot. Your brain knew the route so well it did it without conscious thought. Your words work the same way.</p>
+<p>After years of saying the same negative things, they come out automatically. You don't even think about it. The good news is patterns can be changed — it takes about 30 days to create a new one. Find someone who is getting the results you want and model what they say and do.</p>
+<p>If you keep getting bit by a snake on the same path — stop going down that path! Identify your patterns and make a decision to change them. Commit for 30 days. That's all it takes to start rewiring your words.</p>`,
+  11: `<p>Romans 4:17 says God "calls those things which be not as though they were." He's the original dog-caller. He called Abraham the father of many nations before he had any children. He called Gideon a mighty man of valor when Gideon was hiding in fear.</p>
+<p>Don't call the cat when you want the dog. Don't speak lack when you want abundance. Don't speak sickness when you want healing. Call the dog!</p>
+<p>Chuck's testimony: He confessed "I have a Toyota Highlander" while catching the bus in the snow, with no money. He spoke it in present tense, believed he had received it. He got the exact car — a Toyota Highlander. That's calling the dog.</p>`,
+  12: `<p>General prayers get general results. "God bless everyone" doesn't deploy anything specific. But "God, I bind the spirit of lack from operating in my finances and I loose abundance and favor" — that's specific. That's targeted. That hits the target.</p>
+<p>Matthew 16:19 — whatever you bind on earth is bound in heaven, whatever you loose on earth is loosed in heaven. You have the keys to the kingdom. Start using them!</p>
+<p>And when the enemy tries to put something on you that isn't yours — reject it. Say it out loud: "This sickness is not mine. This poverty is not mine. I refuse to accept it." Authority is not passive. It requires your voice.</p>`,
+  13: `<p>Galatians 3:29 — if you belong to Christ, you are Abraham's offspring and heirs according to the promise. You have an inheritance. A legal, documented, blood-bought inheritance.</p>
+<p>The Bible is your inheritance document. Every promise in it belongs to you. But here's the thing — most Christians live like orphans when they are actually heirs. They beg for what already belongs to them. They accept what the enemy tries to hand them when they have full authority to reject it.</p>
+<p>Joshua 1:8 — meditate on the Word day and night and you will make your way prosperous. God's word is health to all your flesh. Start reading your inheritance document. Find out what belongs to you. Then claim it!</p>`,
+  14: `<p>After every victory, expect a counter attack. This is where most people lose their ground. They win a battle, take off their armor, and get blindsided.</p>
+<p>The enemy will whisper: "I guess it didn't really work." "Maybe God doesn't want you to have that." "You're getting too big for your britches." These are lies. Counter attacks are proof that your victory was real and threatening to the enemy.</p>
+<p>Ephesians 6:13 — after you've done all, STAND. Don't give back what God gave you. Hold your confession. The test gives birth to the testimony. The harder the fight, the greater the story you'll have to tell. Keep standing. The harvest is coming.</p>`
+};
+
+// ── Storage ────────────────────────────────────────────────────────────────────
+function getStore(key) { try { return JSON.parse(localStorage.getItem(key) || 'null'); } catch(e) { return null; } }
+function setStore(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {} }
+
+function getJournal(chNum, idx) { return getStore(`ta_journal_${chNum}_${idx}`) || ''; }
+function setJournal(chNum, idx, val) { setStore(`ta_journal_${chNum}_${idx}`, val); }
+function getChecks(chNum) { return getStore(`ta_checks_${chNum}`) || []; }
+function setChecks(chNum, arr) { setStore(`ta_checks_${chNum}`, arr); }
+function getComplete(chNum) { return !!getStore(`ta_complete_${chNum}`); }
+function setComplete(chNum, val) { setStore(`ta_complete_${chNum}`, val); }
+
+// ── Progress ───────────────────────────────────────────────────────────────────
+function updateProgress() {
+  const done = CHAPTERS.filter(c => getComplete(c.num)).length;
+  const pct = Math.round((done / CHAPTERS.length) * 100);
+  document.getElementById('progress-bar-inner').style.width = pct + '%';
+  document.getElementById('progress-pct').textContent = pct + '%';
+  CHAPTERS.forEach(c => {
+    const link = document.getElementById(`toc-${c.num}`);
+    if (link) link.classList.toggle('done', getComplete(c.num));
+  });
+}
+
+// ── TOC ────────────────────────────────────────────────────────────────────────
+function toggleToc() {
+  const list = document.getElementById('toc-list');
+  const arrow = document.getElementById('toc-arrow');
+  const open = list.classList.toggle('open');
+  arrow.textContent = open ? '▲' : '▼';
+}
+
+// ── Build Chapter HTML ─────────────────────────────────────────────────────────
+function buildChapter(ch) {
+  const checks = getChecks(ch.num);
+  const complete = getComplete(ch.num);
+
+  const keyHtml = ch.keys.map(k => `<li>${k}</li>`).join('');
+  const qaHtml = ch.qa.map((q, i) => `
+    <div class="journal-prompt">
+      <label>${q}</label>
+      <textarea rows="3" placeholder="Write your thoughts here..." onchange="saveJournal(${ch.num}, ${i}, this.value)">${getJournal(ch.num, i)}</textarea>
+    </div>
+  `).join('');
+
+  const actionCheckHtml = ch.actions.map((a, i) => `
+    <label class="action-check">
+      <input type="checkbox" ${checks.includes(i) ? 'checked' : ''} onchange="toggleCheck(${ch.num}, ${i}, this.checked)" />
+      <span class="checkmark"></span>
+      <span class="step-text">${a}</span>
+    </label>
+  `).join('');
+
+  const chapterText = CHAPTER_TEXTS[ch.num] || `<p>Chapter ${ch.num} content.</p>`;
+
+  return `
+    <div class="chapter-section" id="ch${ch.num}">
+      <div class="chapter-header ${complete ? 'complete' : ''}" onclick="toggleChapter(${ch.num})">
+        <span class="ch-num">Ch ${ch.num}</span>
+        <span class="ch-title">${ch.title}</span>
+        <span class="ch-arrow" id="ch-arrow-${ch.num}">▶</span>
+      </div>
+      <div class="chapter-body" id="ch-body-${ch.num}">
+        <div class="chapter-text">${chapterText}</div>
+        <div class="stack-wrap">
+          <div class="stack-header">
+            <h3>📋 Transformation Stack</h3>
+            <span class="badge">Workbook</span>
+          </div>
+          <div class="stack-grid">
+            <div class="stack-card summary">
+              <h4>📝 Summary</h4>
+              <p>${ch.summary}</p>
+            </div>
+            <div class="stack-card keys">
+              <h4>🔑 Key Points</h4>
+              <ul>${keyHtml}</ul>
+            </div>
+          </div>
+          <div class="journal-section">
+            <div class="journal-header">❓ Reflection Questions</div>
+            <div class="journal-prompts">${qaHtml}</div>
+          </div>
+          <div class="journal-section" style="margin-top:12px;">
+            <div class="journal-header">✅ Action Steps</div>
+            <div class="action-checks">${actionCheckHtml}</div>
+          </div>
+          ${ch.bonusLink ? `<a class="bonus-link" href="${ch.bonusLink}" target="_blank"><span class="bl-icon">${ch.bonusIcon}</span><div class="bl-text"><div class="bl-label">Bonus Resource</div>${ch.bonusTitle}</div><span class="bl-arrow">→</span></a>` : ''}
+          <button class="chapter-complete-btn ${complete ? 'done' : ''}" id="btn-${ch.num}" onclick="markComplete(${ch.num})">
+            ${complete ? '✅ Chapter Complete!' : '⬜ Mark Chapter Complete'}
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ── Interactions ──────────────────────────────────────────────────────────────
+function toggleChapter(num) {
+  const body = document.getElementById(`ch-body-${num}`);
+  const arrow = document.getElementById(`ch-arrow-${num}`);
+  const hdr = body.previousElementSibling;
+  const isOpen = body.classList.toggle('open');
+  hdr.classList.toggle('open', isOpen);
+  arrow.textContent = isOpen ? '▼' : '▶';
+}
+
+function saveJournal(chNum, idx, val) {
+  setJournal(chNum, idx, val);
+}
+
+function toggleCheck(chNum, idx, checked) {
+  let checks = getChecks(chNum);
+  if (checked) { if (!checks.includes(idx)) checks.push(idx); }
+  else { checks = checks.filter(i => i !== idx); }
+  setChecks(chNum, checks);
+}
+
+function markComplete(chNum) {
+  const current = getComplete(chNum);
+  setComplete(chNum, !current);
+  const btn = document.getElementById(`btn-${chNum}`);
+  if (!current) {
+    btn.textContent = '✅ Chapter Complete!';
+    btn.classList.add('done');
+  } else {
+    btn.textContent = '⬜ Mark Chapter Complete';
+    btn.classList.remove('done');
+  }
+  updateProgress();
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  const container = document.getElementById('chapters');
+  container.innerHTML = CHAPTERS.map(buildChapter).join('');
+  updateProgress();
+  // Auto-open chapter 1
+  const firstBody = document.getElementById('ch-body-1');
+  const firstHdr = firstBody.previousElementSibling;
+  firstBody.classList.add('open');
+  firstHdr.classList.add('open');
+  document.getElementById('ch-arrow-1').textContent = '▼';
+});
+</script>
+</body>
+</html>

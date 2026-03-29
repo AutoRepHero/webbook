@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>30-Day Transformation Journal — Taking Authority</title>
+  <style>
+    :root { --gold: #c9a227; --gold2: #f0d080; --dark: #060608; --card: rgba(8,8,18,0.97); --text: #e8e8f5; --muted: #4a4a7a; --blue: #3a9fd1; --green: #27ae60; --green2: #2ecc71; --purple: #9b59b6; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Georgia, serif; background: var(--dark); color: var(--text); min-height: 100vh; }
+    header { background: linear-gradient(180deg, #060608 0%, #0a0a12 100%); border-bottom: 2px solid var(--blue); padding: 24px 20px 18px; text-align: center; }
+    .header-icon { font-size: 2rem; margin-bottom: 6px; }
+    .header-title { font-size: clamp(1.2rem, 4vw, 1.6rem); font-weight: 800; color: #7ec8e3; letter-spacing: 2px; text-transform: uppercase; }
+    .header-sub { font-size: 0.75rem; color: var(--muted); margin-top: 5px; }
+
+    .week-tabs { display: flex; background: rgba(0,0,0,0.5); border-bottom: 1px solid #1a1a2a; overflow-x: auto; scrollbar-width: none; }
+    .week-tabs::-webkit-scrollbar { display: none; }
+    .week-tab { flex: 1; padding: 12px 8px; text-align: center; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: all 0.2s; min-width: 80px; }
+    .week-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+    .week-content { display: none; }
+    .week-content.active { display: block; }
+
+    .main { padding: 0 16px 80px; }
+
+    .week-header { padding: 18px 0 10px; }
+    .week-num { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); margin-bottom: 4px; }
+    .week-theme { font-size: 1.2rem; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+    .week-focus { font-size: 0.82rem; color: #888; line-height: 1.6; }
+
+    .day-card { background: var(--card); border: 1px solid #1a1a2a; border-radius: 14px; padding: 16px; margin-bottom: 12px; }
+    .day-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .day-num { background: rgba(201,162,39,0.12); border: 1px solid rgba(201,162,39,0.25); color: var(--gold); font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 99px; }
+    .day-complete { margin-left: auto; }
+    .day-complete label { display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.75rem; color: var(--muted); }
+    .day-complete input { display: none; }
+    .checkmark { width: 18px; height: 18px; border: 2px solid var(--green); border-radius: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s; }
+    .day-complete input:checked ~ .checkmark { background: var(--green); }
+    .day-complete input:checked ~ .checkmark::after { content: '✓'; font-size: 0.7rem; font-weight: bold; color: #000; }
+
+    .prompt-section { margin-bottom: 12px; }
+    .prompt-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 5px; }
+    .prompt-text { font-size: 0.85rem; color: #aaa; font-style: italic; margin-bottom: 7px; line-height: 1.5; }
+    textarea {
+      width: 100%; background: rgba(255,255,255,0.03); border: 1px solid #1e1e2e;
+      border-radius: 8px; padding: 10px 12px; color: var(--text);
+      font-family: inherit; font-size: 0.88rem; resize: vertical; min-height: 64px;
+      line-height: 1.6; outline: none; transition: border-color 0.2s;
+    }
+    textarea:focus { border-color: var(--gold); }
+    textarea::placeholder { color: #333; }
+
+    .declaration-box { background: rgba(201,162,39,0.05); border: 1px solid rgba(201,162,39,0.2); border-radius: 8px; padding: 10px 12px; font-size: 0.88rem; color: var(--gold2); font-style: italic; line-height: 1.6; margin-top: 6px; }
+
+    .back-btn { display: block; text-align: center; padding: 14px; color: var(--gold); text-decoration: none; font-size: 0.85rem; border-top: 1px solid rgba(201,162,39,0.15); background: rgba(201,162,39,0.04); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-icon">📓</div>
+  <div class="header-title">30-Day Transformation Journal</div>
+  <div class="header-sub">Rewire your words. Build your authority. Track your victories.</div>
+</header>
+
+<div class="week-tabs">
+  <div class="week-tab active" onclick="showWeek(1)">Week 1<br>Awareness</div>
+  <div class="week-tab" onclick="showWeek(2)">Week 2<br>Replace</div>
+  <div class="week-tab" onclick="showWeek(3)">Week 3<br>Build</div>
+  <div class="week-tab" onclick="showWeek(4)">Week 4<br>Defend</div>
+</div>
+
+<div class="main">
+
+  <!-- WEEK 1 -->
+  <div class="week-content active" id="week-1">
+    <div class="week-header">
+      <div class="week-num">Week 1 · Days 1–7</div>
+      <div class="week-theme">🔍 Awareness</div>
+      <div class="week-focus">This week you're not changing anything yet — you're just watching. Track what comes out of your mouth. You can't fix what you can't see.</div>
+    </div>
+    <div id="days-1"></div>
+  </div>
+
+  <!-- WEEK 2 -->
+  <div class="week-content" id="week-2">
+    <div class="week-header">
+      <div class="week-num">Week 2 · Days 8–14</div>
+      <div class="week-theme">🔄 Replace</div>
+      <div class="week-focus">You've seen your patterns. Now you replace them. Every death word gets a life word. Every complaint gets a declaration. Start speaking your destination.</div>
+    </div>
+    <div id="days-2"></div>
+  </div>
+
+  <!-- WEEK 3 -->
+  <div class="week-content" id="week-3">
+    <div class="week-header">
+      <div class="week-num">Week 3 · Days 15–21</div>
+      <div class="week-theme">🏗️ Build</div>
+      <div class="week-focus">Now you're building. Scriptures, declarations, binding and loosing. You're calling the dog. Your angels are getting employed. This is where it gets real.</div>
+    </div>
+    <div id="days-3"></div>
+  </div>
+
+  <!-- WEEK 4 -->
+  <div class="week-content" id="week-4">
+    <div class="week-header">
+      <div class="week-num">Week 4 · Days 22–30</div>
+      <div class="week-theme">🛡️ Defend</div>
+      <div class="week-focus">After victory comes the counter attack. This week you hold your ground, journal your wins, and prepare your responses. You don't quit at 30 days — you've just built the foundation.</div>
+    </div>
+    <div id="days-4"></div>
+  </div>
+
+</div>
+
+<a class="back-btn" href="bonus-vault.html">← Back to Bonus Vault</a>
+
+<script>
+const DAYS = {
+  1: [
+    { day: 1, prompts: ["What negative phrase do you say most often about yourself?", "What would the opposite of that sound like as a declaration?"], declaration: "I am paying attention to my words today. I choose to be aware." },
+    { day: 2, prompts: ["What did you say today that you wish you hadn't?", "Write the life version of that statement."], declaration: "My words matter. I am learning to speak life over every situation." },
+    { day: 3, prompts: ["What situation in your life are you speaking defeat over?", "What does God say about that situation?"], declaration: "I will not agree with the enemy's report. I agree with God's word." },
+    { day: 4, prompts: ["What do you say when someone asks 'how are you?'", "Is that the story you want to keep telling?"], declaration: "I am blessed and highly favored. That is my story and I'm sticking to it." },
+    { day: 5, prompts: ["List 3 'death words' you caught yourself saying this week.", "Write the replacement 'life word' for each one."], declaration: "I choose life with my tongue. Death words are leaving my vocabulary." },
+    { day: 6, prompts: ["What area of your life feels most hopeless right now?", "Write a future testimony as if it's already healed/fixed."], declaration: "My story is not over. The best chapters are still ahead." },
+    { day: 7, prompts: ["What patterns did you notice this week in your words?", "What one word habit will you commit to changing next week?"], declaration: "I have identified my pattern. I am ready to break it. 30 days starts NOW." },
+  ],
+  2: [
+    { day: 8, prompts: ["What is your #1 negative word habit?", "Write the replacement phrase you will use instead."], declaration: "I catch and replace. Every time. My mouth is being transformed." },
+    { day: 9, prompts: ["Write your personal Declaration Sheet — 5 specific things you are believing for in present tense.", ""], declaration: "I HAVE ___. I AM ___. I WALK IN ___. These are mine by faith." },
+    { day: 10, prompts: ["What 3 things in your life have you been calling by the wrong name?", "Rename them now — what do you WANT them to be?"], declaration: "I stop calling things what they are and start calling them what I want them to be." },
+    { day: 11, prompts: ["When you pray, do you describe the problem or declare the answer?", "Rewrite your top prayer request as a declaration right now."], declaration: "I pray the answer, not the problem. I speak the solution into existence." },
+    { day: 12, prompts: ["Who in your life speaks life into you?", "Who speaks death? What boundaries do you need to set?"], declaration: "I choose my words and my associations carefully. I refuse the pot." },
+    { day: 13, prompts: ["What victory did you speak this week that you haven't seen yet?", "Are you still standing on it?"], declaration: "I called the dog. I stand on my declaration. The harvest is coming." },
+    { day: 14, prompts: ["Write a victory speech — how will you describe overcoming your biggest battle?", "Read it out loud right now."], declaration: "I am already writing my testimony. The end of this story is victory." },
+  ],
+  3: [
+    { day: 15, prompts: ["Find 3 scriptures that directly address your biggest need. Write them here.", ""], declaration: "God's word is my inheritance. I find it, I speak it, I receive it." },
+    { day: 16, prompts: ["What specific thing are you calling into existence this week?", "Write it in present tense: I HAVE ___"], declaration: "I call those things that be not as though they were. Romans 4:17." },
+    { day: 17, prompts: ["What do you need to BIND from operating in your life?", "What do you need to LOOSE (release, permit)?"], declaration: "I bind ___. I loose ___. In Jesus' name, it is done." },
+    { day: 18, prompts: ["How many times did you speak your declarations today?", "What happened — in your body, your mind, your spirit?"], declaration: "Repetition is the mother of learning. Faith comes by HEARING. I keep speaking." },
+    { day: 19, prompts: ["Write 5 promises of God that belong to you right now.", "Write 'THIS IS MINE' next to each one."], declaration: "I am an heir. I am not an orphan. THIS IS MINE." },
+    { day: 20, prompts: ["What scripture became real to you this week?", "How did your words change because of it?"], declaration: "God's word is alive in my mouth. It does not return void." },
+    { day: 21, prompts: ["Halfway there. What has shifted in you over 21 days?", "What are you still standing for?"], declaration: "21 days in. My words are changing. My life is following. I keep going." },
+  ],
+  4: [
+    { day: 22, prompts: ["What counter attack came after your last victory?", "Did you stand or give up ground?"], declaration: "After I've done all — I STAND. I do not give back what God gave me." },
+    { day: 23, prompts: ["Write your prepared counter attack response for your biggest current battle.", ""], declaration: "Devil, you are defeated. My God is greater than this. I will not agree with your lies." },
+    { day: 24, prompts: ["Write 3 past victories God gave you.", "Revisit them — what do they tell you about right now?"], declaration: "I have a history with God. He has never let me down. He will not start now." },
+    { day: 25, prompts: ["What thought has been trying to get you to agree with defeat this week?", "What is God's word on that subject?"], declaration: "I take every thought captive. I will not open my mouth and agree with the enemy." },
+    { day: 26, prompts: ["What victory, no matter how small, happened this week?", "Write it down — this is ammunition."], declaration: "I journal my victories. Every win is ammo for the next battle." },
+    { day: 27, prompts: ["Who do you know that needs to hear what God has done in your life?", "How will you share it?"], declaration: "I overcome by the blood of the Lamb and the word of my TESTIMONY. Revelation 12:11." },
+    { day: 28, prompts: ["What has changed most in your words over 28 days?", "What areas still need work?"], declaration: "28 days. My mouth is being transformed. The harvest is close." },
+    { day: 29, prompts: ["Write a letter to yourself from Day 1 — what do you know now that you didn't then?", ""], declaration: "I am not the same person who started this. My words have changed. My life is following." },
+    { day: 30, prompts: ["What is your ONE declaration that you will speak every day for the rest of your life?", "Write it. Frame it. Live it."], declaration: "30 days complete. My word patterns are rewired. My angels are employed. My mouth is steering me toward victory. The harvest is coming. 👑" },
+  ]
+};
+
+function showWeek(num) {
+  document.querySelectorAll('.week-content').forEach(w => w.classList.remove('active'));
+  document.querySelectorAll('.week-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(`week-${num}`).classList.add('active');
+  document.querySelectorAll('.week-tab')[num-1].classList.add('active');
+}
+
+function getJournal(day, idx) {
+  try { return localStorage.getItem(`ta_journal_30_${day}_${idx}`) || ''; } catch(e) { return ''; }
+}
+function saveJournal(day, idx, val) {
+  try { localStorage.setItem(`ta_journal_30_${day}_${idx}`, val); } catch(e) {}
+}
+function getCheck(day) {
+  try { return localStorage.getItem(`ta_30_done_${day}`) === '1'; } catch(e) { return false; }
+}
+function setCheck(day, val) {
+  try { localStorage.setItem(`ta_30_done_${day}`, val ? '1' : '0'); } catch(e) {}
+}
+
+function buildDays(week) {
+  const days = DAYS[week];
+  const container = document.getElementById(`days-${week}`);
+  container.innerHTML = days.map(d => {
+    const checked = getCheck(d.day);
+    const promptsHtml = d.prompts.filter(p => p).map((p, i) => `
+      <div class="prompt-section">
+        <div class="prompt-label">Reflect</div>
+        <div class="prompt-text">${p}</div>
+        <textarea rows="3" placeholder="Write here..." onchange="saveJournal(${d.day}, ${i}, this.value)">${getJournal(d.day, i)}</textarea>
+      </div>
+    `).join('');
+    return `
+      <div class="day-card">
+        <div class="day-header">
+          <span class="day-num">Day ${d.day}</span>
+          <div class="day-complete">
+            <label>
+              <input type="checkbox" ${checked ? 'checked' : ''} onchange="setCheck(${d.day}, this.checked)">
+              <span class="checkmark"></span>
+              Done
+            </label>
+          </div>
+        </div>
+        ${promptsHtml}
+        <div class="prompt-label" style="margin-bottom:6px">Today's Declaration</div>
+        <div class="declaration-box">"${d.declaration}"</div>
+      </div>
+    `;
+  }).join('');
+}
+
+[1,2,3,4].forEach(buildDays);
+</script>
+
+</body>
+</html>

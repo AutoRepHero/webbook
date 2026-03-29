@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>God's Medicine — Chuck's 31 Healing Confessions</title>
+  <style>
+    :root {
+      --green: #27ae60;
+      --green2: #2ecc71;
+      --gold: #c9a227;
+      --dark: #060e06;
+      --card: rgba(10,22,10,0.95);
+      --text: #e8f5e9;
+      --muted: #4a7a4a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Georgia, serif;
+      background: var(--dark);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    header {
+      background: linear-gradient(180deg, #030a03 0%, #060e06 100%);
+      border-bottom: 2px solid var(--green);
+      padding: 28px 20px 20px;
+      text-align: center;
+    }
+    .header-icon { font-size: 2.5rem; margin-bottom: 8px; filter: drop-shadow(0 0 12px var(--green)); }
+    .header-title { font-size: clamp(1.3rem, 4vw, 1.8rem); font-weight: 800; color: var(--green2); letter-spacing: 2px; text-transform: uppercase; }
+    .header-sub { font-size: 0.8rem; color: var(--muted); margin-top: 6px; letter-spacing: 1px; }
+
+    .story-card {
+      margin: 20px 16px 0;
+      background: rgba(39,174,96,0.07);
+      border: 1px solid rgba(39,174,96,0.25);
+      border-radius: 16px;
+      padding: 20px;
+    }
+    .story-label { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 2px; color: var(--green); margin-bottom: 10px; }
+    .story-text { font-size: 0.92rem; color: #a5d6a7; line-height: 1.8; font-style: italic; }
+    .story-text strong { color: var(--green2); font-style: normal; }
+    .story-sig { font-size: 0.75rem; color: var(--green); text-align: right; margin-top: 10px; }
+
+    .instructions {
+      margin: 16px 16px 0;
+      background: rgba(201,162,39,0.06);
+      border: 1px solid rgba(201,162,39,0.2);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 0.82rem;
+      color: #f0d080;
+      line-height: 1.7;
+    }
+    .instructions strong { color: #c9a227; }
+
+    .section-title {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--muted);
+      padding: 20px 16px 8px;
+    }
+
+    .conf-list { padding: 0 16px 80px; display: flex; flex-direction: column; gap: 12px; }
+
+    .conf-item {
+      background: var(--card);
+      border: 1px solid rgba(39,174,96,0.15);
+      border-radius: 14px;
+      padding: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+    .conf-item::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--green), transparent);
+    }
+    .conf-num {
+      font-size: 0.62rem;
+      color: var(--green);
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .conf-text {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.65;
+      margin-bottom: 10px;
+    }
+    .conf-ref {
+      font-size: 0.75rem;
+      color: var(--green);
+      font-style: italic;
+    }
+    .conf-speak {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(39,174,96,0.1);
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .back-btn {
+      display: block;
+      text-align: center;
+      padding: 14px;
+      color: var(--green2);
+      text-decoration: none;
+      font-size: 0.85rem;
+      border-top: 1px solid rgba(39,174,96,0.15);
+      background: rgba(39,174,96,0.05);
+    }
+
+    @media print {
+      body { background: #fff; color: #000; }
+      .conf-item { border: 1px solid #27ae60; page-break-inside: avoid; background: #fff; }
+      .conf-text { color: #000; }
+      .conf-num { color: #27ae60; }
+      .conf-ref { color: #27ae60; }
+      header { background: #fff; border-bottom: 2px solid #27ae60; }
+      .header-title { color: #27ae60; }
+      .story-card { background: #f0fff0; border-color: #27ae60; }
+      .story-text { color: #000; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-icon">💊</div>
+  <div class="header-title">God's Medicine</div>
+  <div class="header-sub">Chuck's 31 Healing Confessions · NLT</div>
+</header>
+
+<div class="story-card">
+  <div class="story-label">Why This Exists</div>
+  <div class="story-text">
+    "I was broken. Addicted. In constant physical pain — nerve damage, three shoulder surgeries, damaged vertebrae. A friend gave me a recording of healing scriptures. I listened to it <strong>over and over and over again.</strong> My body responded to God's word. I lost over 125 lbs. The nerve damage healed. I play guitar now with the same hand I couldn't lift above my head. <strong>Faith comes by hearing. These are the confessions I built from that foundation. This is your medicine.</strong>"
+  </div>
+  <div class="story-sig">— Chuck Zaagsma, Taking Authority</div>
+</div>
+
+<div class="instructions">
+  <strong>How to use this:</strong> Read these out loud daily — like medicine. You wouldn't forget your medicine. Speak them in present tense, with faith. The more you hear your own voice declaring God's word, the more your faith grows. <em>Romans 10:17 — Faith comes by hearing.</em>
+</div>
+
+<div class="section-title">31 Healing Confessions</div>
+
+<div class="conf-list" id="conf-list"></div>
+
+<a class="back-btn" href="taking-authority.html">← Back to Taking Authority</a>
+
+<script>
+const CONFESSIONS = [
+  { text: "Lord, You are my Healer. I receive Your healing power in my body today.", ref: "Exodus 15:26" },
+  { text: "I declare that sickness has no hold on me, for You, God, are my protector.", ref: "Deuteronomy 7:15" },
+  { text: "I cried out to you Lord, and you healed me. I call it done. I AM healed and restored in Jesus' Name.", ref: "Psalm 30:2" },
+  { text: "Thank You, Lord, for restoring me and strengthening me when I feel weak.", ref: "Psalm 41:3" },
+  { text: "I am forgiven and healed. Your mercy covers me completely. I AM redeemed.", ref: "Psalm 103:2–3" },
+  { text: "Thank you Lord — You sent Your word and healed me and delivered me.", ref: "Psalm 107:20" },
+  { text: "Your Word is life and health to all my flesh. I meditate on what You say, not what I feel.", ref: "Proverbs 4:20-22" },
+  { text: "By Jesus' stripes, I am healed. I walk in wholeness.", ref: "Isaiah 53:5" },
+  { text: "Lord, You restore my health and heal every wound in me.", ref: "Jeremiah 30:17" },
+  { text: "Healing flows into my life because You promised it. The Bible says it, I believe it, and that settles it.", ref: "Jeremiah 33:6" },
+  { text: "No sickness is too great for You. There is nothing Your healing doesn't cover. I AM Healed!", ref: "Matthew 4:24" },
+  { text: "Jesus took my sickness so I don't have it. I am free from sickness and I AM healed and whole.", ref: "Matthew 8:16–17" },
+  { text: "I believe Jesus heals me today, just as He healed then. Jesus Christ — the same yesterday, today and forever.", ref: "Matthew 9:35 / Hebrews 13:8" },
+  { text: "My faith in You God makes me well, and I walk in total health and peace.", ref: "Mark 5:34" },
+  { text: "Healing belongs to me through faith in Jesus' name. I AM healed.", ref: "Mark 16:17–18" },
+  { text: "Jesus, Your touch brings healing to my body and soul.", ref: "Luke 4:40" },
+  { text: "Your healing power flows into me right now.", ref: "Luke 6:19" },
+  { text: "I choose faith over fear. I believe You Jesus. Healing is mine.", ref: "Luke 8:50" },
+  { text: "You heal me, Lord. I receive Your compassion. Sickness is not from You.", ref: "Luke 9:11" },
+  { text: "Jesus heals me from all oppression from the enemy. I am free.", ref: "Acts 10:38" },
+  { text: "The Spirit gives life to my body. I am renewed. The life of God is flowing through me.", ref: "Romans 8:11" },
+  { text: "As I hear Your Word, my faith grows and healing floods my body. Be it unto me according to Your word.", ref: "Romans 10:17" },
+  { text: "My spirit is renewed daily, and my body follows in strength.", ref: "2 Corinthians 4:16" },
+  { text: "Your grace sustains me. I am weak but my strength is in You.", ref: "2 Corinthians 12:9" },
+  { text: "I am redeemed from sickness and curse. Healing is mine — past tense. I HAVE it.", ref: "Galatians 3:13–14" },
+  { text: "Your peace guards my heart and mind, bringing healing and comfort to my soul.", ref: "Philippians 4:6–7" },
+  { text: "I am strong in Christ. My body, mind and soul are empowered by God's strength. I can do ALL things.", ref: "Philippians 4:13" },
+  { text: "My prayers are powerful. Through Jesus and in His name, when I pray the sick are healed.", ref: "James 5:14–15" },
+  { text: "I declare healing through the wounds of Jesus. By His stripes I AM healed.", ref: "1 Peter 2:24" },
+  { text: "I prosper in health and strength as the Holy Spirit lives in me.", ref: "3 John 1:2" },
+  { text: "God, through Jesus I receive Your comfort and healing now. I walk in wholeness — spirit, soul and body.", ref: "Revelation 21:4" },
+];
+
+const list = document.getElementById('conf-list');
+list.innerHTML = CONFESSIONS.map((c, i) => `
+  <div class="conf-item">
+    <div class="conf-num">Confession ${i + 1}</div>
+    <div class="conf-text">${c.text}</div>
+    <div class="conf-ref">${c.ref}</div>
+    <div class="conf-speak">👆 Speak this out loud. Your voice matters.</div>
+  </div>
+`).join('');
+</script>
+</body>
+</html>

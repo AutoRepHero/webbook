@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bonus Vault — Taking Authority</title>
+  <style>
+    :root { --gold: #c9a227; --gold2: #f0d080; --ember: #ff6b1a; --dark: #080604; --card: rgba(15,12,4,0.97); --text: #f5ead0; --muted: #7a6a40; --green: #27ae60; --green2: #2ecc71; --red: #e74c3c; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Georgia, serif; background: var(--dark); color: var(--text); min-height: 100vh; }
+
+    header { background: linear-gradient(135deg, #0f0c00 0%, #0a0800 50%, #080604 100%); border-bottom: 2px solid var(--gold); padding: 28px 20px 22px; text-align: center; }
+    .crown { font-size: 2.5rem; filter: drop-shadow(0 0 16px var(--gold)); margin-bottom: 8px; }
+    .header-title { font-size: clamp(1.3rem, 4vw, 1.8rem); font-weight: 900; background: linear-gradient(135deg, var(--gold), var(--gold2), var(--ember)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 3px; text-transform: uppercase; }
+    .header-sub { font-size: 0.78rem; color: var(--muted); margin-top: 6px; letter-spacing: 1px; font-style: italic; }
+
+    .intro { margin: 20px 16px 0; background: rgba(201,162,39,0.07); border: 1px solid rgba(201,162,39,0.2); border-radius: 14px; padding: 16px 18px; font-size: 0.88rem; color: var(--gold2); line-height: 1.75; }
+    .intro strong { color: var(--gold); }
+
+    .section-title { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); padding: 22px 16px 10px; }
+
+    .bonus-grid { padding: 0 16px 80px; display: flex; flex-direction: column; gap: 14px; }
+
+    .bonus-card {
+      background: var(--card);
+      border-radius: 16px;
+      overflow: hidden;
+      text-decoration: none;
+      display: block;
+      transition: transform 0.15s;
+      border: 1px solid rgba(201,162,39,0.15);
+    }
+    .bonus-card:active { transform: scale(0.98); }
+    .bonus-top { padding: 18px 18px 14px; }
+    .bonus-icon-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .bonus-emoji { font-size: 1.8rem; }
+    .bonus-tag { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1.5px; padding: 3px 10px; border-radius: 99px; font-weight: 700; }
+    .tag-free { background: rgba(39,174,96,0.15); color: var(--green2); border: 1px solid rgba(39,174,96,0.3); }
+    .tag-bonus { background: rgba(201,162,39,0.15); color: var(--gold); border: 1px solid rgba(201,162,39,0.3); }
+    .tag-app { background: rgba(255,107,26,0.15); color: var(--ember); border: 1px solid rgba(255,107,26,0.3); }
+    .bonus-title { font-size: 1.05rem; font-weight: 800; color: var(--text); margin-bottom: 5px; }
+    .bonus-desc { font-size: 0.83rem; color: #b8a870; line-height: 1.6; }
+    .bonus-footer { padding: 10px 18px 14px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(201,162,39,0.1); }
+    .bonus-cta { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.5px; }
+    .bonus-arrow { font-size: 1rem; }
+
+    .bonus-card.healing .bonus-footer { border-top-color: rgba(39,174,96,0.15); }
+    .bonus-card.healing .bonus-cta { color: var(--green2); }
+    .bonus-card.declarations .bonus-cta { color: var(--gold); }
+    .bonus-card.counterattack .bonus-cta { color: var(--red); }
+    .bonus-card.app .bonus-cta { color: var(--ember); }
+    .bonus-card.journal .bonus-cta { color: #7ec8e3; }
+
+    .back-btn { display: block; text-align: center; padding: 14px; color: var(--gold); text-decoration: none; font-size: 0.85rem; border-top: 1px solid rgba(201,162,39,0.15); background: rgba(201,162,39,0.04); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="crown">👑</div>
+  <div class="header-title">Bonus Vault</div>
+  <div class="header-sub">Everything included with Taking Authority</div>
+</header>
+
+<div class="intro">
+  <strong>You've got the book. Now use the tools.</strong> Every resource below was built to take what you learned in Taking Authority and turn it into a daily system. Read, declare, record, repeat. <em>This is how the transformation actually happens.</em>
+</div>
+
+<div class="section-title">Your Bonus Resources</div>
+
+<div class="bonus-grid">
+
+  <a class="bonus-card declarations" href="kings-best-wealth.html" style="border-color:rgba(201,162,39,0.3)">
+    <div class="bonus-top">
+      <div class="bonus-icon-row">
+        <span class="bonus-emoji">👑</span>
+        <span class="bonus-tag tag-bonus">101 Confessions</span>
+      </div>
+      <div class="bonus-title">King's Best™ — Wealth Scriptures</div>
+      <div class="bonus-desc">101 wealth confessions with full scripture, context, and Hebrew word study. Masculine wealth, covenant identity, biblical prosperity. Every one expandable — tap to go deep.</div>
+    </div>
+    <div class="bonus-footer">
+      <span class="bonus-cta">Open & Declare</span>
+      <span class="bonus-arrow">→</span>
+    </div>
+  </a>
+
+  <a class="bonus-card healing" href="bonus-healing.html">
+    <div class="bonus-top">
+      <div class="bonus-icon-row">
+        <span class="bonus-emoji">💊</span>
+        <span class="bonus-tag tag-free">Included</span>
+      </div>
+      <div class="bonus-title">God's Medicine — 31 Healing Confessions</div>
+      <div class="bonus-desc">Chuck's personal healing confessions built from scripture. The exact method that helped restore his body after addiction, nerve damage, and three shoulder surgeries. Speak these like medicine — daily.</div>
+    </div>
+    <div class="bonus-footer">
+      <span class="bonus-cta">Open & Declare</span>
+      <span class="bonus-arrow">→</span>
+    </div>
+  </a>
+
+  <a class="bonus-card declarations" href="bonus-declarations.html">
+    <div class="bonus-top">
+      <div class="bonus-icon-row">
+        <span class="bonus-emoji">📜</span>
+        <span class="bonus-tag tag-bonus">Bonus</span>
+      </div>
+      <div class="bonus-title">Daily Declaration Card</div>
+      <div class="bonus-desc">One power declaration per chapter — all 14 weapons loaded on a single page. Put it on your mirror. Speak it every morning. This is your daily authority activation.</div>
+    </div>
+    <div class="bonus-footer">
+      <span class="bonus-cta">Open & Speak</span>
+      <span class="bonus-arrow">→</span>
+    </div>
+  </a>
+
+  <a class="bonus-card counterattack" href="bonus-counterattack.html">
+    <div class="bonus-top">
+      <div class="bonus-icon-row">
+        <span class="bonus-emoji">⚔️</span>
+        <span class="bonus-tag tag-bonus">Bonus</span>
+      </div>
+      <div class="bonus-title">Counter Attack Cards</div>
+      <div class="bonus-desc">8 common enemy attacks with your loaded responses — ready before you need them. When the lies come (and they will), you'll already have your answer. Based on Chapter 14.</div>
+    </div>
+    <div class="bonus-footer">
+      <span class="bonus-cta">Load Your Weapon</span>
+      <span class="bonus-arrow">→</span>
+    </div>
+  </a>
+
+  <a class="bonus-card app" href="../confession-app/index.html">
+    <div class="bonus-top">
+      <div class="bonus-icon-row">
+        <span class="bonus-emoji">⚡</span>
+        <span class="bonus-tag tag-app">App</span>
+      </div>
+      <div class="bonus-title">Daily Declarations App</div>
+      <div class="bonus-desc">79 wealth confessions, 31 healing confessions, and a confession builder — all with live gold ember background. Record your own voice. Build your personal declaration library. Your authority in your pocket.</div>
+    </div>
+    <div class="bonus-footer">
+      <span class="bonus-cta">Open the App</span>
+      <span class="bonus-arrow">→</span>
+    </div>
+  </a>
+
+  <a class="bonus-card journal" href="bonus-journal.html">
+    <div class="bonus-top">
+      <div class="bonus-icon-row">
+        <span class="bonus-emoji">📓</span>
+        <span class="bonus-tag tag-bonus">Bonus</span>
+      </div>
+      <div class="bonus-title">30-Day Transformation Journal</div>
+      <div class="bonus-desc">Four weeks of guided journal pages tied to the transformation challenge. Track your words, catch the lies, declare your victories. This is where the rewiring actually happens.</div>
+    </div>
+    <div class="bonus-footer">
+      <span class="bonus-cta">Start the Challenge</span>
+      <span class="bonus-arrow">→</span>
+    </div>
+  </a>
+
+</div>
+
+<a class="back-btn" href="taking-authority.html">← Back to Taking Authority</a>
+
+</body>
+</html>

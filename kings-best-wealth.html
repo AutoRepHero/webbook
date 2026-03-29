@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>King's Best™ — 101 Wealth Confessions</title>
+  <style>
+    :root {
+      --gold: #c9a227; --gold2: #f0d080; --gold3: #ffeaa0;
+      --ember: #ff6b1a; --dark: #080604; --card: rgba(15,12,4,0.97);
+      --text: #f5ead0; --muted: #7a6a40; --green: #27ae60;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Georgia, serif; background: var(--dark); color: var(--text); min-height: 100vh; }
+
+    header {
+      background: linear-gradient(135deg, #0f0c00 0%, #1a1400 50%, #080604 100%);
+      border-bottom: 2px solid var(--gold);
+      padding: 28px 20px 20px;
+      text-align: center;
+    }
+    .header-crown { font-size: 2.5rem; filter: drop-shadow(0 0 16px var(--gold)); margin-bottom: 8px; }
+    .header-brand { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 3px; color: var(--muted); margin-bottom: 4px; }
+    .header-title { font-size: clamp(1.3rem, 4vw, 1.8rem); font-weight: 900; background: linear-gradient(135deg, var(--gold), var(--gold2), var(--ember)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 2px; text-transform: uppercase; }
+    .header-sub { font-size: 0.75rem; color: var(--muted); margin-top: 6px; letter-spacing: 1px; font-style: italic; }
+    .header-count { display: inline-block; margin-top: 10px; background: rgba(201,162,39,0.12); border: 1px solid rgba(201,162,39,0.3); border-radius: 99px; padding: 4px 16px; font-size: 0.75rem; color: var(--gold2); letter-spacing: 1px; }
+
+    /* Progress */
+    #progress-wrap { background: #0a0800; padding: 10px 16px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #1a1400; position: sticky; top: 0; z-index: 100; }
+    #progress-label { font-size: 0.65rem; color: var(--muted); white-space: nowrap; }
+    #progress-outer { flex: 1; background: #1a1400; border-radius: 99px; height: 6px; overflow: hidden; }
+    #progress-inner { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold2)); border-radius: 99px; width: 0%; transition: width 0.4s ease; }
+    #progress-pct { font-size: 0.7rem; color: var(--gold); font-weight: bold; min-width: 32px; text-align: right; }
+
+    /* Instructions */
+    .instructions { margin: 16px 16px 0; background: rgba(201,162,39,0.06); border: 1px solid rgba(201,162,39,0.2); border-radius: 12px; padding: 14px 16px; font-size: 0.82rem; color: var(--gold2); line-height: 1.75; }
+    .instructions strong { color: var(--gold); }
+
+    /* Section headers */
+    .section-title { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); padding: 18px 16px 8px; }
+
+    /* Confession cards */
+    .conf-list { padding: 0 16px 80px; display: flex; flex-direction: column; gap: 10px; }
+
+    .conf-card {
+      background: var(--card);
+      border: 1px solid rgba(201,162,39,0.12);
+      border-radius: 14px;
+      overflow: hidden;
+      position: relative;
+    }
+    .conf-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--gold), var(--ember), transparent); }
+
+    .conf-header {
+      padding: 14px 16px 12px;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .conf-num { font-size: 0.72rem; font-weight: 800; color: var(--gold); min-width: 28px; padding-top: 2px; white-space: nowrap; }
+    .conf-declaration { font-size: 0.95rem; font-weight: 600; color: var(--text); line-height: 1.55; flex: 1; }
+    .conf-ref { font-size: 0.72rem; color: var(--gold); font-style: italic; margin-top: 5px; }
+    .conf-arrow { color: var(--muted); font-size: 0.85rem; padding-top: 4px; flex-shrink: 0; transition: transform 0.2s; }
+    .conf-header.open .conf-arrow { transform: rotate(90deg); }
+
+    .conf-body { display: none; padding: 0 16px 14px; border-top: 1px solid rgba(201,162,39,0.08); }
+    .conf-body.open { display: block; }
+    .conf-section { margin-top: 10px; }
+    .conf-section-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 4px; }
+    .conf-section-text { font-size: 0.82rem; color: #b8a870; line-height: 1.65; }
+    .conf-scripture-text { font-size: 0.82rem; color: #d4c080; font-style: italic; line-height: 1.6; background: rgba(201,162,39,0.05); border-left: 2px solid var(--gold); padding: 8px 10px; border-radius: 0 6px 6px 0; }
+
+    .word-study { margin-top: 10px; }
+    .word-item { font-size: 0.78rem; color: #b8a870; line-height: 1.7; padding: 3px 0; border-bottom: 1px solid rgba(201,162,39,0.06); }
+    .word-item:last-child { border-bottom: none; }
+    .word-term { color: var(--gold2); font-weight: 600; }
+
+    /* Done badge */
+    .conf-done { margin-left: auto; flex-shrink: 0; }
+    .done-check { width: 22px; height: 22px; border: 2px solid rgba(201,162,39,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
+    .done-check.checked { background: var(--gold); border-color: var(--gold); }
+    .done-check.checked::after { content: '✓'; font-size: 0.7rem; font-weight: bold; color: #000; }
+
+    .back-btn { display: block; text-align: center; padding: 14px; color: var(--gold); text-decoration: none; font-size: 0.85rem; border-top: 1px solid rgba(201,162,39,0.12); background: rgba(201,162,39,0.04); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-crown">👑</div>
+  <div class="header-brand">King's Best™</div>
+  <div class="header-title">Money Scriptures</div>
+  <div class="header-sub">Masculine Wealth · Covenant Identity · Biblical Prosperity</div>
+  <div class="header-count">101 Confessions · KJV</div>
+</header>
+
+<div id="progress-wrap">
+  <span id="progress-label">Declared today</span>
+  <div id="progress-outer"><div id="progress-inner"></div></div>
+  <span id="progress-pct">0 / 101</span>
+</div>
+
+<div class="instructions">
+  <strong>"The blessing of the Lord, it maketh rich…" — Proverbs 10:22</strong><br>
+  These scriptures are God's word, His commandments — His will for your life. God wants you to be successful and wealthy for the advancement of His kingdom. Speak these out loud. Tap any confession to see the full scripture, context, and Hebrew word study.
+</div>
+
+<div class="section-title">101 Wealth Confessions</div>
+
+<div class="conf-list" id="conf-list"></div>
+
+<a class="back-btn" href="bonus-vault.html">← Back to Bonus Vault</a>
+
+<script>
+const CONFESSIONS = [
+  { text: "The blessing of the Lord is working in my life. I prosper without sorrow, striving, or fear. Everything God gives me increases and brings peace.", ref: "Proverbs 10:22", scripture: "The blessing of the Lord, it maketh rich, and he addeth no sorrow with it.", context: "Solomon contrasts wealth from human pressure and hustle with wealth from God's covenant blessing.", words: [["Blessing","berakah (beh-rah-KAH)","divine empowerment for success and prosperity"],["Maketh rich","ashar (aw-SHAR)","to accumulate, advance, grow abundantly"],["Sorrow","etseb (ET-sev)","painful toil, grief, anxious labor"]] },
+  { text: "God gives me power to create, build, and multiply wealth. I walk in the strength, strategy, and ability He provides.", ref: "Deuteronomy 8:18", scripture: "But thou shalt remember the Lord thy God: for it is he that giveth thee power to get wealth…", context: "Moses warns Israel not to forget God once prosperity comes.", words: [["Power","koach (KO-akh)","strength, capacity, creative force"],["Get","asah (ah-SAH)","to produce, accomplish, make"],["Wealth","chayil (KHAH-yil)","resources, substance, strong results"]] },
+  { text: "God delights in my prosperity. I walk in His favor, His increase, and His peace.", ref: "Psalm 35:27", scripture: "Let the Lord be magnified, which hath pleasure in the prosperity of his servant.", context: "David reveals that God takes pleasure in the wellbeing and success of His people.", words: [["Pleasure","chaphets (khaw-FETS)","to delight in, desire"],["Prosperity","shalom (shah-LOME)","wholeness, peace, abundance"],["Servant","ebed (EH-bed)","one under God's care and authority"]] },
+  { text: "God supplies all my needs in full. I live from His abundance, not my limitations.", ref: "Philippians 4:19", scripture: "But my God shall supply all your need according to his riches in glory by Christ Jesus.", context: "Paul assures generous believers that God will meet their needs.", words: [["Supply","pleroo (pleh-ROH-oh)","to fill completely, fully furnish"],["Riches","ploutos (PLOO-tos)","wealth, abundance, overflowing resources"]] },
+  { text: "I honor the Lord with my resources, and He fills my life with more than enough.", ref: "Proverbs 3:9–10", scripture: "Honour the Lord with thy substance… so shall thy barns be filled with plenty…", context: "Solomon teaches that honoring God with resources leads to overflowing provision.", words: [["Honour","kabed (kah-BED)","to make weighty, prioritize"],["Substance","hon (HONE)","wealth, possessions"],["Plenty","saba (saw-BAH)","to be filled, satisfied, overflowing"]] },
+  { text: "I am like a tree planted by God. I prosper, flourish, and bear fruit in every season.", ref: "Psalm 1:3", scripture: "And he shall be like a tree planted by the rivers of water… and whatsoever he doeth shall prosper.", context: "The psalm contrasts the righteous man with the wicked, showing the stability and fruitfulness of those rooted in God.", words: [["Planted","shathal (shaw-TAHL)","firmly set, intentionally placed"],["Prosper","tsalach (tsaw-LAKH)","to advance, succeed, break forward"]] },
+  { text: "The Lord is my Shepherd. I lack nothing. He leads me into abundance and rest.", ref: "Psalm 23:1", scripture: "The Lord is my shepherd; I shall not want.", context: "David describes God as a shepherd who provides, guides, and protects.", words: [["Shepherd","raah (rah-AH)","to tend, feed, care for"],["Want","chaser (khaw-SARE)","to lack, be without, decrease"]] },
+  { text: "I am blessed in my coming and going. God's favor surrounds my life and my work.", ref: "Deuteronomy 28:6", scripture: "Blessed shalt thou be when thou comest in, and blessed shalt thou be when thou goest out.", context: "Part of the covenant blessings pronounced over Israel for obedience.", words: [["Blessed","barak (bah-RAHK)","empowered to prosper"],["Come in / go out","bo / yatsa (bo / yah-TSAW)","daily activity, life's rhythms"]] },
+  { text: "Wealth and riches are in my house because I fear the Lord and walk uprightly.", ref: "Psalm 112:3", scripture: "Wealth and riches shall be in his house: and his righteousness endureth for ever.", context: "Psalm 112 describes the life of a man who fears the Lord.", words: [["Wealth","hon (HONE)","substance, goods"],["Riches","osher (OH-sher)","abundance, prosperity"],["House","bayith (BAH-yith)","household, family line"]] },
+  { text: "I am blessed in the work of my hands. Everything I put my hands to prospers.", ref: "Deuteronomy 28:12", scripture: "The Lord shall open unto thee his good treasure… and bless all the work of thine hand…", context: "God promises supernatural provision and productivity to His covenant people.", words: [["Treasure","otsar (oh-TSAR)","storehouse, reserve, vault"],["Bless","barak (bah-RAHK)","empower to succeed"],["Work","maaseh (mah-AH-seh)","deeds, labor, craftsmanship"]] },
+  { text: "The Lord teaches me how to profit. He leads me in the way I should go, and I follow His strategies with confidence.", ref: "Isaiah 48:17", scripture: "I am the Lord thy God which teacheth thee to profit, which leadeth thee by the way that thou shouldest go.", context: "God reminds Israel that He alone guides them into increase, wisdom, and productive paths.", words: [["Teacheth","lamad (lah-MAHD)","to train, instruct, impart skill"],["Profit","yaal (yaw-AL)","to gain, benefit, advance"],["Lead","darak (dah-RAHK)","to guide, cause to walk a path"]] },
+  { text: "I am blessed in the city and blessed in the field. God's favor covers every environment I step into.", ref: "Deuteronomy 28:3", scripture: "Blessed shalt thou be in the city, and blessed shalt thou be in the field.", context: "Part of the covenant blessings for obedience, covering every sphere of life.", words: [["Blessed","barak (bah-RAHK)","empowered to prosper"],["City","iyr (EER)","populated place, marketplace"],["Field","sadeh (sah-DEH)","land, work, production"]] },
+  { text: "My storehouses are blessed. Everything under my stewardship multiplies and increases.", ref: "Deuteronomy 28:8", scripture: "The Lord shall command the blessing upon thee in thy storehouses…", context: "God promises commanded blessing — not optional, not random — on what you manage.", words: [["Command","tsavah (tsaw-VAH)","to appoint, order, decree"],["Blessing","berakah (beh-rah-KAH)","divine empowerment"],["Storehouses","asam (aw-SAWM)","storage, reserves, savings"]] },
+  { text: "I lend and do not borrow. God positions me as the head and not the tail.", ref: "Deuteronomy 28:13", scripture: "And the Lord shall make thee the head, and not the tail…", context: "A covenant promise of leadership, influence, and upward movement.", words: [["Head","rosh (ROSH)","chief, leader, top"],["Tail","zanab (zah-NAHB)","the end, the lowest part"],["Above","ma'al (mah-AHL)","higher, lifted"]] },
+  { text: "I prosper in all things and walk in divine health, even as my soul prospers.", ref: "3 John 1:2", scripture: "Beloved, I wish above all things that thou mayest prosper and be in health…", context: "John expresses God's heart for holistic prosperity — soul, body, and life.", words: [["Prosper","euodoo (yoo-od-OH-oh)","to succeed, to have a good journey"],["Health","hugiaino (hoo-gee-AH-ee-no)","to be sound, whole"],["Soul","psuche (psoo-KHAY)","inner life, mind, emotions"]] },
+  { text: "My God gives seed to the sower. I always have seed to plant and harvest to reap.", ref: "2 Corinthians 9:10", scripture: "Now he that ministereth seed to the sower both minister bread for your food, and multiply your seed sown…", context: "Paul teaches that God supplies both seed (to give) and bread (to enjoy).", words: [["Seed","sperma (SPER-mah)","what is planted, resources for increase"],["Multiply","plethuno (pleh-THOO-no)","to enlarge, cause to grow"],["Increase","auxano (owx-AH-no)","to cause to rise, expand"]] },
+  { text: "I give, and it is given unto me — good measure, pressed down, shaken together, and running over.", ref: "Luke 6:38", scripture: "Give, and it shall be given unto you; good measure, pressed down, and shaken together, and running over…", context: "Jesus teaches the spiritual law of sowing and reaping in generosity.", words: [["Give","didomi (DID-oh-mee)","to release, to offer"],["Measure","metron (MEH-tron)","portion, standard of return"],["Running over","huperekchuno (hoo-peh-rek-KHOO-no)","overflow, spill over"]] },
+  { text: "The Lord makes me plenteous in goods. Everything under my hand increases.", ref: "Deuteronomy 28:11", scripture: "And the Lord shall make thee plenteous in goods…", context: "A covenant promise of abundance in resources, family, and land.", words: [["Plenteous","yathab (yah-THAHB)","to cause to prosper, make good"],["Goods","tub (TOOB)","goodness, wealth, pleasant things"]] },
+  { text: "I meditate on God's Word day and night, and I make my way prosperous.", ref: "Joshua 1:8", scripture: "…for then thou shalt make thy way prosperous, and then thou shalt have good success.", context: "God instructs Joshua that success flows from meditation and obedience.", words: [["Meditate","hagah (hah-GAH)","to ponder, speak, mutter"],["Prosperous","tsalach (tsaw-LAKH)","to advance, break forward"],["Success","sakal (saw-KAHL)","to act wisely, to prosper"]] },
+  { text: "I trust in the Lord with all my heart. He directs my paths into prosperity and peace.", ref: "Proverbs 3:5–6", scripture: "Trust in the Lord with all thine heart… and he shall direct thy paths.", context: "Solomon teaches that trusting God brings straight, successful paths.", words: [["Trust","batach (bah-TAKH)","to rely on, feel secure"],["Direct","yashar (yah-SHAR)","to make straight, level, right"],["Paths","orach (OH-rakh)","life direction, course, journey"]] },
+  { text: "The Lord gives me the desires of my heart because I delight in Him. My financial desires align with His will and come to pass.", ref: "Psalm 37:4", scripture: "Delight thyself also in the Lord; and he shall give thee the desires of thine heart.", context: "David teaches that delighting in God aligns your desires with His purposes.", words: [["Delight","anag (aw-NAG)","to take pleasure in, to be soft toward"],["Desires","mishalah (mish-aw-LAW)","petitions, requests, deep longings"],["Heart","leb (LAYB)","inner man, mind, will, emotions"]] },
+  { text: "I seek first the Kingdom, and everything I need is added to me in abundance.", ref: "Matthew 6:33", scripture: "But seek ye first the kingdom of God, and his righteousness; and all these things shall be added unto you.", context: "Jesus teaches that provision follows priority — Kingdom first, needs second.", words: [["Seek","zeteo (dzay-TEH-oh)","to pursue, crave, worshipfully desire"],["Added","prostithemi (pros-TITH-eh-mee)","to increase, to place beside, to supply"]] },
+  { text: "I am blessed because I trust in the Lord. My life is like a fruitful tree planted by His hand.", ref: "Jeremiah 17:7–8", scripture: "Blessed is the man that trusteth in the Lord… he shall be as a tree planted by the waters…", context: "Jeremiah contrasts the cursed man who trusts in flesh with the blessed man who trusts in God.", words: [["Blessed","barak (bah-RAHK)","empowered to prosper"],["Trust","batach (bah-TAKH)","to rely on, feel secure"],["Planted","shathal (shaw-TAHL)","intentionally placed, rooted"]] },
+  { text: "I walk in the fear of the Lord, and I experience wealth, honor, and life.", ref: "Proverbs 22:4", scripture: "By humility and the fear of the Lord are riches, and honour, and life.", context: "Solomon ties humility and reverence for God to tangible blessing.", words: [["Humility","anavah (ah-nah-VAH)","meekness, yieldedness"],["Riches","osher (OH-sher)","abundance, wealth"],["Honour","kabod (kah-BOHD)","glory, weight, reputation"]] },
+  { text: "I am generous, and my world enlarges. I refuse stinginess; I walk in abundance.", ref: "Proverbs 11:24", scripture: "There is that scattereth, and yet increaseth…", context: "Solomon contrasts generosity with withholding and shows the surprising increase that comes from giving.", words: [["Scattereth","pazar (paw-ZAR)","to disperse, distribute"],["Increaseth","rabah (raw-BAH)","to multiply, grow great"],["Withhold","chasak (khaw-SAK)","to restrain, keep back"]] },
+  { text: "I honor the Lord with my first and best, and He fills my barns with overflow.", ref: "Proverbs 3:9–10", scripture: "Honour the Lord with thy substance, and with the firstfruits of all thine increase…", context: "Solomon teaches that honoring God with firstfruits unlocks supernatural provision.", words: [["Firstfruits","reshith (ray-SHEETH)","the first, the best, the chief"],["Increase","tebuah (teh-boo-AH)","produce, income, yield"],["Filled","male (mah-LAY)","to be full, overflowing"]] },
+  { text: "I am willing and obedient, and I eat the good of the land.", ref: "Isaiah 1:19", scripture: "If ye be willing and obedient, ye shall eat the good of the land.", context: "God calls Israel back to obedience and promises blessing for those who respond.", words: [["Willing","abah (aw-BAH)","to consent, yield, desire"],["Obedient","shama (shaw-MAH)","to hear and respond"],["Good","tub (TOOB)","goodness, prosperity, pleasant things"]] },
+  { text: "I am blessed because I fear the Lord and delight in His commands. Wealth and riches are in my house.", ref: "Psalm 112:1–3", scripture: "Blessed is the man that feareth the Lord… wealth and riches shall be in his house…", context: "Psalm 112 describes the lifestyle and blessings of a God-fearing man.", words: [["Fear","yare (yah-RAY)","reverence, awe"],["Wealth","hon (HONE)","substance, goods"],["Riches","osher (OH-sher)","abundance, prosperity"]] },
+  { text: "I am a giver, and God makes all grace abound toward me. I have all sufficiency in all things.", ref: "2 Corinthians 9:8", scripture: "And God is able to make all grace abound toward you…", context: "Paul teaches that generosity unlocks divine sufficiency and abundance.", words: [["Abound","perisseuo (per-is-SYOO-oh)","overflow, exceed"],["Sufficiency","autarkeia (ow-tar-KAY-ah)","contentment, enough, adequacy"]] },
+  { text: "I am blessed because I trust in the Lord. I flourish like a green leaf.", ref: "Proverbs 11:28", scripture: "He that trusteth in his riches shall fall: but the righteous shall flourish as a branch.", context: "Solomon warns against trusting in wealth instead of God.", words: [["Trust","batach (bah-TAKH)","to rely on, feel secure"],["Flourish","parach (paw-RAKH)","to sprout, bloom, break forth"],["Branch","aleh (aw-LEH)","fresh leaf, new growth"]] },
+  { text: "I am diligent, and my diligence leads to abundance. I refuse laziness and lack.", ref: "Proverbs 10:4", scripture: "He becometh poor that dealeth with a slack hand: but the hand of the diligent maketh rich.", context: "Solomon contrasts laziness with diligence and shows how consistent effort produces wealth.", words: [["Slack","remiyah (reh-mee-YAH)","deceitful, lazy, idle"],["Diligent","charuts (khah-ROOTS)","sharp, decisive, determined"],["Rich","ashar (aw-SHAR)","to accumulate, grow in wealth"]] },
+  { text: "I walk in wisdom, and wisdom brings me wealth, honor, and long life.", ref: "Proverbs 3:16", scripture: "Length of days is in her right hand; and in her left hand riches and honour.", context: "Solomon personifies wisdom as a woman offering long life and prosperity.", words: [["Riches","osher (OH-sher)","abundance, prosperity"],["Honour","kabod (kah-BOHD)","glory, weight, reputation"],["Length of days","orek yamim (OH-rek yah-MEEM)","long life, extended days"]] },
+  { text: "I commit my work to the Lord, and He establishes my plans and causes them to succeed.", ref: "Proverbs 16:3", scripture: "Commit thy works unto the Lord, and thy thoughts shall be established.", context: "Solomon teaches that surrendering your plans to God brings stability and success.", words: [["Commit","galal (gah-LAHL)","to roll onto, entrust"],["Works","maaseh (mah-AH-seh)","deeds, business, labor"],["Established","kun (KOON)","to make firm, secure, successful"]] },
+  { text: "I walk with integrity, and my children are blessed after me.", ref: "Proverbs 20:7", scripture: "The just man walketh in his integrity: his children are blessed after him.", context: "Solomon highlights the generational impact of righteous living.", words: [["Integrity","tom (TOME)","completeness, innocence, uprightness"],["Blessed","barak (bah-RAHK)","empowered to prosper"],["Just","tsaddiq (tsad-DEEK)","righteous, upright"]] },
+  { text: "I am generous to the poor, and the Lord repays me with increase.", ref: "Proverbs 19:17", scripture: "He that hath pity upon the poor lendeth unto the Lord; and that which he hath given will he pay him again.", context: "Solomon teaches that generosity to the poor is treated by God as a loan He repays.", words: [["Pity","chanan (khaw-NAHN)","to show favor, be gracious"],["Lend","lavah (law-VAH)","to borrow, join, connect"],["Pay","shalam (shaw-LAHM)","to restore, repay, make whole"]] },
+  { text: "I keep God's Word, and I prosper in everything I do.", ref: "Proverbs 28:13", scripture: "He that covereth his sins shall not prosper: but whoso confesseth and forsaketh them shall have mercy.", context: "Solomon teaches that repentance opens the door to mercy and blessing.", words: [["Prosper","tsalach (tsaw-LAKH)","to advance, succeed"],["Confess","yadah (yah-DAH)","to acknowledge, praise, admit"],["Forsake","azab (aw-ZAHB)","to leave, abandon"]] },
+  { text: "I am faithful with little, and God makes me ruler over much.", ref: "Luke 16:10", scripture: "He that is faithful in that which is least is faithful also in much…", context: "Jesus teaches stewardship principles that govern increase and promotion.", words: [["Faithful","pistos (PIS-tos)","trustworthy, dependable"],["Least","elachistos (eh-LAKH-is-tos)","smallest, insignificant"],["Much","polus (POH-loos)","many, great, abundant"]] },
+  { text: "I am a wise steward, and God entrusts me with true riches.", ref: "Luke 16:11", scripture: "If therefore ye have not been faithful in the unrighteous mammon, who will commit to your trust the true riches?", context: "Jesus teaches that stewardship of money determines access to spiritual and greater responsibilities.", words: [["Faithful","pistos (PIS-tos)","reliable, trustworthy"],["Mammon","mamonas (mam-oh-NAS)","wealth, possessions"],["True riches","alethinos ploutos (al-eth-ee-NOS PLOO-tos)","genuine, eternal wealth"]] },
+  { text: "I give to the poor, and I lack nothing. My generosity brings honor.", ref: "Proverbs 28:27", scripture: "He that giveth unto the poor shall not lack…", context: "Solomon teaches that generosity protects from lack.", words: [["Give","natan (nah-TAHN)","to bestow, offer"],["Lack","machsor (makh-SORE)","deficiency, need"],["Poor","dal (DAHL)","weak, needy"]] },
+  { text: "I keep God's covenant, and He gives me power to create generational wealth.", ref: "Deuteronomy 7:9", scripture: "Know therefore that the Lord thy God, he is God, the faithful God, which keepeth covenant and mercy…", context: "God reminds Israel that His covenant faithfulness brings blessing to a thousand generations.", words: [["Covenant","berith (beh-REETH)","agreement, alliance, promise"],["Mercy","chesed (KHEH-sed)","loyal love, covenant kindness"],["Faithful","aman (aw-MAN)","trustworthy, firm, reliable"]] },
+  { text: "I obey the voice of the Lord, and blessings overtake me. I live in God's commanded abundance.", ref: "Deuteronomy 28:2", scripture: "And all these blessings shall come on thee, and overtake thee…", context: "Moses describes blessings that actively pursue and overtake those who obey God.", words: [["Blessings","berakah (beh-rah-KAH)","divine empowerment"],["Come on","bo (BOH)","arrive, enter"],["Overtake","nasag (nah-SAHG)","to catch, pursue, overwhelm"]] },
+  { text: "I am a giver, and my generosity brings increase. I refresh others and God refreshes me.", ref: "Proverbs 11:25", scripture: "The liberal soul shall be made fat: and he that watereth shall be watered also himself.", context: "Solomon teaches that generosity leads to personal abundance.", words: [["Liberal","berakah (beh-rah-KAH)","generous, blessing"],["Made fat","dashen (daw-SHEN)","to prosper, be enriched"],["Water","ravah (raw-VAH)","to satisfy, refresh"]] },
+  { text: "I walk in God's favor, and He surrounds me with protection, promotion, and blessing.", ref: "Psalm 5:12", scripture: "For thou, Lord, wilt bless the righteous; with favour wilt thou compass him as with a shield.", context: "David describes God's favor as a protective shield around the righteous.", words: [["Bless","barak (bah-RAHK)","empower to prosper"],["Favour","ratson (raw-TSON)","delight, goodwill, acceptance"],["Compass","atar (aw-TAR)","encircle, crown"]] },
+  { text: "I am righteous in Christ, and wealth flows into the hands of the just.", ref: "Proverbs 13:22", scripture: "…the wealth of the sinner is laid up for the just.", context: "Solomon reveals a divine transfer principle: wealth stored by the wicked is reserved for the righteous.", words: [["Wealth","chayil (KHAH-yil)","strength, resources, riches"],["Laid up","tsaphan (tsaw-FAHN)","hidden, stored, reserved"],["Just","tsaddiq (tsad-DEEK)","righteous, upright"]] },
+  { text: "I am diligent in my business, and I stand before kings. God promotes me to high places.", ref: "Proverbs 22:29", scripture: "Seest thou a man diligent in his business? he shall stand before kings…", context: "Solomon teaches that excellence brings influence and promotion.", words: [["Diligent","mahir (ma-HEER)","quick, skilled, prepared"],["Business","melakah (meh-lah-KAH)","work, craftsmanship"],["Stand","yatsab (yah-TSAB)","to present oneself, serve"]] },
+  { text: "I fear the Lord and walk in His ways. I eat the fruit of my labor and prosper.", ref: "Psalm 128:1–2", scripture: "Blessed is every one that feareth the Lord… For thou shalt eat the labour of thine hands: happy shalt thou be…", context: "A psalm of blessing over the home, work, and family of the God-fearing man.", words: [["Labour","amal (ah-MAHL)","work, effort"],["Happy","esher (EH-sher)","blessed, fortunate"],["Well","tob (TOHB)","good, prosperous, pleasant"]] },
+  { text: "I am generous and lend freely. My children are blessed after me.", ref: "Psalm 112:5", scripture: "A good man sheweth favour, and lendeth…", context: "Psalm 112 describes the lifestyle of a righteous man and the blessings that follow.", words: [["Favour","chanan (khaw-NAHN)","grace, kindness"],["Lend","lavah (law-VAH)","to loan, join, connect"],["Good","tob (TOHB)","beneficial, pleasant"]] },
+  { text: "I am wise with my finances. I store up wealth and avoid foolish spending.", ref: "Proverbs 21:20", scripture: "There is treasure to be desired and oil in the dwelling of the wise; but a foolish man spendeth it up.", context: "Solomon contrasts wise saving with foolish consumption.", words: [["Treasure","otsar (oh-TSAR)","storehouse, wealth"],["Oil","shemen (SHEH-men)","prosperity, richness"],["Spendeth","bala (bah-LAH)","to swallow, consume wastefully"]] },
+  { text: "I walk in integrity, and I am guided by honesty. My path is secure and prosperous.", ref: "Proverbs 11:3", scripture: "The integrity of the upright shall guide them…", context: "Solomon teaches that integrity brings direction and stability.", words: [["Integrity","tom (TOME)","completeness, uprightness"],["Guide","nachah (nah-KHAH)","to lead, direct"],["Upright","yashar (yah-SHAR)","straight, right, level"]] },
+  { text: "I am a wise steward, and I build my house with understanding. Wealth and honor fill my life.", ref: "Proverbs 24:3–4", scripture: "Through wisdom is an house builded; and by understanding it is established…", context: "Solomon teaches that wisdom, understanding, and knowledge create a prosperous household.", words: [["Wisdom","chokmah (khok-MAH)","skill, mastery, insight"],["Understanding","tebunah (teh-boo-NAH)","discernment, intelligence"],["Riches","hon (HONE)","wealth, goods, substance"]] },
+  { text: "I am blessed because I fear the Lord. My wealth increases, and my household thrives.", ref: "Psalm 128:3", scripture: "Thy wife shall be as a fruitful vine by the sides of thine house: thy children like olive plants round about thy table.", context: "A psalm describing the prosperity and fruitfulness of a God-fearing man's home.", words: [["Fruitful","parah (paw-RAH)","to bear fruit, increase"],["Olive plants","zayith (ZAH-yeeth)","symbols of longevity, blessing, and prosperity"],["House","bayith (BAH-yith)","household, lineage"]] },
+  { text: "I am a man of understanding, and I draw out wise strategies for wealth and success.", ref: "Proverbs 20:5", scripture: "Counsel in the heart of man is like deep water; but a man of understanding will draw it out.", context: "Solomon teaches that wisdom and strategy lie deep within, waiting to be drawn out.", words: [["Counsel","etsah (ay-TSAH)","advice, strategy, purpose"],["Deep water","mayim (MAH-yeem)","hidden, valuable, profound"],["Understanding","tebunah (teh-boo-NAH)","discernment, intelligence"]] },
+  { text: "I am generous, and I will never be shaken. My righteousness endures forever.", ref: "Psalm 112:6", scripture: "Surely he shall not be moved for ever: the righteous shall be in everlasting remembrance.", context: "Psalm 112 describes the stability and legacy of the righteous man.", words: [["Moved","mot (MOTE)","shaken, overthrown"],["Righteous","tsaddiq (tsad-DEEK)","upright, just"],["Remembrance","zeker (ZEH-ker)","memorial, legacy"]] },
+  { text: "I am wise with my words, and my speech brings wealth, favor, and influence.", ref: "Proverbs 18:20", scripture: "A man's belly shall be satisfied with the fruit of his mouth…", context: "Solomon teaches that words produce outcomes — including provision.", words: [["Fruit","peri (peh-REE)","results, produce"],["Satisfied","saba (saw-BAH)","filled, enriched"],["Mouth","peh (PAY)","speech, declarations"]] },
+  { text: "I am a man of peace, and God makes even my enemies live at peace with me.", ref: "Proverbs 16:7", scripture: "When a man's ways please the Lord, he maketh even his enemies to be at peace with him.", context: "Solomon teaches that God brings favor and peace when a man walks uprightly.", words: [["Please","ratsah (raw-TSAH)","delight, accept"],["Peace","shalam (shaw-LAHM)","make whole, restore"],["Enemies","oyeb (oh-YEV)","adversaries, opponents"]] },
+  { text: "I am a wise planner. My thoughts are established by counsel and succeed through strategy.", ref: "Proverbs 15:22", scripture: "Without counsel purposes are disappointed: but in the multitude of counsellors they are established.", context: "Solomon teaches that wise planning requires counsel and collaboration.", words: [["Counsel","sod (SODE)","advice, secret counsel"],["Purposes","machashabah (makh-ash-aw-BAH)","plans, strategies"],["Established","kun (KOON)","made firm, successful"]] },
+  { text: "I am protected by the Lord. He is my shield, my glory, and the lifter of my head.", ref: "Psalm 3:3", scripture: "But thou, O Lord, art a shield for me; my glory, and the lifter up of mine head.", context: "David declares God's protection and honor during a time of danger.", words: [["Shield","magen (mah-GEN)","protector, defense"],["Glory","kabod (kah-BOHD)","weight, honor, splendor"],["Lifter","rum (ROOM)","to raise, exalt"]] },
+  { text: "I am blessed because I trust in the Lord. I flourish like a green olive tree in His house.", ref: "Psalm 52:8", scripture: "But I am like a green olive tree in the house of God: I trust in the mercy of God for ever and ever.", context: "David contrasts the wicked with the flourishing of the righteous.", words: [["Olive tree","zayith (ZAH-yeeth)","symbol of prosperity and anointing"],["Green","ra'anan (rah-ah-NAHN)","fresh, flourishing"],["Mercy","chesed (KHEH-sed)","covenant love, loyal kindness"]] },
+  { text: "I am a man of generosity, and I scatter seed that multiplies back into my life.", ref: "Ecclesiastes 11:1", scripture: "Cast thy bread upon the waters: for thou shalt find it after many days.", context: "Solomon teaches the principle of diversified generosity and long-term return.", words: [["Cast","shalach (shaw-LAKH)","to send out, release"],["Bread","lechem (LEH-khem)","resources, provision"],["Waters","mayim (MAH-yeem)","many places, opportunities"]] },
+  { text: "I sow righteousness and reap a harvest of blessing. God's covenant of increase is mine.", ref: "Hosea 10:12", scripture: "Sow to yourselves in righteousness, reap in mercy…", context: "Hosea calls Israel to repentance and promises blessing for righteous sowing.", words: [["Sow","zara (zah-RAH)","to plant, scatter seed"],["Reap","qatsar (kaw-TSAR)","to harvest, gather"],["Mercy","chesed (KHEH-sed)","covenant love, kindness"]] },
+  { text: "I build my finances with wisdom and understanding. My house stands strong.", ref: "Proverbs 24:3", scripture: "Through wisdom is an house builded; and by understanding it is established.", context: "Solomon teaches that wisdom and understanding are the foundation of a prosperous, stable life.", words: [["Wisdom","chokmah (khok-MAH)","skill, mastery, insight"],["Understanding","tebunah (teh-boo-NAH)","discernment, intelligence"],["Established","kun (KOON)","made firm, stable, secure"]] },
+  { text: "My steps are ordered by the Lord, and He delights in my prosperity.", ref: "Psalm 37:23", scripture: "The steps of a good man are ordered by the Lord: and he delighteth in his way.", context: "David describes God's guidance and delight in the life of a righteous man.", words: [["Ordered","kun (KOON)","established, directed"],["Delight","chaphets (khaw-FETS)","take pleasure in"],["Way","derek (DEH-rek)","path, journey, lifestyle"]] },
+  { text: "I honor the Lord with my wealth and firstfruits. My barns overflow.", ref: "Proverbs 3:9", scripture: "Honour the Lord with thy substance, and with the firstfruits of all thine increase…", context: "Solomon teaches that honoring God with resources leads to supernatural increase.", words: [["Honour","kabed (kah-BED)","to make weighty, prioritize"],["Substance","hon (HONE)","wealth, possessions"],["Increase","tebuah (teh-boo-AH)","produce, income"]] },
+  { text: "I am a man of faith, and I believe God's promises. Nothing is impossible with Him.", ref: "Mark 9:23", scripture: "Jesus said unto him, If thou canst believe, all things are possible to him that believeth.", context: "Jesus responds to a father seeking deliverance, emphasizing faith.", words: [["Believe","pisteuo (pis-TOO-oh)","trust, rely on, have faith"],["Possible","dynatos (doo-NAH-tos)","powerful, able, capable"],["All things","panta (PAN-tah)","everything, without exception"]] },
+  { text: "I am righteous, and my prayers are powerful and effective.", ref: "James 5:16", scripture: "The effectual fervent prayer of a righteous man availeth much.", context: "James teaches the power of righteous prayer.", words: [["Effectual fervent","energeo (en-ER-gay-oh)","active, working, energized"],["Righteous","dikaios (dik-EYE-os)","upright, justified"],["Availeth","ischyo (is-KHOO-oh)","to prevail, have force"]] },
+  { text: "I guard my mouth. My words produce life and prosperity.", ref: "Proverbs 18:21", scripture: "Death and life are in the power of the tongue…", context: "Solomon teaches that words carry creative power.", words: [["Power","yad (YAHd)","hand, authority, control"],["Tongue","lashon (lah-SHONE)","speech, language"],["Life","chay (KHAI)","vitality, prosperity"]] },
+  { text: "I walk in favor with God and man. My understanding brings me a good name.", ref: "Proverbs 3:4", scripture: "So shalt thou find favour and good understanding in the sight of God and man.", context: "Solomon teaches that loyalty and truth bring favor.", words: [["Favour","chen (KHEN)","grace, acceptance"],["Understanding","sekel (SEH-kel)","insight, prudence"],["Sight","ayin (EYE-in)","presence, regard"]] },
+  { text: "God enlarges my territory and blesses me indeed.", ref: "1 Chronicles 4:10", scripture: "Oh that thou wouldest bless me indeed, and enlarge my coast…", context: "The prayer of Jabez — a cry for blessing, expansion, and protection.", words: [["Bless","barak (bah-RAHK)","empower to prosper"],["Enlarge","rabah (raw-BAH)","multiply, expand"],["Coast","gebul (geh-BOOL)","boundary, territory"]] },
+  { text: "God girds me with strength and makes my way perfect.", ref: "Psalm 18:32", scripture: "It is God that girdeth me with strength, and maketh my way perfect.", context: "David praises God for empowering him in battle and life.", words: [["Strength","chayil (KHAH-yil)","might, wealth, ability"],["Perfect","tamim (tah-MEEM)","complete, whole, blameless"],["Gird","azar (aw-ZAR)","to equip, surround with strength"]] },
+  { text: "I flourish like a palm tree and grow like a cedar. My life is ever increasing.", ref: "Psalm 92:12", scripture: "The righteous shall flourish like the palm tree: he shall grow like a cedar in Lebanon.", context: "A psalm celebrating the flourishing of the righteous.", words: [["Flourish","parach (paw-RAHK)","sprout, bloom, break forth"],["Palm tree","tamar (tah-MAR)","symbol of victory and fruitfulness"],["Grow","sagah (saw-GAH)","increase, rise high"]] },
+  { text: "I am planted in the house of the Lord, and I flourish in every season of life.", ref: "Psalm 92:13", scripture: "Those that be planted in the house of the Lord shall flourish in the courts of our God.", context: "A psalm celebrating the long-term flourishing of those rooted in God's presence.", words: [["Planted","shathal (shaw-TAHL)","firmly rooted, intentionally placed"],["Flourish","parach (paw-RAHK)","sprout, bloom, break forth"],["Courts","chatser (KHAHT-ser)","dwelling place, enclosure of blessing"]] },
+  { text: "I scatter freely and my harvest returns in abundance. Generous sowing produces generous reaping.", ref: "2 Corinthians 9:6", scripture: "He which soweth sparingly shall reap also sparingly; and he which soweth bountifully shall reap also bountifully.", context: "Paul teaches the spiritual law of proportional sowing and reaping.", words: [["Sparingly","pheidomenos (fay-DOM-en-os)","with restraint"],["Bountifully","eulogia (yoo-loh-GEE-ah)","blessing, generosity"],["Reap","therizo (theh-REE-dzo)","to harvest, gather"]] },
+  { text: "God blesses my household with prosperity and protection all the days of my life.", ref: "Psalm 128:5", scripture: "The Lord shall bless thee out of Zion: and thou shalt see the good of Jerusalem all the days of thy life.", context: "A psalm describing the blessing of God over the home and city of the righteous.", words: [["Bless","barak (bah-RAHK)","empower to prosper"],["Good","tob (TOHB)","pleasant, prosperous"],["Life","chay (KHAI)","vitality, flourishing"]] },
+  { text: "I walk with the wise and grow in success. My associations elevate my destiny.", ref: "Proverbs 13:20", scripture: "He that walketh with wise men shall be wise: but a companion of fools shall be destroyed.", context: "Solomon teaches that relationships shape destiny.", words: [["Walk","halak (hah-LAHK)","to live with, journey with"],["Wise","chakam (khaw-KAHM)","skilled, intelligent"],["Destroyed","ra'a (rah-AH)","harmed, ruined"]] },
+  { text: "I am diligent, and my plans lead to abundance. I refuse haste and poverty.", ref: "Proverbs 21:5", scripture: "The thoughts of the diligent tend only to plenteousness; but of every one that is hasty only to want.", context: "Solomon contrasts strategic planning with impulsive decisions.", words: [["Diligent","charuts (khah-ROOTS)","decisive, determined"],["Plenteousness","motar (mo-TAR)","surplus, abundance"],["Hasty","uts (OOTZ)","rushed, impulsive"]] },
+  { text: "My path shines brighter every day. God leads me into increasing prosperity.", ref: "Proverbs 4:18", scripture: "But the path of the just is as the shining light, that shineth more and more unto the perfect day.", context: "Solomon describes the progressive increase of the righteous.", words: [["Path","orach (OH-rakh)","course of life"],["Shining","nogah (NOH-gah)","brightness, radiance"],["More and more","halak (hah-LAHK)","to advance, continue"]] },
+  { text: "I speak to mountains, and they move. Nothing stands in the way of God's promises in my life.", ref: "Mark 11:23", scripture: "Whosoever shall say unto this mountain, Be thou removed… he shall have whatsoever he saith.", context: "Jesus teaches the authority of faith-filled words.", words: [["Say","epo (EH-po)","declare, command"],["Removed","airo (EYE-ro)","lift, take away"],["Believe","pisteuo (pis-TOO-oh)","trust, rely on"]] },
+  { text: "I am obedient to God's voice, and blessings chase me down. His goodness overtakes my life.", ref: "Deuteronomy 28:1", scripture: "…if thou shalt hearken diligently unto the voice of the Lord thy God…", context: "The opening of the blessing chapter, emphasizing obedience as the doorway to abundance.", words: [["Hearken","shama (shaw-MAH)","listen with intent to obey"],["Diligently","shama shama (shaw-MAH shaw-MAH)","listen carefully, fully"],["Voice","qol (KOHL)","sound, command, instruction"]] },
+  { text: "God trains my hands for war. I overcome every financial battle.", ref: "Psalm 144:1", scripture: "Blessed be the Lord my strength, which teacheth my hands to war, and my fingers to fight.", context: "David praises God for empowering him with skill, strength, and victory.", words: [["Strength","tsur (TSOOR)","rock, fortress"],["Teacheth","lamad (lah-MAHD)","train, instruct"],["War","milchamah (mil-khah-MAH)","battle, conflict"]] },
+  { text: "I am a man of strength, and God trains me for victory. He makes my way prosperous and secure.", ref: "Psalm 18:34", scripture: "He teacheth my hands to war, so that a bow of steel is broken by mine arms.", context: "David praises God for giving him supernatural strength and skill in battle.", words: [["Teacheth","lamad (lah-MAHD)","train, instruct"],["War","milchamah (mil-khah-MAH)","battle, conflict"],["Bow of steel","qeshet nechushah (KEH-shet neh-KHOO-shah)","bronze bow, symbol of strength"]] },
+  { text: "I am a man of righteousness, and I flourish under God's favor. His blessing crowns my life.", ref: "Psalm 65:11", scripture: "Thou crownest the year with thy goodness; and thy paths drop fatness.", context: "A psalm celebrating God's abundant provision and blessing over the land.", words: [["Crownest","atar (aw-TAR)","surround, encircle"],["Goodness","tob (TOHB)","prosperity, blessing"],["Fatness","deshen (DEH-shen)","abundance, richness"]] },
+  { text: "I am a man of wisdom, and I listen to instruction. I dwell securely and prosper without fear.", ref: "Proverbs 1:33", scripture: "But whoso hearkeneth unto me shall dwell safely, and shall be quiet from fear of evil.", context: "Wisdom speaks, promising safety and prosperity to those who listen.", words: [["Hearken","shama (shaw-MAH)","listen with obedience"],["Dwell safely","betach (beh-TAKH)","live securely, confidently"],["Quiet","shaqat (shaw-KAT)","undisturbed, at rest"]] },
+  { text: "I am a man of generosity, and I give to the poor. The Lord repays me with increase.", ref: "Proverbs 14:21", scripture: "He that hath mercy on the poor, happy is he.", context: "Solomon teaches that compassion toward the poor brings blessing.", words: [["Mercy","chanan (khaw-NAHN)","show grace, favor"],["Poor","ani (ah-NEE)","afflicted, needy"],["Happy","esher (EH-sher)","blessed, fortunate"]] },
+  { text: "I am a man of diligence, and my hard work leads to profit. I refuse fantasy and embrace action.", ref: "Proverbs 14:23", scripture: "In all labour there is profit: but the talk of the lips tendeth only to penury.", context: "Solomon contrasts productive work with empty talk.", words: [["Labour","amal (ah-MAHL)","work, effort"],["Profit","motar (mo-TAR)","gain, increase"],["Penury","machsor (makh-SORE)","lack, poverty"]] },
+  { text: "I am a man of peace, and God blesses my home with prosperity and protection.", ref: "Proverbs 3:33", scripture: "The curse of the Lord is in the house of the wicked: but he blesseth the habitation of the just.", context: "Solomon contrasts the outcomes of wickedness and righteousness.", words: [["Bless","barak (bah-RAHK)","empower to prosper"],["Habitation","naveh (nah-VEH)","dwelling, home"],["Just","tsaddiq (tsad-DEEK)","righteous, upright"]] },
+  { text: "I am a man of wisdom, and I store up knowledge. My wealth increases through understanding.", ref: "Proverbs 10:14", scripture: "Wise men lay up knowledge: but the mouth of the foolish is near destruction.", context: "Solomon teaches that wisdom stores up resources — both knowledge and wealth.", words: [["Lay up","tsaphan (tsaw-FAHN)","store, treasure"],["Knowledge","daath (DAH-ath)","understanding, skill"],["Foolish","ewil (eh-WEEL)","stubborn, destructive"]] },
+  { text: "I am a man of righteousness, and my house stands firm. I am never uprooted.", ref: "Proverbs 12:7", scripture: "The wicked are overthrown, and are not: but the house of the righteous shall stand.", context: "Solomon contrasts the instability of the wicked with the endurance of the righteous.", words: [["Overthrown","haphak (hah-FAHK)","overturned, destroyed"],["Stand","qum (KOOM)","rise, endure, remain"],["Righteous","tsaddiq (tsad-DEEK)","upright, just"]] },
+  { text: "I am a man of generosity, and I refresh others. God satisfies my soul in every season.", ref: "Isaiah 58:11", scripture: "And the Lord shall guide thee continually, and satisfy thy soul in drought…", context: "God promises blessing to those who care for the oppressed and needy.", words: [["Guide","nachah (nah-KHAH)","lead, direct"],["Satisfy","saba (saw-BAH)","fill, enrich"],["Drought","tsachah (tsaw-KHAH)","dryness, scarcity"]] },
+  { text: "I am a man of faith, and I believe God's Word. I receive everything He has promised.", ref: "Hebrews 11:6", scripture: "But without faith it is impossible to please him…", context: "The writer of Hebrews teaches that faith is essential to receiving from God.", words: [["Faith","pistis (PIS-tis)","trust, confidence, conviction"],["Please","euaresteo (yoo-ar-es-TEH-oh)","to satisfy, bring pleasure"],["Diligently seek","ekzeteo (ek-zay-TEH-oh)","pursue, crave, search out"]] },
+  { text: "The Lord enlarges my steps. I do not slip or fall in my financial journey.", ref: "Psalm 18:36", scripture: "Thou hast enlarged my steps under me, that my feet did not slip.", context: "David praises God for stabilizing his path and preventing failure.", words: [["Enlarged","rachab (raw-KHAB)","broaden, expand"],["Steps","tsaad (tsah-AD)","stride, progress"],["Slip","mot (MOTE)","totter, fall, be shaken"]] },
+  { text: "I am a man of righteousness, and wealth is in my house. My legacy endures for generations.", ref: "Psalm 112:2–3", scripture: "His seed shall be mighty upon earth… wealth and riches shall be in his house…", context: "Psalm 112 describes the generational blessing of the righteous.", words: [["Seed","zera (ZEH-rah)","offspring, descendants"],["Mighty","gibbor (ghib-BOHR)","strong, powerful"],["Wealth","hon (HONE)","substance, goods"]] },
+  { text: "I am a man of peace, and God blesses my land. Everything under my care prospers.", ref: "Deuteronomy 28:4", scripture: "Blessed shall be the fruit of thy body, and the fruit of thy ground…", context: "Part of the covenant blessings for obedience.", words: [["Fruit","peri (peh-REE)","produce, results"],["Ground","adamah (ad-ah-MAH)","land, soil, territory"],["Blessed","barak (bah-RAHK)","empowered to prosper"]] },
+  { text: "I walk in the fear of the Lord. My days are prolonged and prosperous.", ref: "Proverbs 10:27", scripture: "The fear of the Lord prolongeth days…", context: "Solomon teaches that reverence for God brings long life and stability.", words: [["Fear","yare (yah-RAY)","reverence, awe"],["Prolongeth","yasaph (yah-SAF)","add, increase"],["Days","yom (YOHm)","time, lifespan"]] },
+  { text: "I am a man of diligence, and my hands bring me wealth. I refuse laziness and lack.", ref: "Proverbs 12:11", scripture: "He that tilleth his land shall be satisfied with bread…", context: "Solomon contrasts productive work with chasing fantasies.", words: [["Tilleth","abad (ah-BAHD)","work, serve, cultivate"],["Satisfied","saba (saw-BAH)","filled, enriched"],["Bread","lechem (LEH-khem)","provision, resources"]] },
+  { text: "I am a man of generosity, and I give freely. My righteousness endures forever.", ref: "Psalm 112:9", scripture: "He hath dispersed, he hath given to the poor; his righteousness endureth for ever…", context: "Psalm 112 describes the generosity and legacy of the righteous.", words: [["Dispersed","pazar (paw-ZAR)","scatter, distribute"],["Given","natan (nah-TAHN)","offer, bestow"],["Endureth","amad (ah-MAHD)","stand firm, remain"]] },
+  { text: "I am a man of faith, and I believe God's promises. I receive the reward He has prepared for me.", ref: "Hebrews 10:35", scripture: "Cast not away therefore your confidence, which hath great recompence of reward.", context: "The writer encourages believers to hold onto their confidence in God.", words: [["Confidence","parresia (par-RAY-see-ah)","boldness, assurance"],["Recompence","misthapodosia (mis-thah-po-do-SEE-ah)","repayment, reward"],["Reward","misthos (MIS-thos)","wages, compensation"]] },
+  { text: "I am a man of peace, and God blesses my relationships. Favor surrounds me like a shield.", ref: "Proverbs 16:3", scripture: "Commit thy works unto the Lord, and thy thoughts shall be established.", context: "Solomon teaches that entrusting your plans to God brings stability and success.", words: [["Commit","galal (gah-LAHL)","roll onto, entrust"],["Works","maaseh (mah-AH-seh)","deeds, business, labor"],["Established","kun (KOON)","made firm, secure"]] },
+  { text: "I am a man of righteousness, and I flourish like a fruitful vine. God prospers the work of my hands.", ref: "Psalm 128:3", scripture: "Thy wife shall be as a fruitful vine…", context: "A psalm describing the prosperity and fruitfulness of the righteous man's home.", words: [["Fruitful","parah (paw-RAH)","increase, bear fruit"],["Vine","gephen (GEH-fen)","symbol of prosperity"],["House","bayith (BAH-yith)","household, lineage"]] },
+  { text: "I am a man of faith, and I walk in God's promises. He gives me the desires of my heart.", ref: "Psalm 145:19", scripture: "He will fulfil the desire of them that fear him…", context: "David describes God's goodness toward those who fear Him.", words: [["Fulfil","asah (ah-SAH)","accomplish, bring to pass"],["Desire","ratsah (raw-TSAH)","longing, request"],["Fear","yare (yah-RAY)","reverence, awe"]] },
+  { text: "I seek the Lord, and I lack no good thing. God provides for me fully, faithfully, and abundantly. I walk in covenant provision, strength, and prosperity.", ref: "Psalm 34:10", scripture: "The young lions do lack, and suffer hunger: but they that seek the Lord shall not want any good thing.", context: "David wrote this psalm after escaping danger by the wisdom of God. He contrasts the strongest natural hunters — young lions — with the man who seeks the Lord. Even the strongest can fail, but the man who seeks God will not lack anything good.", words: [["Young lions","kefirim (keh-FEER-eem)","strong, self-reliant hunters"],["Seek","darash (daw-RASH)","to pursue, inquire, worshipfully seek"],["Want","chaser (khaw-SARE)","to lack, be without, decrease"],["Good thing","tob (TOHB)","beneficial, prosperous, pleasant, valuable"]] },
+];
+
+// Storage
+function getCheck(i) { try { return localStorage.getItem(`kb_done_${i}`) === '1'; } catch(e) { return false; } }
+function setCheck(i, v) { try { localStorage.setItem(`kb_done_${i}`, v ? '1' : '0'); } catch(e) {} }
+
+function updateProgress() {
+  const done = CONFESSIONS.filter((_, i) => getCheck(i)).length;
+  const pct = Math.round((done / CONFESSIONS.length) * 100);
+  document.getElementById('progress-inner').style.width = pct + '%';
+  document.getElementById('progress-pct').textContent = `${done} / ${CONFESSIONS.length}`;
+}
+
+function toggleBody(i) {
+  const body = document.getElementById(`kb-body-${i}`);
+  const header = document.getElementById(`kb-header-${i}`);
+  const open = body.classList.toggle('open');
+  header.classList.toggle('open', open);
+}
+
+function toggleDone(i, el) {
+  const cur = getCheck(i);
+  setCheck(i, !cur);
+  el.classList.toggle('checked', !cur);
+  updateProgress();
+}
+
+function buildList() {
+  const list = document.getElementById('conf-list');
+  list.innerHTML = CONFESSIONS.map((c, i) => {
+    const checked = getCheck(i);
+    const wordsHtml = c.words.map(w => `<div class="word-item"><span class="word-term">${w[0]}</span> — ${w[1]}: ${w[2]}</div>`).join('');
+    return `
+      <div class="conf-card">
+        <div class="conf-header" id="kb-header-${i}" onclick="toggleBody(${i})">
+          <div class="conf-num">${String(i+1).padStart(2,'0')}</div>
+          <div style="flex:1">
+            <div class="conf-declaration">${c.text}</div>
+            <div class="conf-ref">${c.ref}</div>
+          </div>
+          <div class="conf-done" onclick="event.stopPropagation(); toggleDone(${i}, this.querySelector('.done-check'))">
+            <div class="done-check ${checked ? 'checked' : ''}"></div>
+          </div>
+          <div class="conf-arrow">▶</div>
+        </div>
+        <div class="conf-body" id="kb-body-${i}">
+          <div class="conf-section">
+            <div class="conf-section-label">Scripture</div>
+            <div class="conf-scripture-text">"${c.scripture}"</div>
+          </div>
+          <div class="conf-section">
+            <div class="conf-section-label">Context</div>
+            <div class="conf-section-text">${c.context}</div>
+          </div>
+          <div class="word-study">
+            <div class="conf-section-label" style="margin-bottom:6px">Hebrew / Greek Word Study</div>
+            ${wordsHtml}
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+buildList();
+updateProgress();
+</script>
+</body>
+</html>

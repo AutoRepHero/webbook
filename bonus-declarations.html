@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Daily Declaration Card — Taking Authority</title>
+  <style>
+    :root {
+      --gold: #c9a227; --gold2: #f0d080; --ember: #ff6b1a;
+      --dark: #080604; --card: rgba(15,12,4,0.97); --text: #f5ead0; --muted: #7a6a40;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Georgia, serif; background: var(--dark); color: var(--text); min-height: 100vh; }
+    header { background: linear-gradient(180deg, #0f0c00 0%, #080604 100%); border-bottom: 2px solid var(--gold); padding: 24px 20px 18px; text-align: center; }
+    .header-icon { font-size: 2rem; margin-bottom: 6px; filter: drop-shadow(0 0 10px var(--gold)); }
+    .header-title { font-size: clamp(1.2rem, 4vw, 1.6rem); font-weight: 800; background: linear-gradient(135deg, var(--gold), var(--gold2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 2px; text-transform: uppercase; }
+    .header-sub { font-size: 0.75rem; color: var(--muted); margin-top: 5px; letter-spacing: 1px; }
+
+    .instructions { margin: 16px 16px 0; background: rgba(201,162,39,0.07); border: 1px solid rgba(201,162,39,0.2); border-radius: 12px; padding: 14px 16px; font-size: 0.82rem; color: #f0d080; line-height: 1.7; }
+    .instructions strong { color: var(--gold); }
+
+    .section-title { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); padding: 20px 16px 8px; }
+
+    .decl-list { padding: 0 16px 80px; display: flex; flex-direction: column; gap: 10px; }
+
+    .decl-item {
+      background: var(--card);
+      border: 1px solid rgba(201,162,39,0.15);
+      border-radius: 14px;
+      padding: 16px 18px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      position: relative;
+      overflow: hidden;
+    }
+    .decl-item::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, var(--gold), var(--ember)); }
+    .decl-num { font-size: 0.75rem; font-weight: 800; color: var(--gold); min-width: 28px; padding-top: 2px; }
+    .decl-body {}
+    .decl-chapter { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 5px; }
+    .decl-text { font-size: 0.95rem; font-weight: 600; color: var(--text); line-height: 1.6; margin-bottom: 5px; }
+    .decl-ref { font-size: 0.72rem; color: var(--gold); font-style: italic; }
+
+    .back-btn { display: block; text-align: center; padding: 14px; color: var(--gold); text-decoration: none; font-size: 0.85rem; border-top: 1px solid rgba(201,162,39,0.15); background: rgba(201,162,39,0.04); }
+
+    @media print {
+      body { background: #fff; color: #000; }
+      .decl-item { border: 1px solid #c9a227; background: #fff; page-break-inside: avoid; }
+      .decl-text { color: #000; }
+      header { background: #fff; }
+      .header-title { -webkit-text-fill-color: #c9a227; color: #c9a227; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-icon">👑</div>
+  <div class="header-title">Daily Declaration Card</div>
+  <div class="header-sub">One Power Declaration Per Chapter · Taking Authority</div>
+</header>
+
+<div class="instructions">
+  <strong>Speak these every morning.</strong> Put this on your mirror, your phone wallpaper, or your bathroom wall. One declaration per chapter — all 14 weapons loaded. Speak them out loud. Your voice creates. <em>Proverbs 18:21 — Death and life are in the power of the tongue.</em>
+</div>
+
+<div class="section-title">14 Daily Declarations</div>
+
+<div class="decl-list">
+  <div class="decl-item">
+    <div class="decl-num">01</div>
+    <div class="decl-body">
+      <div class="decl-chapter">Chapter 1 — Utter Defeat, No Hope</div>
+      <div class="decl-text">My story is not over. God can restore what seems permanently destroyed. This is my comeback chapter.</div>
+    </div>
+  </div>
+  <div class="decl-item">
+    <div class="decl-num">02</div>
+    <div class="decl-body">
+      <div class="decl-chapter">Chapter 2 — Choosing the Words</div>
+      <div class="decl-text">I am the author of my life. I choose better words today. Better words, better story, better life.</div>
+    </div>
+  </div>
+  <div class="decl-item">
+    <div class="decl-num">03</div>
+    <div class="decl-body">
+      <div class="decl-chapter">Chapter 3 — Get Out of the Pot</div>
+      <div class="decl-text">I refuse to be pulled back in. I choose life. My life is a GET TO, not a have to. I claim the goodness God has for me right now!</div>
+    </div>
+  </div>
+  <div class="decl-item">
+    <div class="decl-num">04</div>
+    <div class="decl-body">
+      <div class="decl-chapter">Chapter 4 — Victim or Victor</div>
+      <div class="decl-text">I speak like a king. I am a victor, not a victim. I keep playing until I win. Where the word of a king is, there is power.</div>
+    </div>
+  </div>
+  <div class="decl-item">
+    <div class="decl-num">05</div>
+    <div class="decl-body">
+      <div class="decl-chapter">Chapter 5 — The Big Lie</div>
+      <div class="decl-text">Death and life are in the power of MY tongue. I choose life. I eat the fruit of words that build, bless, and create.</div>
+      <div class="decl-ref">Proverbs 18:21</div>
+    </div>
+  </div>
+  <div class="decl-item">
+    <div class="decl-num">06</div>
+    <div class="decl-body">
+      <div class="decl-chapter">Chapter 6 — The Power of Words</div>
+      <div class="decl-text">I am made in God's image. My words create. I call things by the right name — what I WANT them to be, not what they are.</div>
+    </div>
+  </div>
+  <div class="decl-item">
+    <div class="decl-num">07</div>
+    <div class="decl-body">
+      <div class="decl-chapter">Chapter 7 — Self-Fulfilling Prophecy</div>
+      <div class="decl-text">I shall have what I SAY. I pray the answer, not the problem. I declare the outcome before the battle.</div>
+      <div class="decl-ref">Mark 11:23</div>
+    </div>
+  </div>
+  <div class="decl-item">
+    <div class="decl-num">08</div>
+    <div class="decl-body">
+      <div class="decl-chapter">Chapter 8 — Steering Wheel</div>
+      <div class="decl-text">My words are steering my life toward victory, abundance, and God's best. I speak my destination every day.</div>
+      <div class="decl-ref">James 3:3-4</div>
+    </div>
+  </div>
+  <div class="decl-item">
+    <div class="decl-num">09</div>
+    <div class="decl-body">
+      <div class="decl-chapter">Chapter 9 — Unemployed Angels</div>
+      <div class="decl-text">My angels are employed. I speak God's word over every situation. Heaven's army is working on my behalf right now.</div>
+      <div class="decl-ref">Psalm 103:20</div>
+    </div>
+  </div>
+  <div class="decl-item">
+    <div class="decl-num">10</div>
+    <div class="decl-body">
+      <div class="decl-chapter">Chapter 10 — Patterned Behavior</div>
+      <div class="decl-text">I am rewiring my word patterns. Every day I catch and replace. 30 days builds a new normal. I am building mine now.</div>
+    </div>
+  </div>
+  <div class="decl-item">
+    <div class="decl-num">11</div>
+    <div class="decl-body">
+      <div class="decl-chapter">Chapter 11 — Calling the Dog</div>
+      <div class="decl-text">I call the thing I WANT, not the thing I have. I have ___________. I speak it in present tense. I receive it now by faith.</div>
+      <div class="decl-ref">Romans 4:17 / Mark 11:24</div>
+    </div>
+  </div>
+  <div class="decl-item">
+    <div class="decl-num">12</div>
+    <div class="decl-body">
+      <div class="decl-chapter">Chapter 12 — Being Specific</div>
+      <div class="decl-text">I bind ___ from operating in my life. I loose God's blessing, favor, and provision. I am specific. I am terrific.</div>
+      <div class="decl-ref">Matthew 16:19</div>
+    </div>
+  </div>
+  <div class="decl-item">
+    <div class="decl-num">13</div>
+    <div class="decl-body">
+      <div class="decl-chapter">Chapter 13 — Claiming Your Inheritance</div>
+      <div class="decl-text">I am an heir of God. His promises are mine — HERE and NOW. I live like an heir, not an orphan. THIS IS MINE.</div>
+      <div class="decl-ref">Galatians 3:29 / Romans 8:17</div>
+    </div>
+  </div>
+  <div class="decl-item">
+    <div class="decl-num">14</div>
+    <div class="decl-body">
+      <div class="decl-chapter">Chapter 14 — Counter Attacks</div>
+      <div class="decl-text">Devil, you are defeated. My God is greater than this situation. I stand. I hold my confession. The test gives birth to the testimony.</div>
+      <div class="decl-ref">Ephesians 6:13</div>
+    </div>
+  </div>
+</div>
+
+<a class="back-btn" href="taking-authority.html">← Back to Taking Authority</a>
+
+</body>
+</html>
