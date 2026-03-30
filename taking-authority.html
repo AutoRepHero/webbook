@@ -430,6 +430,21 @@
     }
     footer a { color: var(--gold); text-decoration: none; }
   </style>
+
+<script>
+// Read-only mode via ?mode=read
+const urlParams = new URLSearchParams(window.location.search);
+const readOnly = urlParams.get('mode') === 'read';
+if (readOnly) {
+  document.documentElement.classList.add('read-only');
+}
+</script>
+<style>
+.read-only .stack-wrap,
+.read-only .chapter-complete-btn,
+.read-only .bonus-link { display: none !important; }
+.read-only .chapter-body { border-radius: 0 0 var(--radius) var(--radius); }
+</style>
 </head>
 <body style="position:relative;z-index:1;">
 <div style="text-align:center;padding:20px 0 8px;">
