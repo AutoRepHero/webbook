@@ -430,6 +430,49 @@
     }
     footer a { color: var(--gold); text-decoration: none; }
   
+
+    /* ── S.T.A.N.D. Workshop ── */
+    .stand-section {
+      margin-top: 40px;
+      background: linear-gradient(135deg, #0f0400, #0a0200);
+      border: 2px solid var(--red, #e74c3c);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .stand-header { padding: 20px 24px 16px; border-bottom: 1px solid rgba(231,76,60,0.15); text-align: center; }
+    .stand-header h2 { font-size: 1.4rem; font-weight: 900; color: #e74c3c; letter-spacing: 4px; text-transform: uppercase; }
+    .stand-header p { font-size: 0.85rem; color: #8a4040; margin-top: 6px; font-style: italic; }
+    .stand-steps { padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+    .stand-step { background: rgba(15,4,4,0.9); border: 1px solid rgba(231,76,60,0.15); border-radius: 12px; overflow: hidden; }
+    .stand-step-header { padding: 14px 16px; display: flex; align-items: center; gap: 12px; }
+    .stand-letter { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 900; background: rgba(231,76,60,0.15); color: #e74c3c; flex-shrink: 0; }
+    .stand-step-info { flex: 1; }
+    .stand-step-word { font-size: 0.95rem; font-weight: 800; color: var(--text); }
+    .stand-step-tag { font-size: 0.72rem; color: var(--muted); font-style: italic; }
+    .stand-verse { margin: 0 16px 12px; background: rgba(201,162,39,0.05); border-left: 2px solid var(--gold); padding: 8px 12px; border-radius: 0 6px 6px 0; font-size: 0.82rem; color: var(--gold2); font-style: italic; line-height: 1.6; }
+    .stand-commentary { margin: 0 16px 12px; font-size: 0.82rem; color: #c8a060; line-height: 1.7; }
+    .stand-input-wrap { padding: 0 16px 14px; border-top: 1px solid rgba(231,76,60,0.08); }
+    .stand-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin: 12px 0 6px; display: block; }
+    .stand-label span { color: #e74c3c; font-weight: 700; }
+    .stand-input, .stand-textarea, .stand-select {
+      width: 100%; background: rgba(255,255,255,0.03); border: 1px solid rgba(231,76,60,0.2);
+      border-radius: 8px; padding: 10px 12px; color: var(--text); font-family: inherit;
+      font-size: 0.88rem; outline: none; resize: vertical; transition: border-color 0.2s;
+    }
+    .stand-input:focus, .stand-textarea:focus, .stand-select:focus { border-color: #e74c3c; }
+    .stand-input::placeholder, .stand-textarea::placeholder { color: rgba(122,80,80,0.6); }
+    .stand-select option { background: #1a0808; }
+    .stand-output { margin: 0 16px 16px; background: rgba(201,162,39,0.06); border: 1px solid rgba(201,162,39,0.2); border-radius: 10px; padding: 16px; min-height: 70px; }
+    .stand-output-label { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold); margin-bottom: 8px; }
+    .stand-output-text { font-size: 0.95rem; font-weight: 600; color: var(--text); line-height: 1.75; }
+    .stand-output-text.empty { color: var(--muted); font-weight: 400; font-size: 0.82rem; font-style: italic; }
+    .stand-btns { display: flex; gap: 8px; margin-top: 10px; }
+    .stand-btn { flex: 1; padding: 10px; border-radius: 8px; font-size: 0.82rem; font-weight: 700; cursor: pointer; border: none; transition: all 0.15s; }
+    .stand-btn.copy { background: rgba(201,162,39,0.1); color: var(--gold); border: 1px solid rgba(201,162,39,0.3); }
+    .stand-btn.copy:hover { background: var(--gold); color: #000; }
+    .stand-btn.save { background: rgba(39,174,96,0.1); color: var(--green2); border: 1px solid rgba(39,174,96,0.3); }
+    .stand-btn.save:hover { background: var(--green); color: #fff; }
+
 </style>
 
 
@@ -538,6 +581,117 @@ window.addEventListener('error', function(e) {
         <span style="color:#ff6b1a">→</span>
       </a>
     </div>
+  </div>
+
+
+  <!-- S.T.A.N.D. Workshop -->
+  <div class="stand-section">
+    <div class="stand-header">
+      <h2>⚔️ S.T.A.N.D.</h2>
+      <p>Chuck's 5-step method to build a confession that defeats the enemy</p>
+    </div>
+    <div class="stand-steps">
+
+      <div class="stand-step">
+        <div class="stand-step-header">
+          <div class="stand-letter">S</div>
+          <div class="stand-step-info">
+            <div class="stand-step-word">Scripture</div>
+            <div class="stand-step-tag">Find God's word that speaks to your situation</div>
+          </div>
+        </div>
+        <div class="stand-verse">"So then faith cometh by hearing, and hearing by the word of God." <span style="font-size:0.7rem;color:var(--muted)">— Romans 10:17 KJV</span></div>
+        <div class="stand-commentary">Don't confess what you feel — confess what God said. Look it up in 2-3 translations. Find the wording that resonates. That's your foundation.</div>
+        <div class="stand-input-wrap">
+          <label class="stand-label"><span>S:</span> What are you believing God for?</label>
+          <input class="stand-input" id="wb-s-need" type="text" placeholder="e.g. Healing, financial breakthrough, restored marriage..." oninput="updateStand()"/>
+          <label class="stand-label"><span>Scripture</span> reference:</label>
+          <input class="stand-input" id="wb-s-ref" type="text" placeholder="e.g. Isaiah 53:5, Philippians 4:19..." oninput="updateStand()"/>
+        </div>
+      </div>
+
+      <div class="stand-step">
+        <div class="stand-step-header">
+          <div class="stand-letter">T</div>
+          <div class="stand-step-info">
+            <div class="stand-step-word">Translate It</div>
+            <div class="stand-step-tag">First person. Present tense. Your words.</div>
+          </div>
+        </div>
+        <div class="stand-verse">"...ye shall know the truth, and the truth shall make you free." <span style="font-size:0.7rem;color:var(--muted)">— John 8:32 KJV</span></div>
+        <div class="stand-commentary">Don't say "God heals people." Say "I AM healed." Don't say "God will..." — say "I HAVE." You are the author. Write God's word in your voice.</div>
+        <div class="stand-input-wrap">
+          <label class="stand-label"><span>T:</span> Write it in first person, present tense:</label>
+          <textarea class="stand-textarea" id="wb-t-trans" rows="3" placeholder="I AM... I HAVE... I WALK IN..." oninput="updateStand()"></textarea>
+        </div>
+      </div>
+
+      <div class="stand-step">
+        <div class="stand-step-header">
+          <div class="stand-letter">A</div>
+          <div class="stand-step-info">
+            <div class="stand-step-word">Audible</div>
+            <div class="stand-step-tag">Speak it out loud. Your voice creates.</div>
+          </div>
+        </div>
+        <div class="stand-verse">"Death and life are in the power of the tongue..." <span style="font-size:0.7rem;color:var(--muted)">— Proverbs 18:21 KJV</span></div>
+        <div class="stand-commentary">Silent faith stays in your head. Spoken faith creates. Open your mouth and deploy heaven's army. Speak it like medicine — daily, out loud, until you see it.</div>
+        <div class="stand-input-wrap">
+          <label class="stand-label"><span>A:</span> Your commitment — when will you speak this?</label>
+          <select class="stand-select" id="wb-a-when" oninput="updateStand()">
+            <option value="">-- Select --</option>
+            <option value="Every morning when I wake up">Every morning when I wake up</option>
+            <option value="Morning and night, every day">Morning and night, every day</option>
+            <option value="3 times daily - morning, noon, night">3 times daily - morning, noon, night</option>
+            <option value="Every time the enemy attacks">Every time the enemy attacks</option>
+            <option value="Daily until I see the manifestation">Daily until I see the manifestation</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="stand-step">
+        <div class="stand-step-header">
+          <div class="stand-letter">N</div>
+          <div class="stand-step-info">
+            <div class="stand-step-word">Never Quit</div>
+            <div class="stand-step-tag">Hold your confession under attack.</div>
+          </div>
+        </div>
+        <div class="stand-verse">"...and having done all, to stand. Stand therefore." <span style="font-size:0.7rem;color:var(--muted)">— Ephesians 6:13-14 KJV</span></div>
+        <div class="stand-commentary">You keep standing. You don't quit. You hold your ground. The counter attack will come — prepare your response NOW before you need it.</div>
+        <div class="stand-input-wrap">
+          <label class="stand-label"><span>N:</span> Your counter attack response:</label>
+          <textarea class="stand-textarea" id="wb-n-counter" rows="2" placeholder="Devil you are defeated. My God is greater than this situation..." oninput="updateStand()"></textarea>
+        </div>
+      </div>
+
+      <div class="stand-step">
+        <div class="stand-step-header">
+          <div class="stand-letter">D</div>
+          <div class="stand-step-info">
+            <div class="stand-step-word">Declare the Outcome</div>
+            <div class="stand-step-tag">Call what you WANT, not what you HAVE.</div>
+          </div>
+        </div>
+        <div class="stand-verse">"...calleth those things which be not as though they were." <span style="font-size:0.7rem;color:var(--muted)">— Romans 4:17 KJV</span></div>
+        <div class="stand-commentary">God called Abraham father of many nations before he had one child. Don't call the cat when you want the dog. Declare the end from the beginning.</div>
+        <div class="stand-input-wrap">
+          <label class="stand-label"><span>D:</span> Declare the outcome — what does it look like fully manifested?</label>
+          <textarea class="stand-textarea" id="wb-d-declare" rows="2" placeholder="I am completely healed and whole. I am walking in full strength..." oninput="updateStand()"></textarea>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="stand-output" id="wb-stand-output">
+      <div class="stand-output-label">👑 Your S.T.A.N.D. Confession</div>
+      <div class="stand-output-text empty" id="wb-stand-text">Fill in the steps above and your confession will appear here...</div>
+      <div class="stand-btns" id="wb-stand-btns" style="display:none">
+        <button class="stand-btn copy" onclick="copyStand()">📋 Copy</button>
+        <button class="stand-btn save" onclick="saveStand()">💾 Save to App</button>
+      </div>
+    </div>
+
   </div>
 
   <!-- 30-Day Challenge -->
@@ -1436,6 +1590,62 @@ function markComplete(chNum) {
     btn.classList.remove('done');
   }
   updateProgress();
+}
+
+
+function updateStand() {
+  const need = document.getElementById('wb-s-need').value.trim();
+  const ref = document.getElementById('wb-s-ref').value.trim();
+  const trans = document.getElementById('wb-t-trans').value.trim();
+  const when = document.getElementById('wb-a-when').value;
+  const counter = document.getElementById('wb-n-counter').value.trim();
+  const declare = document.getElementById('wb-d-declare').value.trim();
+  const el = document.getElementById('wb-stand-text');
+  const btns = document.getElementById('wb-stand-btns');
+  if (!trans && !declare) {
+    el.className = 'stand-output-text empty';
+    el.textContent = 'Fill in the steps above and your confession will appear here...';
+    btns.style.display = 'none'; return;
+  }
+  let parts = [];
+  if (trans) parts.push(trans);
+  if (ref) parts.push('(' + ref + ')');
+  if (when) parts.push('I speak this ' + when.toLowerCase() + '.');
+  if (declare) parts.push(declare);
+  if (counter) parts.push('When attacked: ' + counter);
+  el.className = 'stand-output-text';
+  el.textContent = parts.join(' ');
+  btns.style.display = 'flex';
+}
+
+function copyStand() {
+  const text = document.getElementById('wb-stand-text').textContent;
+  navigator.clipboard.writeText(text).then(() => showToast('Copied!')).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta); showToast('Copied!');
+  });
+}
+
+function saveStand() {
+  const text = document.getElementById('wb-stand-text').textContent;
+  const need = document.getElementById('wb-s-need').value.trim();
+  if (!text || text.includes('Fill in')) return;
+  try {
+    const saved = JSON.parse(localStorage.getItem('ta_stand_saved') || '[]');
+    saved.unshift({ id: Date.now(), text, need, date: new Date().toLocaleDateString() });
+    if (saved.length > 20) saved.length = 20;
+    localStorage.setItem('ta_stand_saved', JSON.stringify(saved));
+    showToast('Saved to S.T.A.N.D. library!');
+  } catch(e) { showToast('Saved!'); }
+}
+
+function showToast(msg) {
+  let t = document.getElementById('wb-toast');
+  if (!t) { t = document.createElement('div'); t.id = 'wb-toast'; t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:linear-gradient(135deg,#c9a227,#ff6b1a);color:#000;padding:10px 22px;border-radius:99px;font-size:0.82rem;font-weight:700;z-index:500;transition:transform 0.3s;white-space:nowrap;'; document.body.appendChild(t); }
+  t.textContent = msg;
+  t.style.transform = 'translateX(-50%) translateY(0)';
+  setTimeout(() => { t.style.transform = 'translateX(-50%) translateY(80px)'; }, 2500);
 }
 
 // ── Init ──────────────────────────────────────────────────────────────────────
