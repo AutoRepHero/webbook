@@ -130,7 +130,82 @@
       .story-card { background: #f0fff0; border-color: #27ae60; }
       .story-text { color: #000; }
     }
-  </style>
+  
+  .verse-ref {
+    display: inline-block;
+    color: var(--green);
+    font-style: italic;
+    font-size: 0.75rem;
+    cursor: pointer;
+    border-bottom: 1px dashed rgba(39,174,96,0.4);
+    transition: color 0.15s;
+  }
+  .verse-ref:hover { color: var(--green2); border-bottom-color: var(--green2); }
+  .verse-ref::after { content: ' 📖'; font-size: 0.7rem; }
+
+  #verse-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.88);
+    z-index: 999;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 20px;
+  }
+  #verse-modal.show { display: flex; }
+  .verse-modal-inner {
+    background: #111;
+    border: 1px solid rgba(39,174,96,0.3);
+    border-radius: 18px 18px 12px 12px;
+    width: 100%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 24px 20px 20px;
+    animation: slideUp 0.25s cubic-bezier(.34,1.56,.64,1);
+  }
+  @keyframes slideUp { from{transform:translateY(60px);opacity:0} to{transform:translateY(0);opacity:1} }
+  .verse-modal-ref {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--green);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .verse-modal-close {
+    background: rgba(39,174,96,0.1);
+    border: 1px solid rgba(39,174,96,0.2);
+    border-radius: 99px;
+    color: var(--green2);
+    padding: 4px 12px;
+    font-size: 0.75rem;
+    cursor: pointer;
+  }
+  .verse-block { margin-bottom: 16px; }
+  .verse-translation {
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .verse-text {
+    font-size: 0.95rem;
+    color: #e8d898;
+    line-height: 1.8;
+    font-style: italic;
+    border-left: 2px solid var(--green);
+    padding: 8px 12px;
+    background: rgba(39,174,96,0.04);
+    border-radius: 0 8px 8px 0;
+  }
+  .verse-modal-inner::-webkit-scrollbar { width: 4px; }
+  .verse-modal-inner::-webkit-scrollbar-thumb { background: var(--green); border-radius: 99px; }
+</style>
 </head>
 <body style="position:relative;z-index:1;">
 <div style="text-align:center;padding:16px 0 4px;">
@@ -238,6 +313,181 @@ requestAnimationFrame(draw);
 }
 draw();
 })();
+</script>
+
+<div id="verse-modal" onclick="closeVerseModal(event)">
+  <div class="verse-modal-inner">
+    <div class="verse-modal-ref">
+      <span id="modal-ref-title"></span>
+      <button class="verse-modal-close" onclick="document.getElementById('verse-modal').classList.remove('show')">✕ Close</button>
+    </div>
+    <div id="modal-kjv" class="verse-block">
+      <div class="verse-translation">KJV — King James Version</div>
+      <div class="verse-text" id="modal-kjv-text"></div>
+    </div>
+    <div id="modal-web" class="verse-block">
+      <div class="verse-translation">WEB — World English Bible</div>
+      <div class="verse-text" id="modal-web-text"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const VERSES = {
+  "Exodus 15:26": {
+    kjv: "...I am the LORD that healeth thee.",
+    web: "...I am Yahweh who heals you."
+  },
+  "Deuteronomy 7:15": {
+    kjv: "And the LORD will take away from thee all sickness, and will put none of the evil diseases of Egypt, which thou knowest, upon thee...",
+    web: "Yahweh will take away from you all sickness; and none of the evil diseases of Egypt, which you know, he will put on you..."
+  },
+  "Psalm 30:2": {
+    kjv: "O LORD my God, I cried unto thee, and thou hast healed me.",
+    web: "Yahweh my God, I cried to you, and you have healed me."
+  },
+  "Psalm 41:3": {
+    kjv: "The LORD will strengthen him upon the bed of languishing: thou wilt make all his bed in his sickness.",
+    web: "Yahweh will sustain him on his sickbed, and restore him from his bed of illness."
+  },
+  "Psalm 103:2–3": {
+    kjv: "Bless the LORD, O my soul, and forget not all his benefits: Who forgiveth all thine iniquities; who healeth all thy diseases.",
+    web: "Praise Yahweh, my soul, and don't forget all his benefits: who forgives all your sins; who heals all your diseases."
+  },
+  "Psalm 107:20": {
+    kjv: "He sent his word, and healed them, and delivered them from their destructions.",
+    web: "He sent his word and healed them, and delivered them from their graves."
+  },
+  "Proverbs 4:20-22": {
+    kjv: "My son, attend to my words; incline thine ear unto my sayings. Let them not depart from thine eyes; keep them in the midst of thine heart. For they are life unto those that find them, and health to all their flesh.",
+    web: "My son, attend to my words. Turn your ear to my sayings. Let them not depart from your eyes. Keep them in the center of your heart. For they are life to those who find them, and health to their whole body."
+  },
+  "Isaiah 53:5": {
+    kjv: "But he was wounded for our transgressions, he was bruised for our iniquities: the chastisement of our peace was upon him; and with his stripes we are healed.",
+    web: "But he was pierced for our transgressions. He was crushed for our iniquities. The punishment that brought our peace was on him; and by his wounds we are healed."
+  },
+  "Jeremiah 30:17": {
+    kjv: "For I will restore health unto thee, and I will heal thee of thy wounds, saith the LORD...",
+    web: "For I will restore health to you, and I will heal you of your wounds, says Yahweh..."
+  },
+  "Jeremiah 33:6": {
+    kjv: "Behold, I will bring it health and cure, and I will cure them, and will reveal unto them the abundance of peace and truth.",
+    web: "Behold, I will bring it health and cure, and I will cure them; and I will reveal to them abundance of peace and truth."
+  },
+  "Matthew 4:24": {
+    kjv: "...and they brought unto him all sick people that were taken with divers diseases and torments...and he healed them.",
+    web: "...they brought to him all who were sick, afflicted with various diseases and torments...and he healed them."
+  },
+  "Matthew 8:16–17": {
+    kjv: "...he cast out the spirits with his word, and healed all that were sick: That it might be fulfilled which was spoken by Esaias the prophet, saying, Himself took our infirmities, and bare our sicknesses.",
+    web: "...he cast out the spirits with a word, and healed all who were sick; that it might be fulfilled which was spoken through Isaiah the prophet, saying, 'He took our infirmities and bore our diseases.'"
+  },
+  "Matthew 9:35": {
+    kjv: "And Jesus went about all the cities and villages...healing every sickness and every disease among the people.",
+    web: "Jesus went about all the cities and the villages...healing every disease and every sickness among the people."
+  },
+  "Mark 5:34": {
+    kjv: "And he said unto her, Daughter, thy faith hath made thee whole; go in peace, and be whole of thy plague.",
+    web: "He said to her, 'Daughter, your faith has made you well. Go in peace, and be cured of your disease.'"
+  },
+  "Mark 16:17–18": {
+    kjv: "And these signs shall follow them that believe...they shall lay hands on the sick, and they shall recover.",
+    web: "These signs will accompany those who believe...they will lay hands on the sick, and they will recover."
+  },
+  "Luke 4:40": {
+    kjv: "Now when the sun was setting, all they that had any sick with divers diseases brought them unto him; and he laid his hands on every one of them, and healed them.",
+    web: "When the sun was setting, all those who had any sick with various diseases brought them to him; and he laid his hands on every one of them, and healed them."
+  },
+  "Luke 6:19": {
+    kjv: "And the whole multitude sought to touch him: for there went virtue out of him, and healed them all.",
+    web: "All the multitude sought to touch him, for power came out of him and healed them all."
+  },
+  "Luke 8:50": {
+    kjv: "But when Jesus heard it, he answered him, saying, Fear not: believe only, and she shall be made whole.",
+    web: "But Jesus hearing it, answered him, 'Don't be afraid. Only believe, and she will be healed.'"
+  },
+  "Luke 9:11": {
+    kjv: "...and healed them that had need of healing.",
+    web: "...and he cured those who needed healing."
+  },
+  "Acts 10:38": {
+    kjv: "How God anointed Jesus of Nazareth with the Holy Ghost and with power: who went about doing good, and healing all that were oppressed of the devil; for God was with him.",
+    web: "even Jesus of Nazareth, how God anointed him with the Holy Spirit and with power, who went about doing good and healing all who were oppressed by the devil, for God was with him."
+  },
+  "Romans 8:11": {
+    kjv: "But if the Spirit of him that raised up Jesus from the dead dwell in you, he that raised up Christ from the dead shall also quicken your mortal bodies by his Spirit that dwelleth in you.",
+    web: "But if the Spirit of him who raised up Jesus from the dead dwells in you, he who raised up Christ Jesus from the dead will also give life to your mortal bodies through his Spirit who dwells in you."
+  },
+  "Romans 10:17": {
+    kjv: "So then faith cometh by hearing, and hearing by the word of God.",
+    web: "So faith comes by hearing, and hearing by the word of God."
+  },
+  "2 Corinthians 4:16": {
+    kjv: "...but though our outward man perish, yet the inward man is renewed day by day.",
+    web: "...but though our outward man is decaying, yet our inward man is renewed day by day."
+  },
+  "2 Corinthians 12:9": {
+    kjv: "And he said unto me, My grace is sufficient for thee: for my strength is made perfect in weakness.",
+    web: "He has said to me, 'My grace is sufficient for you, for my power is made perfect in weakness.'"
+  },
+  "Galatians 3:13–14": {
+    kjv: "Christ hath redeemed us from the curse of the law, being made a curse for us...That the blessing of Abraham might come on the Gentiles through Jesus Christ; that we might receive the promise of the Spirit through faith.",
+    web: "Christ redeemed us from the curse of the law, having become a curse for us...that the blessing of Abraham might come on the Gentiles through Christ Jesus; that we might receive the promise of the Spirit through faith."
+  },
+  "Philippians 4:6–7": {
+    kjv: "Be careful for nothing; but in every thing by prayer and supplication with thanksgiving let your requests be made known unto God. And the peace of God, which passeth all understanding, shall keep your hearts and minds through Christ Jesus.",
+    web: "In nothing be anxious, but in everything, by prayer and petition with thanksgiving, let your requests be made known to God. And the peace of God, which surpasses all understanding, will guard your hearts and your thoughts in Christ Jesus."
+  },
+  "Philippians 4:13": {
+    kjv: "I can do all things through Christ which strengtheneth me.",
+    web: "I can do all things through Christ, who strengthens me."
+  },
+  "James 5:14–15": {
+    kjv: "Is any sick among you? let him call for the elders of the church; and let them pray over him, anointing him with oil in the name of the Lord: And the prayer of faith shall save the sick, and the Lord shall raise him up...",
+    web: "Is any among you sick? Let him call for the elders of the assembly, and let them pray over him, anointing him with oil in the name of the Lord, and the prayer of faith will heal the one who is sick..."
+  },
+  "1 Peter 2:24": {
+    kjv: "Who his own self bare our sins in his own body on the tree, that we, being dead to sins, should live unto righteousness: by whose stripes ye were healed.",
+    web: "He himself bore our sins in his body on the tree, that we, having died to sins, might live to righteousness; by whose stripes you were healed."
+  },
+  "3 John 1:2": {
+    kjv: "Beloved, I wish above all things that thou mayest prosper and be in health, even as thy soul prospereth.",
+    web: "Beloved, I pray that you may prosper in all things and be healthy, even as your soul prospers."
+  },
+  "Revelation 21:4": {
+    kjv: "And God shall wipe away all tears from their eyes; and there shall be no more death, neither sorrow, nor crying, neither shall there be any more pain: for the former things are passed away.",
+    web: "He will wipe away from them every tear from their eyes. Death will be no more; neither will there be mourning, nor crying, nor pain, any more. The first things have passed away."
+  }
+};
+
+function openVerseModal(ref) {
+  const v = VERSES[ref];
+  if (!v) return;
+  document.getElementById('modal-ref-title').textContent = ref;
+  document.getElementById('modal-kjv-text').textContent = v.kjv;
+  document.getElementById('modal-web-text').textContent = v.web;
+  document.getElementById('verse-modal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeVerseModal(e) {
+  if (e.target === document.getElementById('verse-modal')) {
+    document.getElementById('verse-modal').classList.remove('show');
+    document.body.style.overflow = '';
+  }
+}
+
+// Make all verse refs clickable
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.conf-ref').forEach(el => {
+    const ref = el.textContent.trim();
+    if (VERSES[ref]) {
+      el.classList.add('verse-ref');
+      el.style.cursor = 'pointer';
+      el.addEventListener('click', () => openVerseModal(ref));
+    }
+  });
+});
 </script>
 </body>
 </html>
