@@ -339,13 +339,10 @@ draw();
       <button class="verse-modal-close" onclick="closeModal()">✕ Close</button>
     </div>
     <div id="modal-kjv" class="verse-block">
-      <div class="verse-translation">KJV — King James Version</div>
+      <div class="verse-translation">King James Version (KJV)</div>
       <div class="verse-text" id="modal-kjv-text"></div>
     </div>
-    <div id="modal-web" class="verse-block">
-      <div class="verse-translation">WEB — World English Bible</div>
-      <div class="verse-text" id="modal-web-text"></div>
-    </div>
+
   </div>
 </div>
 
@@ -482,7 +479,7 @@ function openVerseModal(ref) {
   if (!v) return;
   document.getElementById('modal-ref-title').textContent = ref;
   document.getElementById('modal-kjv-text').textContent = v.kjv;
-  document.getElementById('modal-web-text').textContent = v.web;
+  
   document.getElementById('verse-modal').classList.add('show');
   document.body.style.overflow = 'hidden';
   document.documentElement.style.overflow = 'hidden';
