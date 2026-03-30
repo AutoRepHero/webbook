@@ -429,22 +429,61 @@
       margin-top: 48px;
     }
     footer a { color: var(--gold); text-decoration: none; }
-  </style>
+  
+    /* ── Mode Toggle ── */
+    #mode-toggle-bar {
+      display: flex;
+      background: #111;
+      border-bottom: 1px solid #1e1e1e;
+      padding: 8px 16px;
+      gap: 8px;
+      position: sticky;
+      top: 48px;
+      z-index: 99;
+    }
+    .mode-btn {
+      flex: 1;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1.5px solid #2a2a2a;
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: 0.5px;
+    }
+    .mode-btn.active {
+      background: linear-gradient(135deg, var(--gold), var(--ember, #ff6b1a));
+      color: #000;
+      border-color: transparent;
+    }
+    /* Hide/show sections based on mode */
+    body.work-mode .chapter-text { display: none; }
+    body.read-mode .stack-wrap { display: none; }
+    body.read-mode .chapter-complete-btn { display: none; }
+    body.read-mode .bonus-link { display: none; }
+    body.read-mode .chapter-body { border-radius: 0 0 var(--radius) var(--radius); }
+
+</style>
 
 <script>
-// Read-only mode via ?mode=read
-const urlParams = new URLSearchParams(window.location.search);
-const readOnly = urlParams.get('mode') === 'read';
-if (readOnly) {
-  document.documentElement.classList.add('read-only');
+function setMode(mode) {
+  document.body.classList.remove('read-mode','work-mode');
+  document.body.classList.add(mode + '-mode');
+  document.getElementById('btn-read').classList.toggle('active', mode === 'read');
+  document.getElementById('btn-work').classList.toggle('active', mode === 'work');
+  try { localStorage.setItem('ta_mode', mode); } catch(e){}
 }
+
+// Check URL param first, then localStorage
+const urlParams = new URLSearchParams(window.location.search);
+const urlMode = urlParams.get('mode');
+const savedMode = urlMode || (function(){ try { return localStorage.getItem('ta_mode'); } catch(e){ return null; } })() || 'read';
+document.addEventListener('DOMContentLoaded', function(){ setMode(savedMode); });
 </script>
-<style>
-.read-only .stack-wrap,
-.read-only .chapter-complete-btn,
-.read-only .bonus-link { display: none !important; }
-.read-only .chapter-body { border-radius: 0 0 var(--radius) var(--radius); }
-</style>
 </head>
 <body style="position:relative;z-index:1;">
 <div style="text-align:center;padding:20px 0 8px;">
@@ -463,6 +502,12 @@ if (readOnly) {
   <span id="progress-label">Your Progress</span>
   <div id="progress-bar-outer"><div id="progress-bar-inner"></div></div>
   <span id="progress-pct">0%</span>
+</div>
+
+
+<div id="mode-toggle-bar">
+  <button class="mode-btn active" id="btn-read" onclick="setMode('read')">📖 Read</button>
+  <button class="mode-btn" id="btn-work" onclick="setMode('work')">✍️ Work</button>
 </div>
 
 <div class="container">
