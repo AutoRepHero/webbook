@@ -319,7 +319,7 @@ draw();
   <div class="verse-modal-inner">
     <div class="verse-modal-ref">
       <span id="modal-ref-title"></span>
-      <button class="verse-modal-close" onclick="document.getElementById('verse-modal').classList.remove('show')">✕ Close</button>
+      <button class="verse-modal-close" onclick="closeModal()">✕ Close</button>
     </div>
     <div id="modal-kjv" class="verse-block">
       <div class="verse-translation">KJV — King James Version</div>
@@ -468,13 +468,21 @@ function openVerseModal(ref) {
   document.getElementById('modal-web-text').textContent = v.web;
   document.getElementById('verse-modal').classList.add('show');
   document.body.style.overflow = 'hidden';
+  document.documentElement.style.overflow = 'hidden';
 }
 
 function closeVerseModal(e) {
   if (e.target === document.getElementById('verse-modal')) {
-    document.getElementById('verse-modal').classList.remove('show');
-    document.body.style.overflow = '';
+    closeModal();
   }
+}
+
+function closeModal() {
+  document.getElementById('verse-modal').classList.remove('show');
+  document.body.style.overflow = '';
+  document.documentElement.style.overflow = '';
+  document.body.style.position = '';
+  document.body.style.width = '';
 }
 
 // Make all verse refs clickable
