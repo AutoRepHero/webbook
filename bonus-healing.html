@@ -300,6 +300,7 @@ list.innerHTML = CONFESSIONS.map((c, i) => `
 `).join('');
 </script>
 <script>
+document.addEventListener("DOMContentLoaded", function(){
 (function(){
 const c=document.getElementById("ember-canvas"),ctx=c.getContext("2d");
 let embers=[];
@@ -330,6 +331,7 @@ requestAnimationFrame(draw);
 }
 draw();
 })();
+}); // DOMContentLoaded
 </script>
 
 <div id="verse-modal" onclick="closeVerseModal(event)">

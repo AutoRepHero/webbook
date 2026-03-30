@@ -82,6 +82,7 @@
   </div>
 </div>
 <script>
+document.addEventListener("DOMContentLoaded", function(){
 (function(){
 const c=document.getElementById("ember-canvas"),ctx=c.getContext("2d");
 let embers=[];
@@ -112,6 +113,7 @@ requestAnimationFrame(draw);
 }
 draw();
 })();
+}); // DOMContentLoaded
 </script>
 </body>
 </html>
