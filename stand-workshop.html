@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>S.T.A.N.D. — Build Your Confession</title>
+  <style>
+    :root {
+      --gold: #c9a227; --gold2: #f0d080; --ember: #ff6b1a;
+      --dark: #080604; --card: #141414; --text: #f5ead0;
+      --muted: #7a6a40; --green: #27ae60; --green2: #2ecc71;
+      --red: #e74c3c; --radius: 14px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Georgia, serif; background: var(--dark); color: var(--text); min-height: 100vh; padding: 0 0 80px; }
+
+    header {
+      background: linear-gradient(135deg, #0f0c00, #0a0800);
+      border-bottom: 2px solid var(--gold);
+      padding: 24px 20px 18px;
+      text-align: center;
+    }
+    .header-crown { font-size: 2rem; filter: drop-shadow(0 0 12px var(--gold)); margin-bottom: 8px; }
+    .header-title { font-size: clamp(1.4rem, 5vw, 2rem); font-weight: 900; color: var(--gold); letter-spacing: 4px; text-transform: uppercase; }
+    .header-sub { font-size: 0.82rem; color: var(--muted); margin-top: 6px; font-style: italic; }
+
+    .intro { margin: 20px 16px 0; background: rgba(201,162,39,0.07); border: 1px solid rgba(201,162,39,0.2); border-radius: var(--radius); padding: 18px; }
+    .intro p { font-size: 0.9rem; color: #d4c080; line-height: 1.8; margin-bottom: 10px; }
+    .intro p:last-child { margin-bottom: 0; }
+    .intro strong { color: var(--gold2); }
+
+    .steps { padding: 20px 16px 0; display: flex; flex-direction: column; gap: 16px; }
+
+    .step-card {
+      background: var(--card);
+      border: 1px solid rgba(201,162,39,0.15);
+      border-radius: var(--radius);
+      overflow: hidden;
+      position: relative;
+    }
+    .step-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+    .step-card.s::before { background: linear-gradient(90deg, #3a9fd1, transparent); }
+    .step-card.t::before { background: linear-gradient(90deg, var(--gold), transparent); }
+    .step-card.a::before { background: linear-gradient(90deg, var(--ember), transparent); }
+    .step-card.n::before { background: linear-gradient(90deg, var(--red), transparent); }
+    .step-card.d::before { background: linear-gradient(90deg, var(--green), transparent); }
+
+    .step-header { padding: 18px 18px 14px; }
+    .step-letter {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 44px; height: 44px; border-radius: 12px;
+      font-size: 1.5rem; font-weight: 900; margin-bottom: 10px;
+    }
+    .s .step-letter { background: rgba(58,159,209,0.15); color: #3a9fd1; }
+    .t .step-letter { background: rgba(201,162,39,0.15); color: var(--gold); }
+    .a .step-letter { background: rgba(255,107,26,0.15); color: var(--ember); }
+    .n .step-letter { background: rgba(231,76,60,0.15); color: var(--red); }
+    .d .step-letter { background: rgba(39,174,96,0.15); color: var(--green2); }
+
+    .step-word { font-size: 1.1rem; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+    .step-tagline { font-size: 0.8rem; color: var(--muted); font-style: italic; margin-bottom: 14px; }
+
+    .verse-block {
+      background: rgba(201,162,39,0.05);
+      border-left: 2px solid var(--gold);
+      padding: 10px 14px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 12px;
+    }
+    .verse-text { font-size: 0.88rem; color: var(--gold2); font-style: italic; line-height: 1.7; }
+    .verse-ref { font-size: 0.7rem; color: var(--muted); margin-top: 4px; }
+
+    .commentary { font-size: 0.88rem; color: #c8b060; line-height: 1.75; margin-bottom: 16px; }
+
+    .input-section { padding: 0 18px 18px; border-top: 1px solid rgba(201,162,39,0.08); }
+    .input-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin: 14px 0 7px; display: block; }
+    .input-label span { font-weight: 700; }
+    input[type="text"], textarea, select {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(201,162,39,0.2);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+      resize: vertical;
+    }
+    input[type="text"]:focus, textarea:focus, select:focus { border-color: var(--gold); }
+    input::placeholder, textarea::placeholder { color: rgba(122,106,64,0.6); }
+    select option { background: #1a1400; }
+
+    .hint { font-size: 0.78rem; color: var(--muted); margin-top: 6px; font-style: italic; line-height: 1.5; }
+
+    /* Output confession */
+    .confession-output {
+      margin: 20px 16px 0;
+      background: linear-gradient(135deg, rgba(201,162,39,0.08), rgba(255,107,26,0.05));
+      border: 2px solid var(--gold);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .output-header { padding: 16px 18px 12px; border-bottom: 1px solid rgba(201,162,39,0.15); }
+    .output-header h2 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); }
+    .output-body { padding: 18px; }
+    .output-text {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.8;
+      min-height: 80px;
+    }
+    .output-text.empty { color: var(--muted); font-weight: 400; font-size: 0.88rem; font-style: italic; }
+    .output-actions { display: flex; gap: 10px; margin-top: 14px; }
+    .btn-copy, .btn-save {
+      flex: 1; padding: 12px; border-radius: 10px;
+      font-size: 0.85rem; font-weight: 700; cursor: pointer;
+      border: none; transition: all 0.15s;
+    }
+    .btn-copy { background: rgba(201,162,39,0.1); color: var(--gold); border: 1px solid rgba(201,162,39,0.3); }
+    .btn-copy:hover { background: var(--gold); color: #000; }
+    .btn-save { background: rgba(39,174,96,0.1); color: var(--green2); border: 1px solid rgba(39,174,96,0.3); }
+    .btn-save:hover { background: var(--green); color: #fff; }
+
+    /* Saved confessions */
+    .saved-section { margin: 16px 16px 0; }
+    .saved-title { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-bottom: 10px; }
+    .saved-list { display: flex; flex-direction: column; gap: 8px; }
+    .saved-item {
+      background: var(--card);
+      border: 1px solid rgba(201,162,39,0.12);
+      border-radius: 10px;
+      padding: 14px;
+    }
+    .saved-item-text { font-size: 0.88rem; color: var(--text); line-height: 1.6; margin-bottom: 8px; }
+    .saved-item-meta { font-size: 0.7rem; color: var(--muted); display: flex; justify-content: space-between; align-items: center; }
+    .saved-del { color: var(--red); cursor: pointer; font-size: 0.75rem; border: none; background: none; }
+
+    /* Toast */
+    #toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: linear-gradient(135deg, var(--gold), var(--ember)); color: #000; padding: 10px 22px; border-radius: 99px; font-size: 0.82rem; font-weight: 700; z-index: 500; transition: transform 0.3s cubic-bezier(.34,1.56,.64,1); white-space: nowrap; }
+    #toast.show { transform: translateX(-50%) translateY(0); }
+
+    .back-btn { display: block; text-align: center; padding: 16px; color: var(--gold); text-decoration: none; font-size: 0.85rem; border-top: 1px solid rgba(201,162,39,0.12); margin-top: 24px; }
+  </style>
+</head>
+<body>
+
+<canvas id="ember-canvas" style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;"></canvas>
+
+<div style="position:relative;z-index:1;">
+
+<header>
+  <div class="header-crown">⚔️</div>
+  <div class="header-title">S.T.A.N.D.</div>
+  <div class="header-sub">How to Build a Confession That Defeats the Enemy</div>
+</header>
+
+<div class="intro">
+  <p><strong>This is Chuck's method.</strong> Five steps to build a confession so grounded in God's word that the enemy has no answer for it. Work through each step and watch your confession come together at the bottom.</p>
+  <p>Every great declaration starts here — with the word of God, made personal, spoken out loud, held under fire, and declared in advance. That's how you S.T.A.N.D.</p>
+</div>
+
+<div class="steps">
+
+  <!-- S -->
+  <div class="step-card s">
+    <div class="step-header">
+      <div class="step-letter">S</div>
+      <div class="step-word">Scripture</div>
+      <div class="step-tagline">Find God's word that speaks directly to your situation.</div>
+      <div class="verse-block">
+        <div class="verse-text">"So then faith cometh by hearing, and hearing by the word of God."</div>
+        <div class="verse-ref">Romans 10:17 KJV</div>
+      </div>
+      <div class="commentary">Don't confess what you feel — confess what God said. His word is the foundation. You can't build on sand and expect it to stand. Find the scripture that hits your situation dead on — look it up in 2-3 translations and find the wording that resonates with you.</div>
+    </div>
+    <div class="input-section">
+      <label class="input-label"><span>Step S:</span> What is your need? What area of your life are you believing God for?</label>
+      <input type="text" id="s-need" placeholder="e.g. Healing in my body, Financial breakthrough, Restoration in my marriage..." oninput="updateOutput()"/>
+      <label class="input-label"><span>Scripture reference</span> that addresses your need:</label>
+      <input type="text" id="s-ref" placeholder="e.g. Isaiah 53:5, Philippians 4:19, Jeremiah 29:11..." oninput="updateOutput()"/>
+    </div>
+  </div>
+
+  <!-- T -->
+  <div class="step-card t">
+    <div class="step-header">
+      <div class="step-letter">T</div>
+      <div class="step-word">Translate It</div>
+      <div class="step-tagline">Make it yours. First person. Present tense.</div>
+      <div class="verse-block">
+        <div class="verse-text">"...and ye shall know the truth, and the truth shall make you free."</div>
+        <div class="verse-ref">John 8:32 KJV</div>
+      </div>
+      <div class="commentary">Don't say "God heals people." Say "I AM healed." Don't say "God provides." Say "I HAVE provision." Don't say "God will..." — say "God HAS." You are the author. Write your story with God's words. Look at the scripture in different translations — what wording resonates most with you? That's your foundation.</div>
+    </div>
+    <div class="input-section">
+      <label class="input-label"><span>Step T:</span> Write the scripture in first person, present tense. Start with "I AM..." or "I HAVE..." or "I WALK IN..."</label>
+      <textarea id="t-translate" rows="3" placeholder="e.g. By the stripes of Jesus I AM healed and whole. Sickness has no authority over my body..." oninput="updateOutput()"></textarea>
+      <div class="hint">Tip: Look it up in multiple translations. Find the words that hit you. Then make it personal.</div>
+    </div>
+  </div>
+
+  <!-- A -->
+  <div class="step-card a">
+    <div class="step-header">
+      <div class="step-letter">A</div>
+      <div class="step-word">Audible</div>
+      <div class="step-tagline">Speak it out loud. Your voice matters.</div>
+      <div class="verse-block">
+        <div class="verse-text">"Death and life are in the power of the tongue: and they that love it shall eat the fruit thereof."</div>
+        <div class="verse-ref">Proverbs 18:21 KJV</div>
+      </div>
+      <div class="commentary">God spoke the world into existence. You are made in His image. Silent faith stays in your head. Spoken faith creates. Open your mouth and deploy heaven's army. Faith comes by HEARING — and when you speak your confession out loud, you are the first one to hear it. Speak it daily. Morning and night. Like medicine.</div>
+    </div>
+    <div class="input-section">
+      <label class="input-label"><span>Step A:</span> When will you speak this confession? Set your commitment.</label>
+      <select id="a-when" oninput="updateOutput()">
+        <option value="">-- Select your commitment --</option>
+        <option value="Every morning when I wake up">Every morning when I wake up</option>
+        <option value="Morning and night, every day">Morning and night, every day</option>
+        <option value="3 times daily - morning, noon, night">3 times daily - morning, noon, night</option>
+        <option value="Every time the enemy attacks">Every time the enemy attacks</option>
+        <option value="Daily until I see the manifestation">Daily until I see the manifestation</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- N -->
+  <div class="step-card n">
+    <div class="step-header">
+      <div class="step-letter">N</div>
+      <div class="step-word">Never Quit</div>
+      <div class="step-tagline">Hold your confession under attack.</div>
+      <div class="verse-block">
+        <div class="verse-text">"...and having done all, to stand. Stand therefore."</div>
+        <div class="verse-ref">Ephesians 6:13-14 KJV</div>
+      </div>
+      <div class="commentary">You keep standing. You don't quit. You hold your ground. The counter attack WILL come — that means it's working. The enemy only attacks what threatens him. When doubt hits, don't open your mouth and agree with it. Prepare your response NOW before you need it. What will you say when the attack comes?</div>
+    </div>
+    <div class="input-section">
+      <label class="input-label"><span>Step N:</span> Write your counter attack response. What will you say when the enemy whispers doubt?</label>
+      <textarea id="n-counter" rows="2" placeholder="e.g. Devil you are defeated. My God is greater than this situation. I hold my confession. The test gives birth to the testimony..." oninput="updateOutput()"></textarea>
+    </div>
+  </div>
+
+  <!-- D -->
+  <div class="step-card d">
+    <div class="step-header">
+      <div class="step-letter">D</div>
+      <div class="step-word">Declare the Outcome</div>
+      <div class="step-tagline">Call the thing you WANT, not the thing you HAVE.</div>
+      <div class="verse-block">
+        <div class="verse-text">"...God, who quickeneth the dead, and calleth those things which be not as though they were."</div>
+        <div class="verse-ref">Romans 4:17 KJV</div>
+      </div>
+      <div class="commentary">God called Abraham the father of many nations before he had a single child. He called Gideon a mighty man of valor while Gideon was hiding in fear. Don't call the cat when you want the dog. Declare the end from the beginning. What does your life look like when this is fully manifested? Speak THAT.</div>
+    </div>
+    <div class="input-section">
+      <label class="input-label"><span>Step D:</span> Declare your outcome — what does it look like when God's promise is fully manifested in your life?</label>
+      <textarea id="d-declare" rows="2" placeholder="e.g. I am completely healed and whole. I am walking in full strength. My body is a testimony of God's healing power..." oninput="updateOutput()"></textarea>
+    </div>
+  </div>
+
+</div>
+
+<!-- Output -->
+<div class="confession-output" id="output-section">
+  <div class="output-header">
+    <h2>👑 Your S.T.A.N.D. Confession</h2>
+  </div>
+  <div class="output-body">
+    <div class="output-text empty" id="output-text">Fill in the steps above and your confession will appear here...</div>
+    <div class="output-actions" id="output-actions" style="display:none">
+      <button class="btn-copy" onclick="copyConfession()">📋 Copy</button>
+      <button class="btn-save" onclick="saveConfession()">💾 Save It</button>
+    </div>
+  </div>
+</div>
+
+<!-- Saved -->
+<div class="saved-section" id="saved-section" style="display:none">
+  <div class="saved-title">💾 My Saved S.T.A.N.D. Confessions</div>
+  <div class="saved-list" id="saved-list"></div>
+</div>
+
+<a class="back-btn" href="bonus-vault.html">← Back to Bonus Vault</a>
+
+</div>
+
+<div id="toast"></div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+(function(){
+const c=document.getElementById("ember-canvas"),ctx=c.getContext("2d");
+let embers=[];
+function resize(){c.width=innerWidth;c.height=innerHeight;}
+resize();window.addEventListener("resize",resize);
+function rand(a,b){return a+Math.random()*(b-a);}
+function spawn(){return{x:rand(0,c.width),y:c.height+8,size:rand(1,3),vy:rand(0.3,1.2),vx:rand(-0.3,0.3),drift:rand(-0.01,0.01),a:rand(0.3,0.8),fade:rand(0.002,0.005),flicker:rand(0,Math.PI*2),fs:rand(0.04,0.1),hue:rand(22,45)};}
+for(let i=0;i<50;i++){const e=spawn();e.y=rand(0,c.height);embers.push(e);}
+function draw(){
+ctx.clearRect(0,0,c.width,c.height);
+const g=ctx.createRadialGradient(c.width/2,c.height,0,c.width/2,c.height,c.height*0.7);
+g.addColorStop(0,"rgba(80,40,0,0.1)");g.addColorStop(1,"rgba(0,0,0,0)");
+ctx.fillStyle=g;ctx.fillRect(0,0,c.width,c.height);
+embers.forEach((e,i)=>{
+e.y-=e.vy;e.x+=e.vx+Math.sin(e.flicker)*0.25;e.flicker+=e.fs;e.vx+=e.drift;e.a-=e.fade;
+if(e.a<=0||e.y<-10){embers[i]=spawn();return;}
+const f=0.7+Math.sin(e.flicker)*0.3,a=e.a*f;
+const gr=ctx.createRadialGradient(e.x,e.y,0,e.x,e.y,e.size*4);
+gr.addColorStop(0,"hsla("+e.hue+",100%,65%,"+(a*0.5)+")");
+gr.addColorStop(1,"hsla("+e.hue+",100%,50%,0)");
+ctx.beginPath();ctx.arc(e.x,e.y,e.size*4,0,Math.PI*2);ctx.fillStyle=gr;ctx.fill();
+ctx.beginPath();ctx.arc(e.x,e.y,e.size*f,0,Math.PI*2);
+ctx.fillStyle="hsla("+e.hue+",100%,78%,"+a+")";ctx.fill();
+});
+if(Math.random()<0.3)embers.push(spawn());
+if(embers.length>100)embers.shift();
+requestAnimationFrame(draw);
+}
+draw();
+})();
+
+// Output builder
+function updateOutput() {
+  const need = document.getElementById('s-need').value.trim();
+  const ref = document.getElementById('s-ref').value.trim();
+  const translate = document.getElementById('t-translate').value.trim();
+  const when = document.getElementById('a-when').value;
+  const counter = document.getElementById('n-counter').value.trim();
+  const declare = document.getElementById('d-declare').value.trim();
+
+  const el = document.getElementById('output-text');
+  const actions = document.getElementById('output-actions');
+
+  if (!translate && !declare) {
+    el.className = 'output-text empty';
+    el.textContent = 'Fill in the steps above and your confession will appear here...';
+    actions.style.display = 'none';
+    return;
+  }
+
+  let parts = [];
+  if (translate) parts.push(translate);
+  if (ref) parts.push('(' + ref + ')');
+  if (when) parts.push('I speak this ' + when.toLowerCase() + '.');
+  if (declare) parts.push(declare);
+  if (counter) parts.push('When the enemy attacks: ' + counter);
+
+  el.className = 'output-text';
+  el.textContent = parts.join(' ');
+  actions.style.display = 'flex';
+}
+
+window.updateOutput = updateOutput;
+
+function copyConfession() {
+  const text = document.getElementById('output-text').textContent;
+  navigator.clipboard.writeText(text).then(() => toast('Copied!')).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    toast('Copied!');
+  });
+}
+window.copyConfession = copyConfession;
+
+function saveConfession() {
+  const text = document.getElementById('output-text').textContent;
+  const need = document.getElementById('s-need').value.trim();
+  if (!text || text.includes('Fill in the steps')) return;
+
+  const saved = getSaved();
+  saved.unshift({ id: Date.now(), text, need, date: new Date().toLocaleDateString() });
+  if (saved.length > 20) saved.length = 20;
+  setSaved(saved);
+  renderSaved();
+  toast('Saved to My Confessions!');
+}
+window.saveConfession = saveConfession;
+
+function getSaved() { try { return JSON.parse(localStorage.getItem('ta_stand_saved') || '[]'); } catch(e) { return []; } }
+function setSaved(a) { try { localStorage.setItem('ta_stand_saved', JSON.stringify(a)); } catch(e) {} }
+
+function renderSaved() {
+  const saved = getSaved();
+  const section = document.getElementById('saved-section');
+  const list = document.getElementById('saved-list');
+  if (saved.length === 0) { section.style.display = 'none'; return; }
+  section.style.display = 'block';
+  list.innerHTML = saved.map((s, i) => `
+    <div class="saved-item">
+      <div class="saved-item-text">${s.text}</div>
+      <div class="saved-item-meta">
+        <span>${s.need || ''} &middot; ${s.date}</span>
+        <button class="saved-del" onclick="delSaved(${i})">Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function delSaved(i) {
+  const saved = getSaved();
+  saved.splice(i, 1);
+  setSaved(saved);
+  renderSaved();
+}
+window.delSaved = delSaved;
+
+let toastTimer;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+renderSaved();
+}); // DOMContentLoaded
+</script>
+</body>
+</html>
