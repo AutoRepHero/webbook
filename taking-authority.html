@@ -482,7 +482,7 @@ function setMode(mode) {
 const urlParams = new URLSearchParams(window.location.search);
 const urlMode = urlParams.get('mode');
 const savedMode = urlMode || (function(){ try { return localStorage.getItem('ta_mode'); } catch(e){ return null; } })() || 'read';
-document.addEventListener('DOMContentLoaded', function(){ setMode(savedMode); });
+// setMode called after chapters built
 </script>
 </head>
 <body style="position:relative;z-index:1;">
@@ -1484,6 +1484,8 @@ document.addEventListener('DOMContentLoaded', () => {
   firstBody.classList.add('open');
   firstHdr.classList.add('open');
   document.getElementById('ch-arrow-1').textContent = '▼';
+  // Apply mode AFTER chapters are in the DOM
+  setMode(savedMode);
 });
 </script>
 <script>
