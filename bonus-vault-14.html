@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Bonuses — Taking Authority Interactive Webbook</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <style>
+    :root { --gold: #c9a227; --gold2: #f0d080; --ember: #ff6b1a; --dark: #080604; --card: #141414; --text: #f5ead0; --muted: #7a6a40; --green: #27ae60; --green2: #2ecc71; --red: #e74c3c; --blue: #3a9fd1; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Georgia, serif; background: var(--dark); color: var(--text); min-height: 100vh; padding: 24px 16px 60px; position: relative; }
+    .wrap { max-width: 480px; margin: 0 auto; text-align: center; }
+    .crown { font-size: 3rem; margin-bottom: 10px; filter: drop-shadow(0 0 16px var(--gold)); display: block; }
+    h1 { font-size: clamp(1.3rem, 4vw, 1.7rem); font-weight: 900; background: linear-gradient(135deg, var(--gold), var(--gold2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 1px; margin-bottom: 6px; }
+    .sub { font-size: 0.85rem; color: var(--muted); margin-bottom: 22px; font-style: italic; }
+    .tip { background: rgba(201,162,39,0.07); border: 1px solid rgba(201,162,39,0.2); border-radius: 12px; padding: 12px 16px; font-size: 0.82rem; color: var(--gold2); line-height: 1.7; margin-bottom: 20px; text-align: left; }
+    .tip strong { color: var(--gold); }
+    .section-title { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-bottom: 10px; text-align: left; }
+    .link-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    .btn { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: opacity 0.15s; text-align: left; }
+    .btn.gold { background: linear-gradient(135deg, var(--gold), #e8a020); color: #000; }
+    .btn.dark { background: #1a1400; color: var(--text); border: 1px solid rgba(201,162,39,0.2); }
+    .btn .icon { font-size: 1.3rem; flex-shrink: 0; }
+    .btn .txt { flex: 1; }
+    .btn .lbl { font-size: 0.6rem; font-weight: 400; opacity: 0.65; display: block; margin-bottom: 1px; }
+    .upgrade { margin-top: 20px; background: linear-gradient(135deg, rgba(255,107,26,0.08), rgba(201,162,39,0.05)); border: 1px solid rgba(255,107,26,0.3); border-radius: 14px; padding: 18px; text-align: center; }
+    .upgrade h3 { color: var(--ember); font-size: 0.95rem; margin-bottom: 6px; }
+    .upgrade p { font-size: 0.8rem; color: #b8a060; line-height: 1.6; margin-bottom: 14px; }
+    .upgrade a { display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, var(--ember), #ffaa00); color: #000; border-radius: 10px; font-weight: 800; font-size: 0.9rem; text-decoration: none; }
+  </style>
+</head>
+<body>
+<canvas id="ember-canvas" style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;"></canvas>
+<div style="position:relative;z-index:1;">
+<div class="wrap">
+  <span class="crown">👑</span>
+  <h1>Your Bonuses</h1>
+  <div class="sub">Taking Authority — Interactive Webbook</div>
+
+  <div class="tip"><strong>Bookmark this page.</strong> Everything below is included with your Interactive Webbook purchase.</div>
+
+  <div class="section-title">📖 Your Book</div>
+  <div class="link-list">
+    <a class="btn gold" href="https://read.chuckz.online/taking-authority.html">
+      <span class="icon">📖</span>
+      <span class="txt"><span class="lbl">Book + workbook + S.T.A.N.D. builder</span>Taking Authority — Interactive Webbook</span>
+      <span>→</span>
+    </a>
+  </div>
+
+  <div class="section-title">🎁 Your Bonuses</div>
+  <div class="link-list">
+    <a class="btn dark" href="https://read.chuckz.online/stand-workshop.html">
+      <span class="icon">⚔️</span>
+      <span class="txt"><span class="lbl">5-step confession builder</span>S.T.A.N.D. — Build Your Confession</span>
+      <span style="color:#e74c3c">→</span>
+    </a>
+    <a class="btn dark" href="https://read.chuckz.online/bonus-declarations.html">
+      <span class="icon">📜</span>
+      <span class="txt"><span class="lbl">Put on your mirror</span>Daily Declaration Card — All 14 Chapters</span>
+      <span style="color:var(--gold)">→</span>
+    </a>
+    <a class="btn dark" href="https://read.chuckz.online/bonus-counterattack.html">
+      <span class="icon">⚔️</span>
+      <span class="txt"><span class="lbl">Load before you need it</span>Counter Attack Cards</span>
+      <span style="color:#e74c3c">→</span>
+    </a>
+    <a class="btn dark" href="https://read.chuckz.online/bonus-journal.html">
+      <span class="icon">📓</span>
+      <span class="txt"><span class="lbl">4 weeks · saves in browser</span>30-Day Transformation Journal</span>
+      <span style="color:#3a9fd1">→</span>
+    </a>
+  </div>
+
+  <div class="upgrade">
+    <h3>⚡ Want the Full Arsenal?</h3>
+    <p>Upgrade to the Full Transformation Package — get the Declarations App, 101 King's Best Wealth Confessions, 31 Healing Confessions, and more.</p>
+    <a href="https://pay.chuckzonline.com/b/bJecMX214aVNcAnfJC63K08">Upgrade to Full Package — $27 →</a>
+  </div>
+
+</div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+(function(){const c=document.getElementById("ember-canvas"),ctx=c.getContext("2d");let e=[];function r(){c.width=innerWidth;c.height=innerHeight;}r();window.addEventListener("resize",r);function rnd(a,b){return a+Math.random()*(b-a);}function sp(){return{x:rnd(0,c.width),y:c.height+8,size:rnd(1,3),vy:rnd(0.3,1.2),vx:rnd(-0.3,0.3),drift:rnd(-0.01,0.01),a:rnd(0.3,0.8),fade:rnd(0.002,0.005),fl:rnd(0,Math.PI*2),fs:rnd(0.04,0.1),hue:rnd(22,45)};}
+for(let i=0;i<50;i++){const em=sp();em.y=rnd(0,c.height);e.push(em);}
+function draw(){ctx.clearRect(0,0,c.width,c.height);e.forEach((em,i)=>{em.y-=em.vy;em.x+=em.vx+Math.sin(em.fl)*0.25;em.fl+=em.fs;em.vx+=em.drift;em.a-=em.fade;if(em.a<=0||em.y<-10){e[i]=sp();return;}const f=0.7+Math.sin(em.fl)*0.3,a=em.a*f;const g=ctx.createRadialGradient(em.x,em.y,0,em.x,em.y,em.size*4);g.addColorStop(0,"hsla("+em.hue+",100%,65%,"+(a*0.5)+")");g.addColorStop(1,"hsla("+em.hue+",100%,50%,0)");ctx.beginPath();ctx.arc(em.x,em.y,em.size*4,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();ctx.beginPath();ctx.arc(em.x,em.y,em.size*f,0,Math.PI*2);ctx.fillStyle="hsla("+em.hue+",100%,78%,"+a+")";ctx.fill();});if(Math.random()<0.3)e.push(sp());if(e.length>100)e.shift();requestAnimationFrame(draw);}draw();})();});
+</script>
+</body>
+</html>
